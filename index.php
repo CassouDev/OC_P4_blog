@@ -7,6 +7,7 @@
     </head>
     
     <body>
+        <button>acheter</button>
         <!-- MENU -->
         <header>
             <nav>
