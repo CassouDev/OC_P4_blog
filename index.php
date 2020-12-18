@@ -7,26 +7,15 @@
     </head>
     
     <body>
-        <button>acheter</button>
         <!-- MENU -->
         <header>
-            <nav>
-                <ul>
-                    <li>Portrait</li>
-                    <li><button id="boutonConnect">Connexion</button></li>
-                </ul>
-            </nav>
-            <form method="post" action="php/connectForm.php" id="connectForm">
-                    <label for="pseudo">Pseudo: </label><input type="pseudo" name="pseudo"/><br/>
-                    <label for="motdepasse">Mot de passe: </label><input type="password" name="motdepasse"/><br/>
+            <button id="boutonConnect">Connexion</button>
+            <!-- <form method="post" action="php/connectForm.php" id="connectForm">
+                    <label for="pseudo">Pseudo: </label><input type="text" name="pseudo"/><br>
+                    <label for="motdepasse">Mot de passe: </label><input type="password" name="motdepasse"/><br>
                     <input type="submit" value="Se connecter"/>
-            </form>
-
-        <!-- ENTETE GRAPHIQUE-->
-            <section id='titre'>
-                <h1>Billet simple pour l'Alaska</h1>
-                <h2>par Jean Forteroche</h2>
-            </section>
+            </form> -->
+            <img src="images/Alaska-7.png" alt="triptyque montagnes">
         </header>
 
         <!-- BILLETS -->

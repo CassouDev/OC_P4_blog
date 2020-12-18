@@ -8,8 +8,7 @@
         <button a href ="index.php"></button>
         
     <!-- Le mot de passe a été envoyé et il est bon -->
-    <?php }else { ?>
-        <p>Bienvenue <?= $_POST['pseudo']?></p>
-        <button>écrire un nouveau billet</button>
-    <?php } 
+    <?php }else { 
+        include("admin.php");
+    } 
 ?>
