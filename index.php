@@ -21,11 +21,17 @@ $reponses = $bdd->query('SELECT titre, contenu, DATE_FORMAT(post_date, \'%d/%m/%
         <!-- MENU -->
         <header>
             <button id="boutonConnect">Connexion</button>
-            <form method="post" action="php/connectForm.php" id="connectForm">
-                    <label for="pseudo">Pseudo: </label><input type="text" name="pseudo"/><br>
-                    <label for="motdepasse">Mot de passe: </label><input type="password" name="motdepasse"/><br>
-                    <input type="submit" value="Se connecter"/>
-            </form>
+                <div id="adminForm">
+                    <form method="post" action="php/connectForm.php" id="connectForm">
+                        <div id="formPseudo">
+                            <label for="pseudo">Pseudo: </label><input type="text" name="pseudo"/><br>
+                        </div>
+                        <div id="formMdp">
+                            <label for="motdepasse">Mot de passe: </label><input type="password" name="motdepasse"/><br>
+                        </div>
+                            <input type="submit" value="Se connecter"/>
+                    </form>
+                </div>
             <img id="montagnes" src="images/montagnes.png" alt="montagnes billet simple pour l'Alaska">
         </header>
 
@@ -45,5 +51,5 @@ $reponses = $bdd->query('SELECT titre, contenu, DATE_FORMAT(post_date, \'%d/%m/%
         </section>
     </body>
 
-    <!-- <script src=".js"></script> -->
+    <script src="js/connect.js"></script>
 </html>
