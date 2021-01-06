@@ -6,7 +6,7 @@ try {
 catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
 }
-$reponses = $bdd->query('SELECT titre, contenu, DATE_FORMAT(post_date, \'%d/%m/%Y %Hh%imin%ss\') AS post_date FROM billets ORDER BY id DESC LIMIT 0,5');
+$reponses = $bdd->query('SELECT id, titre, contenu, DATE_FORMAT(post_date, \'%d/%m/%Y %Hh%imin%ss\') AS post_date FROM billets ORDER BY id DESC LIMIT 0,5');
 
 ?>
 <!DOCTYPE html>
@@ -20,18 +20,7 @@ $reponses = $bdd->query('SELECT titre, contenu, DATE_FORMAT(post_date, \'%d/%m/%
     <body>
         <!-- MENU -->
         <header>
-            <button id="boutonConnect">Connexion</button>
-                <div id="adminForm">
-                    <form method="post" action="php/connectForm.php" id="connectForm">
-                        <div id="formPseudo">
-                            <label for="pseudo">Pseudo: </label><input type="text" name="pseudo"/><br>
-                        </div>
-                        <div id="formMdp">
-                            <label for="motdepasse">Mot de passe: </label><input type="password" name="motdepasse"/><br>
-                        </div>
-                            <input type="submit" value="Se connecter"/>
-                    </form>
-                </div>
+            <?php include("php/connect.php"); ?>
             <img id="montagnes" src="images/montagnes.png" alt="montagnes billet simple pour l'Alaska">
         </header>
 
@@ -41,10 +30,11 @@ $reponses = $bdd->query('SELECT titre, contenu, DATE_FORMAT(post_date, \'%d/%m/%
             <?php 
             while($donnees = $reponses->fetch()) {
             ?>
-            <div class='new_billet'>
-                <h3><?php echo htmlspecialchars($donnees['titre']) .' - '. htmlspecialchars($donnees['post_date']); ?></h3>
-                <p><?php echo htmlspecialchars($donnees['contenu']); ?></p>
-            </div>
+            <a href="php/billets.php?idBillet=<?php echo $donnees['id']; ?>">
+                <div class='derniersBillets'>
+                    <h3><?php echo htmlspecialchars($donnees['titre'])?></h3>
+                </div>
+            </a>
             <?php
             }
             $reponses->closeCursor();?>
