@@ -20,7 +20,18 @@ $reponses = $bdd->query('SELECT id, titre, contenu, DATE_FORMAT(post_date, \'%d/
     <body>
         <!-- MENU -->
         <header>
-            <?php include("php/connect.php"); ?>
+            <button id="boutonConnect">Connexion</button>
+            <div id="adminForm">
+                <form method="post" action="php/connect_form.php" id="connectForm">
+                    <p>
+                        <label for="pseudo">Pseudo: </label>
+                        <input type="text" name="pseudo"/><br>
+                        <label for="motdepasse">Mot de passe: </label>
+                        <input type="password" name="motdepasse"/><br>
+                        <input class="button" type="submit" value="Se connecter"/>
+                    </p>
+                </form>
+            </div>
             <img id="montagnes" src="images/montagnes.png" alt="montagnes billet simple pour l'Alaska">
         </header>
 
@@ -41,5 +52,5 @@ $reponses = $bdd->query('SELECT id, titre, contenu, DATE_FORMAT(post_date, \'%d/
         </section>
     </body>
 
-    <script src="js/connect.js"></script>
+    <script src="js/connect_form.js"></script>
 </html>
