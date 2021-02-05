@@ -27,7 +27,7 @@
     <head>
         <meta charset="utf-8"/>
         <title>Billet simple pour l'Alaska</title>
-        <link rel="stylesheet" media="screen" href="../css/accueil.css">
+        <link rel="stylesheet" media="screen" href="../css/home_page.css">
         <link rel="stylesheet" media="screen" href="../css/billets.css">
     </head>
     <body>
@@ -65,5 +65,5 @@
             </div>
         </section>
     </body>
-    <script src="../js/connect.js"></script>
+    <script src="../js/connect_form.js"></script>
 </html>

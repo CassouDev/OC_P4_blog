@@ -14,7 +14,7 @@ $reponses = $bdd->query('SELECT id, titre, contenu, DATE_FORMAT(post_date, \'%d/
     <head>
         <meta charset="utf-8" />
         <title>Billet simple pour l'Alaska</title>
-        <link rel="stylesheet" media="screen" href="css/accueil.css">
+        <link rel="stylesheet" media="screen" href="css/home_page.css">
     </head>
     
     <body>

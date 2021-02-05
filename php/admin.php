@@ -33,7 +33,7 @@ $reponses = $bdd->query('SELECT id, titre, contenu, DATE_FORMAT(post_date, \'%d/
             </div>
             <div class="tabContent">
                 <div id="newBillet">
-                    <form method='post' action="new_billet.php">
+                    <form method='post' action="admin.php">
                     <label id="titreBillet" for="titre">Titre:</label><input id="inputTitre" type="text" name="titre" autofocus/><br>
                     <label id="dateBillet" for="post_date">Date:</label><input id="inputDate" type="date" name="post_date"/><br>
                     <textarea name="contenu" cols="70" rows="20"></textarea><br>
