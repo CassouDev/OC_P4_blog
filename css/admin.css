@@ -48,6 +48,7 @@ header nav ul li {
     width: 60%;
     opacity: 95%;
     margin: auto;
+    margin-bottom: 10px;
     background-image: url('../images/chapter_background.jpg');
     background-size: contain;
     border-radius: 10px;
@@ -87,6 +88,29 @@ header nav ul li {
     margin-bottom: 15px;
 }
 #boutonPublier {
+    background-color: rgba(0, 0, 0, 0.95);
+    color: #ffffff;
+    padding: 10px 30px;
+    border-width: 0px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+/* PAGE MODIFICATION DE BILLET */
+#modifierBillet {
+    text-align: center;
+}
+#modifierBillet h1 {
+    padding: 50px;
+}
+#zoneTexte {
+    width: 70%;
+}
+#boutons {
+    display: flex;
+    justify-content: space-around;
+}
+#boutonSupprimer {
     background-color: rgba(0, 0, 0, 0.95);
     color: #ffffff;
     padding: 10px 30px;

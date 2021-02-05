@@ -6,8 +6,8 @@ try {
 catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
 }
-$reponses = $bdd->query('SELECT id, titre, contenu, DATE_FORMAT(post_date, \'%d/%m/%Y %Hh%imin%ss\') AS post_date FROM billets ORDER BY id DESC LIMIT 0,5');
-?>
+// Récupération des billets
+$reponses = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%d/%m/%Y %Hh%imin%ss') AS post_date FROM billets ORDER BY id DESC LIMIT 0,10");
 // Ajout des nouveaux billets
 if(isset($_POST['contenu'])) {
     $titre = $_POST['titre'];
@@ -16,6 +16,18 @@ if(isset($_POST['contenu'])) {
     // Insertion du message à l'aide d'une requête préparée
     $req = $bdd->prepare('INSERT INTO billets (titre, post_date, contenu) VALUES(?, ?, ?)');
     $req->execute(array($titre, $post_date, $contenu));
+}
+
+// Suppression des billets
+if(isset($_GET['supprBillet']) & $_GET['supprBillet'] = '1') {
+    $suppr = $bdd->prepare('DELETE FROM billets WHERE id = :id');
+    $suppr->execute([
+        "id"=> $_GET['idBillet']
+    ]);
+    ?>
+<?php
+}
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -54,22 +66,27 @@ if(isset($_POST['contenu'])) {
                     </form>
                 </div>
             </div>
+
             <div class="tabContent">
                 <section id='sectionBillets'>
-                    <!-- Récupération des 5 derniers billets postés -->
+                    <!-- Récupération des 10 derniers billets postés -->
                     <?php 
-                    while($donnees = $reponses->fetch()) {
-                    ?>
-                    <a href="php/billets.php?idBillet=<?php echo $donnees['id']; ?>">
-                        <div class='derniersBillets'>
-                            <h3><?php echo htmlspecialchars($donnees['titre'])?></h3>
-                        </div>
-                    </a>
+                    while($donnees = $reponses->fetch()) 
+                    {
+                        var_dump($donnees['titre']);
+                        ?>
+                        <a href="modification_billets.php?idBillet=<?= $donnees['id']; ?>">
+                            <div class='derniersBillets'>
+                                <h3><?= htmlspecialchars($donnees['titre']); ?></h3>
+                            </div>
+                        </a>
                     <?php
                     }
-                    $reponses->closeCursor();?>
+                    $reponses->closeCursor();
+                    ?>
                 </section>
             </div>
+
         </div>
             
     </body>
