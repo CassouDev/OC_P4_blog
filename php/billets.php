@@ -13,13 +13,26 @@
         "id"=> $_GET['idBillet']
     ]);
     
-    // // Récupération des commentaires
-    // $response = $bdd->prepare('SELECT id, id_billet, auteur, commentaire, DATE_FORMAT(date_commentaire, \'%d/%m/%Y %Hh%imin%ss\') AS date_commentaire FROM commentaires WHERE id_billet = ? ORDER BY id LIMIT 0,25');
-    // $response->execute(array($_GET['billet']));
+    // Récupération des commentaires
+    $response = $bdd->prepare("SELECT id, id_billet, auteur, commentaire, DATE_FORMAT(date_commentaire, '%d/%m/%Y %Hh%imin%ss') AS date_commentaire FROM commentaires WHERE id_billet = ? ORDER BY id LIMIT 0,25");
+    $response->execute([
+        $_GET['idBillet']
+    ]);
     
-    // Gestion du formulaire ici
+    // Gestion du formulaire
     if(isset($_POST['commentaire'])) {
-        var_dump ('envoyer');
+        $idBillet = $_GET['idBillet'];
+        $auteur = $_POST['auteur'];
+        $commentaire = $_POST['commentaire'];
+        $date_commentaire = $_POST['date_commentaire'];
+        
+        $response = $bdd->prepare('INSERT INTO commentaires(id_billet, auteur, commentaire, date_commentaire) VALUES(:idbillet, :auteur, :comment, :commentdate)');
+        $response->execute(array(
+            'idbillet' => $idBillet,
+            'auteur' => $auteur,
+            'comment' => $commentaire,
+            'commentdate' => $date_commentaire
+        ) );
     }
 ?>
 <!DOCTYPE html>
@@ -33,8 +46,24 @@
     <body>
         <!-- MENU -->
         <header>
-            <?php include("connect.php"); ?>
-            <img id="montagnes" src="../images/montagnes.png" alt="montagnes billet simple pour l'Alaska">
+            <button id="boutonConnect">Connexion</button>
+            <div id="adminForm">
+                <form method="post" action="connect_form.php" id="connectForm">
+                    <p>
+                        <label for="pseudo">Pseudo: </label>
+                        <input type="text" name="pseudo"/><br>
+                        <label for="motdepasse">Mot de passe: </label>
+                        <input type="password" name="motdepasse"/><br>
+                        <input class="button" type="submit" value="Se connecter"/>
+                    </p>
+                </form>
+            </div>
+            <p>
+                <a href="../index.php">
+                    <img id="montagnes" src="../images/montagnes.png" alt="montagnes billet simple pour l'Alaska">
+                </a>
+            </p>
+            
         </header>
         <!-- Récupération du billet -->
         <section id='sectionBillet'>
@@ -51,17 +80,24 @@
         <section id='sectionCommentaires'>
             <h1>Commentaires</h1>
             <!-- Récupération des commentaires -->
-            <?php while ($commentaires = $req->fetch()) { ?>
-                    <p><strong> <?= htmlspecialchars($commentaires['auteur']) ?></strong> le <?= htmlspecialchars($commentaires['date_commentaire']) ?></p>';
-                    <p><?= htmlspecialchars($commentaires['commentaire']) ?></p>';
-            <?php } ?>
+            <div id="comments">
+                <?php while ($commentaires = $response->fetch()) { ?>
+                        <p><strong> <?= htmlspecialchars($commentaires['auteur']) ?></strong> le <?= htmlspecialchars($commentaires['date_commentaire']) ?></p>
+                        <p><?= htmlspecialchars($commentaires['commentaire']) ?></p>
+                <?php } ?>
+            </div>
+            <button class="button">Signaler</button>
+            <!-- Formulaire d'ajout de commentaires -->
+            <h1>Laisser un commentaires</h1>
             <div id="commentForm">
-                        <form method="post" id="commentForm">
-                        <label for="comment_titre">Titre: </label><input type="text" name="comment_titre" autofocus/><br>
-                        <label for="comment_date">Date: </label><input type="date" name="comment_date"/><br>
-                        <textarea name="commentaire" id="newComment" cols="100" rows="10"></textarea><br>
-                            <input type="submit" name="commentaire" value="Commenter"/>
-                        </form>
+                <form method="post" action="billets.php?idBillet=<?= $_GET['idBillet'] ?>">
+                    <p>
+                        <label for="auteur">Pseudo: </label><input id="auteur" type="text" name="auteur" autofocus/><br>
+                        <label for="date_commentaire">Date: </label><input id="date_commentaire" type="date" name="date_commentaire"/><br>
+                        <textarea name="commentaire" cols="100" rows="10"></textarea><br>
+                        <input class="button" type="submit" name="boutonCommenter" value="Commenter"/>
+                    </p>
+                </form>
             </div>
         </section>
     </body>
