@@ -22,10 +22,15 @@ $reponses = $bdd->query('SELECT id, titre, contenu, DATE_FORMAT(post_date, \'%d/
     <body>
         <!-- HEADER -->
         <header>
+            <button id="boutonDeconnect">Déconnexion</button>
             <img id="montagnes_admin" src="../images/admin.png" alt="montagnes admin">
-            <h1>Bienvenue <strong><?= $_POST['pseudo']?></strong></h1>
         </header>
 
+        <div id="bienvenue">
+            <h1>Bienvenue <strong>
+                <!-- <?=$_POST['pseudo'], $_GET['pseudo']?> -->
+                Jean Forteroche</strong></h1>
+        </div>
         <div id="tabs">
             <div id="tabMenu">
                 <div class="tab whiteborder">Nouveau billet</div>
