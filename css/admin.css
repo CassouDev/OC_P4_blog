@@ -119,3 +119,27 @@ header nav ul li {
     font-weight: bold;
     font-size: 14px;
 }
+/* PAGE COMMENTAIRES */
+#sectionCommentaires {
+    border-bottom: 1px, solid, black;
+}
+#sectionCommentaires h1 {
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 5px 5px 0 0;
+    padding: 10px 30px;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.6);
+}
+#comments, #signComments {
+    border-top: 1px solid black;
+}
+#infosComment {
+    display: flex;
+    justify-content: center;
+}
+.row {
+    margin-right: -50px;
+    margin-left: -50px;
+}

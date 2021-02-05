@@ -7,7 +7,12 @@ catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
 }
 // Récupération des billets
-$reponses = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%d/%m/%Y %Hh%imin%ss') AS post_date FROM billets ORDER BY id DESC LIMIT 0,10");
+$reponses = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM billets ORDER BY id");
+// Récupération des titres des billets (chapitres)
+$titres = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM billets ORDER BY id");
+// Récupération des commentaires
+$commentRep = $bdd->query("SELECT id, id_billet, auteur, commentaire, DATE_FORMAT(date_commentaire, '%d/%m/%Y') AS date_commentaire FROM commentaires ORDER BY date_commentaire LIMIT 0,25");
+
 // Ajout des nouveaux billets
 if(isset($_POST['contenu'])) {
     $titre = $_POST['titre'];
@@ -55,7 +60,9 @@ if(isset($_GET['supprBillet']) & $_GET['supprBillet'] = '1') {
             <div id="tabMenu">
                 <div class="tab whiteborder">Nouveau billet</div>
                 <div class="tab">Mes billets</div>
+                <div class="tab">Commentaires</div>
             </div>
+
             <div class="tabContent">
                 <div id="newBillet">
                     <form method='post' action="admin.php">
@@ -69,12 +76,11 @@ if(isset($_GET['supprBillet']) & $_GET['supprBillet'] = '1') {
 
             <div class="tabContent">
                 <section id='sectionBillets'>
-                    <!-- Récupération des 10 derniers billets postés -->
+                    <!-- Récupération dese tous les billets postés -->
                     <?php 
                     while($donnees = $reponses->fetch()) 
                     {
-                        var_dump($donnees['titre']);
-                        ?>
+                    ?>
                         <a href="modification_billets.php?idBillet=<?= $donnees['id']; ?>">
                             <div class='derniersBillets'>
                                 <h3><?= htmlspecialchars($donnees['titre']); ?></h3>
@@ -87,8 +93,52 @@ if(isset($_GET['supprBillet']) & $_GET['supprBillet'] = '1') {
                 </section>
             </div>
 
+            <div class="tabContent">
+                <section id='sectionCommentaires'>
+                <!-- Récupération des commentaires postés -->
+                    <h1>Commentaires signalés</h1>
+                    <!-- Récupération des commentaires signalés -->
+                    <div id="signComments">
+                    </div>
+                    <h1>Autres commentaires</h1>
+                    <!-- Récupération du nom du billet -->
+                    <div id="container">
+                        <?php 
+                        while($comments = $commentRep->fetch()) {
+                        ?>  
+                            <div class="row">
+                                <div class="col">
+                                    <p><strong><?= htmlspecialchars($comments['auteur']); ?></strong> le <?= htmlspecialchars($comments['date_commentaire']); ?></p>
+                                </div>
+                                <div class="col">
+                                    <?php
+                                    if($chapitres = $titres->fetch()) {
+                                    ?>
+                                    <p><i><?= htmlspecialchars($chapitres['titre']); ?></i></p>
+                                </div>
+                            </div>
+                            <?php
+                            }
+                            $titres->closeCursor();
+                            ?>
+                            <p><?= htmlspecialchars($comments['commentaire']); ?></p>
+                        <?php
+                        }
+                        $commentRep->closeCursor();
+                        ?>
+                    </div>
+                </section>
+            </div>
         </div>
-            
+        <!-- Optional JavaScript -->
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     </body>
 
     <script src="../js/tabs.js"></script>
