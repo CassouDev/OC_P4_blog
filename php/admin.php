@@ -8,6 +8,14 @@ catch (Exception $e) {
 }
 $reponses = $bdd->query('SELECT id, titre, contenu, DATE_FORMAT(post_date, \'%d/%m/%Y %Hh%imin%ss\') AS post_date FROM billets ORDER BY id DESC LIMIT 0,5');
 ?>
+// Ajout des nouveaux billets
+if(isset($_POST['contenu'])) {
+    $titre = $_POST['titre'];
+    $post_date = $_POST['post_date'];
+    $contenu = $_POST['contenu'];
+    // Insertion du message à l'aide d'une requête préparée
+    $req = $bdd->prepare('INSERT INTO billets (titre, post_date, contenu) VALUES(?, ?, ?)');
+    $req->execute(array($titre, $post_date, $contenu));
 <!DOCTYPE html>
 <html>
     <head>
