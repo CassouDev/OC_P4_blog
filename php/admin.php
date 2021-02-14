@@ -32,7 +32,15 @@ if(isset($_GET['supprBillet'])) {
     ?>
 <?php
 }
-?>
+//Désignaler un commentaire
+if(isset($_GET['unreportComment'])) {
+    $req = $bdd->prepare("UPDATE commentaires SET sign_commentaire = '0' WHERE id = :id");
+    $req->execute([
+        'id'=>$_GET['id']
+    ]);
+    ?>
+    <?php
+}
 //Suppression d'un commentaire
 if(isset($_GET['supprComment'])) {
     $suppr = $bdd->prepare('DELETE FROM commentaires WHERE id = :id');
@@ -106,8 +114,40 @@ if(isset($_GET['supprComment'])) {
                 <section id='sectionCommentaires'>
                 <!-- Récupération des commentaires signalés -->
                     <h1>Commentaires signalés</h1>
-                    <!-- Récupération des commentaires signalés -->
-                    <div id="signComments">
+                    <div id="container">
+                        <?php 
+                        while($report = $reportComment->fetch()) {
+                            ?>
+                            <div id="signComment">
+                                <div class="row">
+                                    <div class="col">
+                                        <p><strong><?= htmlspecialchars($report['auteur']); ?></strong> le <?= htmlspecialchars($report['date_commentaire']); ?></p>
+                                    </div>
+                                    <div class="col">
+                                        <?php
+                                        $req = $bdd->prepare("SELECT titre FROM billets WHERE id = :id");
+                                        $req->execute([
+                                            'id'=> $report['id_billet']
+                                        ]);
+                                        $title = $req->fetch();
+                                        ?>
+                                        <p><?= htmlspecialchars($title['titre']); ?></p>
+                                    </div>
+                                </div>
+                                <p><?= htmlspecialchars($report['commentaire']); ?></p>
+                                <div class="row">
+                                    <div class="col">
+                                        <a href="admin.php?unreportComment&amp;id=<?= $report['id']; ?>">Désignaler</a>
+                                    </div>
+                                    <div class="col">
+                                        <a href="admin.php?supprComment&amp;id=<?= $report['id']; ?>">Supprimer</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <?php
+                        }
+                        ?>
                     </div>
                     <h1>Autres commentaires</h1>
                     <!-- Récupération des commentaires non signalés -->

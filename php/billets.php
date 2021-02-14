@@ -12,28 +12,44 @@ $req = $bdd->prepare("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%d/%m/%
 $req->execute([
     "id"=> $_GET['idBillet']
 ]);
+
+// Récupération des commentaires
+$response = $bdd->prepare("SELECT id, id_billet, auteur, commentaire, DATE_FORMAT(date_commentaire, '%d/%m/%Y') AS date_commentaire, sign_commentaire FROM commentaires WHERE id_billet = ? AND sign_commentaire = '0' ORDER BY id DESC LIMIT 0,25");
+$response->execute([
+    $_GET['idBillet']
+]);
     
-    // Récupération des commentaires
-    $response = $bdd->prepare("SELECT id, id_billet, auteur, commentaire, DATE_FORMAT(date_commentaire, '%d/%m/%Y %Hh%imin%ss') AS date_commentaire FROM commentaires WHERE id_billet = ? ORDER BY id LIMIT 0,25");
-    $response->execute([
-        $_GET['idBillet']
-    ]);
-    
-    // Gestion du formulaire
-    if(isset($_POST['commentaire'])) {
-        $idBillet = $_GET['idBillet'];
-        $auteur = $_POST['auteur'];
-        $commentaire = $_POST['commentaire'];
-        $date_commentaire = $_POST['date_commentaire'];
+// Gestion du formulaire d'ajout de commentaires
+if(isset($_POST['commentaire'])) {
+    $idBillet = $_GET['idBillet'];
+    $auteur = $_POST['auteur'];
+    $commentaire = $_POST['commentaire'];
+    $date_commentaire = $_POST['date_commentaire'];
+    $report = '0';
         
-        $response = $bdd->prepare('INSERT INTO commentaires(id_billet, auteur, commentaire, date_commentaire) VALUES(:idbillet, :auteur, :comment, :commentdate)');
-        $response->execute(array(
-            'idbillet' => $idBillet,
-            'auteur' => $auteur,
-            'comment' => $commentaire,
-            'commentdate' => $date_commentaire
-        ) );
+    $response = $bdd->prepare('INSERT INTO commentaires(id_billet, auteur, commentaire, date_commentaire, sign_commentaire) VALUES(:idbillet, :auteur, :comment, :commentdate, :report)');
+    $response->execute(array(
+        'idbillet' => $idBillet,
+        'auteur' => $auteur,
+        'comment' => $commentaire,
+        'commentdate' => $date_commentaire,
+        'report' => $report
+    ));
+    ?>
+    <?php
+}
+
+// Signalement
+if(isset($_GET['report_comment'])) {
+    if($_GET['report_comment']='1') {
+        $reportReq = $bdd->prepare('UPDATE commentaires SET sign_commentaire = 1 WHERE id = :id_comment');
+        $reportReq->execute([
+            'id_comment' => $_GET['id']
+        ]);
     }
+    ?>
+    <?php
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -85,9 +101,10 @@ $req->execute([
                         <div id="eachComment">
                             <p><strong> <?= htmlspecialchars($commentaires['auteur']) ?></strong> le <?= htmlspecialchars($commentaires['date_commentaire']) ?></p>
                             <p><?= htmlspecialchars($commentaires['commentaire']) ?></p>
+                            <a href="billets.php?idBillet=<?= $_GET['idBillet'] ?>&amp;id=<?=$commentaires['id']?>&amp;report_comment=1" id="reportButton">Signaler</a>
+                        </div>
                 <?php } ?>
             </div>
-            <button class="button">Signaler</button>
             <!-- Formulaire d'ajout de commentaires -->
             <h1 id="letCommentsTitle">Laisser un commentaires</h1>
             <div id="commentForm">
