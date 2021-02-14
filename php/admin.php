@@ -33,6 +33,16 @@ if(isset($_GET['supprBillet'])) {
 <?php
 }
 ?>
+//Suppression d'un commentaire
+if(isset($_GET['supprComment'])) {
+    $suppr = $bdd->prepare('DELETE FROM commentaires WHERE id = :id');
+    $suppr->execute([
+        'id'=>$_GET['id']
+    ]);
+    ?>
+    <?php
+}
+?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -94,7 +104,7 @@ if(isset($_GET['supprBillet'])) {
 
             <div class="tabContent">
                 <section id='sectionCommentaires'>
-                <!-- Récupération des commentaires postés -->
+                <!-- Récupération des commentaires signalés -->
                     <h1>Commentaires signalés</h1>
                     <!-- Récupération des commentaires signalés -->
                     <div id="signComments">
@@ -104,41 +114,38 @@ if(isset($_GET['supprBillet'])) {
                     <div id="container">
                         <?php 
                         while($comments = $commentRep->fetch()) {
-                        ?>  
-                            <div class="row">
-                                <div class="col">
-                                    <p><strong><?= htmlspecialchars($comments['auteur']); ?></strong> le <?= htmlspecialchars($comments['date_commentaire']); ?></p>
+                        ?>  <div id="otherComment">
+                                <div class="row">
+                                    <div class="col">
+                                        <p><strong><?= htmlspecialchars($comments['auteur']); ?></strong> le <?= htmlspecialchars($comments['date_commentaire']); ?></p>
+                                    </div>
+                                    <div class="col">
+                                        <?php
+                                        $req= $bdd->prepare('SELECT titre FROM billets WHERE id = :id');
+                                        $req->execute([
+                                            'id'=> $comments['id_billet']
+                                        ]);
+                                        $title = $req->fetch();
+                                        ?>
+                                        <p><?= htmlspecialchars($title['titre']); ?></p>
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <?php
-                                    if($chapitres = $titres->fetch()) {
-                                    ?>
-                                    <p><i><?= htmlspecialchars($chapitres['titre']); ?></i></p>
-                                </div>
+                                <p><?= htmlspecialchars($comments['commentaire']); ?></p>
                             </div>
-                            <?php
-                            }
-                            $titres->closeCursor();
-                            ?>
-                            <p><?= htmlspecialchars($comments['commentaire']); ?></p>
                         <?php
                         }
-                        $commentRep->closeCursor();
                         ?>
                     </div>
                 </section>
             </div>
         </div>
-        <!-- Optional JavaScript -->
 
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-
+    <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    </body>
-
+    
     <script src="../js/tabs.js"></script>
+
+    </body>
 </html>

@@ -31,26 +31,35 @@ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubun
     margin-bottom: 0;
     margin: auto;
 }
-#sectionCommentaires #comments {
-    border-top: 1px solid black;
-}
-#comments button {
-
-}
-#commentForm {
-    margin: auto;
-    padding: 25px;
-    border: 2px solid rgba(0, 0, 0, 0.95);
-    margin-bottom: 20px;
-    border-radius: 0 0 5px 5px;
-}
-#sectionCommentaires h1 {
+#commentsTitle{
     font-size: 20px;
     border-radius: 5px 5px 0 0;
     padding: 10px 30px;
     margin-bottom: 0;
     background-color: rgba(0, 0, 0, 0.1);
     color: rgba(0, 0, 0, 0.6);
+}
+#sectionCommentaires #comments {
+    border: 3px solid rgba(0, 0, 0, 0.1);
+}
+#eachComment {
+    border-top: 3px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+#letCommentsTitle {
+    font-size: 20px;
+    border-radius: 5px 5px 0 0;
+    padding: 10px 30px;
+    margin-bottom: 0;
+    background-color: rgba(0, 0, 0, 1);
+    color: white;
+}
+#commentForm {
+    margin: auto;
+    padding: 0 25px 0 25px;
+    border: 2px solid rgba(0, 0, 0, 0.95);
+    margin-bottom: 20px;
+    border-radius: 0 0 5px 5px;
 }
 #commentPseudo, #commentDate{
     border: none;

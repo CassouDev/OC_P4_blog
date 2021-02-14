@@ -72,6 +72,36 @@ header nav ul li {
     font-weight: bold;
     font-size: 14px;
 }
+/* MES BILLETS / CHAPITRES */
+#sectionBillets {
+    margin: 50px 0 25px 0;
+}
+#sectionBillets a {
+    text-decoration: none;
+}
+.derniersBillets {
+    width: 60%;
+    opacity: 95%;
+    margin: auto;
+    margin-bottom: 10px;
+    background-image: url('../images/chapter_background.jpg');
+    background-size: contain;
+    border-radius: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: white;
+    text-align: center;
+    display: block;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+.derniersBillets h3 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 22px;
+}
+.derniersBillets a {
+    color: white;
+}
 /* PAGE MODIFICATION DE BILLET */
 .modifier {
     text-align: center;
@@ -118,4 +148,17 @@ header nav ul li {
 .row {
     margin-right: -50px;
     margin-left: -50px;
+}
+/* PAGE MODIFICATION DE COMMENTAIRES */
+.twoCols {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.modifier .twoCols.top {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+.twoCols.bottom {
+    margin-top: 20px;
 }

@@ -78,22 +78,25 @@ $req->execute([
             $req->closeCursor();?>
         </section>
         <section id='sectionCommentaires'>
-            <h1>Commentaires</h1>
+            <h1 id="commentsTitle">Commentaires</h1>
             <!-- Récupération des commentaires -->
             <div id="comments">
                 <?php while ($commentaires = $response->fetch()) { ?>
-                        <p><strong> <?= htmlspecialchars($commentaires['auteur']) ?></strong> le <?= htmlspecialchars($commentaires['date_commentaire']) ?></p>
-                        <p><?= htmlspecialchars($commentaires['commentaire']) ?></p>
+                        <div id="eachComment">
+                            <p><strong> <?= htmlspecialchars($commentaires['auteur']) ?></strong> le <?= htmlspecialchars($commentaires['date_commentaire']) ?></p>
+                            <p><?= htmlspecialchars($commentaires['commentaire']) ?></p>
                 <?php } ?>
             </div>
             <button class="button">Signaler</button>
             <!-- Formulaire d'ajout de commentaires -->
-            <h1>Laisser un commentaires</h1>
+            <h1 id="letCommentsTitle">Laisser un commentaires</h1>
             <div id="commentForm">
                 <form method="post" action="billets.php?idBillet=<?= $_GET['idBillet'] ?>">
                     <p>
-                        <label for="auteur">Pseudo: </label><input id="auteur" type="text" name="auteur" autofocus/><br>
-                        <label for="date_commentaire">Date: </label><input id="date_commentaire" type="date" name="date_commentaire"/><br>
+                        <label for="auteur">Pseudo: </label>
+                        <input id="auteur" type="text" name="auteur"/><br>
+                        <label for="date_commentaire">Date: </label>
+                        <input id="date_commentaire" type="date" name="date_commentaire"/><br>
                         <textarea name="commentaire" cols="100" rows="10"></textarea><br>
                         <input class="button" type="submit" name="boutonCommenter" value="Commenter"/>
                     </p>

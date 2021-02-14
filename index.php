@@ -50,7 +50,6 @@ $reponses = $bdd->query('SELECT id, titre, contenu, DATE_FORMAT(post_date, \'%d/
             }
             $reponses->closeCursor();?>
         </section>
-    </body>
 
     <script src="js/connect_form.js"></script>
 </html>
