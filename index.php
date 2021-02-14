@@ -41,7 +41,7 @@ $reponses = $bdd->query('SELECT id, titre, contenu, DATE_FORMAT(post_date, \'%d/
             <?php 
             while($donnees = $reponses->fetch()) {
             ?>
-            <a href="php/billets.php?idBillet=<?php echo $donnees['id']; ?>">
+            <a href="php/billets.php?idBillet=<?= $donnees['id']; ?>">
                 <div class='derniersBillets'>
                     <h3><?php echo htmlspecialchars($donnees['titre'])?></h3>
                 </div>

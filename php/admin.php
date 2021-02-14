@@ -7,13 +7,13 @@ catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
 }
 // Récupération des billets
-$reponses = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM billets ORDER BY id");
-// Récupération des titres des billets (chapitres)
-$titres = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM billets ORDER BY id");
-// Récupération des commentaires
-$commentRep = $bdd->query("SELECT id, id_billet, auteur, commentaire, DATE_FORMAT(date_commentaire, '%d/%m/%Y') AS date_commentaire FROM commentaires ORDER BY date_commentaire LIMIT 0,25");
+$reponses = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM billets ORDER BY post_date");
+// Récupération des commentaires non signalés
+$commentRep = $bdd->query("SELECT id, id_billet, auteur, commentaire, DATE_FORMAT(date_commentaire, '%d/%m/%Y') AS date_commentaire, sign_commentaire FROM commentaires WHERE sign_commentaire = '0' ORDER BY id DESC");
+// Récupération des commentaires signalés
+$reportComment = $bdd->query("SELECT * FROM commentaires WHERE sign_commentaire = '1' ORDER BY id DESC");
 
-// Ajout des nouveaux billets
+// Ajout d'un nouveau billet
 if(isset($_POST['contenu'])) {
     $titre = $_POST['titre'];
     $post_date = $_POST['post_date'];
@@ -23,11 +23,11 @@ if(isset($_POST['contenu'])) {
     $req->execute(array($titre, $post_date, $contenu));
 }
 
-// Suppression des billets
-if(isset($_GET['supprBillet']) & $_GET['supprBillet'] = '1') {
+// Suppression d'un billet
+if(isset($_GET['supprBillet'])) {
     $suppr = $bdd->prepare('DELETE FROM billets WHERE id = :id');
     $suppr->execute([
-        "id"=> $_GET['idBillet']
+        "id" => $_GET['idBillet']
     ]);
     ?>
 <?php
@@ -76,7 +76,7 @@ if(isset($_GET['supprBillet']) & $_GET['supprBillet'] = '1') {
 
             <div class="tabContent">
                 <section id='sectionBillets'>
-                    <!-- Récupération dese tous les billets postés -->
+                    <!-- Récupération de tous les billets postés -->
                     <?php 
                     while($donnees = $reponses->fetch()) 
                     {
@@ -88,7 +88,6 @@ if(isset($_GET['supprBillet']) & $_GET['supprBillet'] = '1') {
                         </a>
                     <?php
                     }
-                    $reponses->closeCursor();
                     ?>
                 </section>
             </div>
@@ -101,7 +100,7 @@ if(isset($_GET['supprBillet']) & $_GET['supprBillet'] = '1') {
                     <div id="signComments">
                     </div>
                     <h1>Autres commentaires</h1>
-                    <!-- Récupération du nom du billet -->
+                    <!-- Récupération des commentaires non signalés -->
                     <div id="container">
                         <?php 
                         while($comments = $commentRep->fetch()) {

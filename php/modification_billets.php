@@ -45,7 +45,7 @@ if(isset($_POST['contenu'])) {
             <img id="montagnes_admin" src="../images/admin.png" alt="montagnes admin">
         </header>
 
-        <div id="modifierBillet">
+        <div class="modifier">
             <h1>Modifier mon billet</h1>
             <div id="formModif">
                 <?php 
@@ -54,15 +54,15 @@ if(isset($_POST['contenu'])) {
                     <form method='post' action="modification_billets.php?idBillet=<?= $donnees['id']; ?>">
                     <label id="titreBillet" for="titre">Titre:</label><input id="inputTitre" type="text" name="titre" value="<?=$donnees['titre']?>"/><br>
                     <label id="dateBillet" for="post_date">Date:</label><input id="inputDate" type="date" name="post_date" value="<?= $donnees['post_date'] ?>"/><br>
-                    <textarea id="zoneTexte" name="contenu" cols="70" rows="20"><?=$donnees['contenu']?></textarea><br>
+                    <textarea class="zoneTexte" name="contenu" cols="70" rows="20"><?=$donnees['contenu']?></textarea><br>
                     <div id="boutons">
                         <input id="boutonPublier" type="submit" value="Modifier"/>
                         <a href="admin.php?idBillet=<?= $donnees['id']; ?>&supprBillet=1" id="boutonSupprimer">Supprimer</a>
                     </div>
                     </form>
-                <?php }
-                $response->closeCursor();?>
-                
+                <?php 
+                }
+                ?>
             </div>
         </div>
     

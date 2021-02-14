@@ -1,17 +1,17 @@
 <?php
-    // Connexion à la bdd
-    try {
-        $bdd = new PDO('mysql:host=localhost;dbname=oc_p4;charset=utf8', 'root', '');
-    }
-    catch (Exception $e) {
-            die('Erreur : ' . $e->getMessage());
-    }
+// Connexion à la bdd
+try {
+    $bdd = new PDO('mysql:host=localhost;dbname=oc_p4;charset=utf8', 'root', '');
+}
+catch (Exception $e) {
+    die('Erreur : ' . $e->getMessage());
+}
 
-    // Récupération du billet
-    $req = $bdd->prepare("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%d/%m/%Y %Hh%imin%ss') AS post_date FROM billets WHERE id = :id");
-    $req->execute([
-        "id"=> $_GET['idBillet']
-    ]);
+// Récupération du billet
+$req = $bdd->prepare("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM billets WHERE id = :id");
+$req->execute([
+    "id"=> $_GET['idBillet']
+]);
     
     // Récupération des commentaires
     $response = $bdd->prepare("SELECT id, id_billet, auteur, commentaire, DATE_FORMAT(date_commentaire, '%d/%m/%Y %Hh%imin%ss') AS date_commentaire FROM commentaires WHERE id_billet = ? ORDER BY id LIMIT 0,25");
