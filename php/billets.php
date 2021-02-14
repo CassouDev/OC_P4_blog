@@ -56,7 +56,7 @@ if(isset($_GET['report_comment'])) {
     <head>
         <meta charset="utf-8"/>
         <title>Billet simple pour l'Alaska</title>
-        <link rel="stylesheet" media="screen" href="../css/home_page.css">
+        <link rel="stylesheet" media="screen" href="../css/homepage.css">
         <link rel="stylesheet" media="screen" href="../css/billets.css">
     </head>
     <body>
@@ -64,7 +64,7 @@ if(isset($_GET['report_comment'])) {
         <header>
             <button id="boutonConnect">Connexion</button>
             <div id="adminForm">
-                <form method="post" action="connect_form.php" id="connectForm">
+                <form method="get" action="../index.php" id="connectForm">
                     <p>
                         <label for="pseudo">Pseudo: </label>
                         <input type="text" name="pseudo"/><br>
@@ -120,6 +120,7 @@ if(isset($_GET['report_comment'])) {
                 </form>
             </div>
         </section>
+        <script src="../js/connect_form.js"></script>
+
     </body>
-    <script src="../js/connect_form.js"></script>
 </html>

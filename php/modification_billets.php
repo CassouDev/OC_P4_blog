@@ -6,6 +6,8 @@ try {
 catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
 }
+//Démarrage de la session
+session_start();
 
 $response = $bdd->prepare("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%Y-%m-%d') AS post_date FROM billets WHERE id = :id");
 $response->execute([
@@ -42,7 +44,9 @@ if(isset($_POST['contenu'])) {
     <body>
         <!-- HEADER -->
         <header>
-            <img id="montagnes_admin" src="../images/admin.png" alt="montagnes admin">
+            <a href="admin.php">
+                <img id="montagnes_admin" src="../images/admin.png" alt="montagnes admin">
+            </a>
         </header>
 
         <div class="modifier">

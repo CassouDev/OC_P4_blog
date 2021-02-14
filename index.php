@@ -6,15 +6,26 @@ try {
 catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
 }
-$reponses = $bdd->query('SELECT id, titre, contenu, DATE_FORMAT(post_date, \'%d/%m/%Y %Hh%imin%ss\') AS post_date FROM billets ORDER BY id DESC LIMIT 0,5');
+$reponses = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM billets ORDER BY id DESC");
 
+if(isset($_GET['motdepasse']) && $_GET['motdepasse'] == 'Wadji2015') {
+    //Démarrage de la session + redirection
+    session_start();
+    $_SESSION['pseudo'] = $_GET['pseudo'];
+    header("Location:php/admin.php");
+}else if (isset($_GET['motdepasse']) && $_GET['motdepasse'] != 'Wadji2015' ) {
+?>
+<?php
+}else {
+
+}
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" />
         <title>Billet simple pour l'Alaska</title>
-        <link rel="stylesheet" media="screen" href="css/home_page.css">
+        <link rel="stylesheet" media="screen" href="css/homepage.css">
     </head>
     
     <body>
@@ -22,12 +33,12 @@ $reponses = $bdd->query('SELECT id, titre, contenu, DATE_FORMAT(post_date, \'%d/
         <header>
             <button id="boutonConnect">Connexion</button>
             <div id="adminForm">
-                <form method="post" action="php/connect_form.php" id="connectForm">
+                <form method="get" action="index.php" id="connectForm">
                     <p>
-                        <label for="pseudo">Pseudo: </label>
-                        <input type="text" name="pseudo"/><br>
-                        <label for="motdepasse">Mot de passe: </label>
-                        <input type="password" name="motdepasse"/><br>
+                        <label for='pseudo'>Pseudo: </label>
+                        <input type='text' name='pseudo'/><br>
+                        <label for='motdepasse'>Mot de passe: </label>
+                        <input type='password' name='motdepasse'/><br>
                         <input class="button" type="submit" value="Se connecter"/>
                     </p>
                 </form>
@@ -51,5 +62,7 @@ $reponses = $bdd->query('SELECT id, titre, contenu, DATE_FORMAT(post_date, \'%d/
             $reponses->closeCursor();?>
         </section>
 
-    <script src="js/connect_form.js"></script>
+        <script src="js/connect_form.js"></script>
+
+    </body>
 </html>

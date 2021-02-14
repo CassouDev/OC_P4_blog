@@ -6,6 +6,15 @@ try {
 catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
 }
+
+//Démarrage de la session
+session_start();
+//Arrêt de la session + redirection
+if(isset($_GET['deconnect'])) {
+    session_destroy();
+    header("Location:../index.php");
+}
+
 // Récupération des billets
 $reponses = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM billets ORDER BY post_date");
 // Récupération des commentaires non signalés
@@ -65,14 +74,12 @@ if(isset($_GET['supprComment'])) {
     <body>
         <!-- HEADER -->
         <header>
-            <button id="boutonDeconnect">Déconnexion</button>
+            <a href="admin.php?deconnect" id="boutonDeconnect">Déconnexion</a>
             <img id="montagnes_admin" src="../images/admin.png" alt="montagnes admin">
         </header>
 
         <div id="bienvenue">
-            <h1>Bienvenue <strong>
-                <!-- <?=$_POST['pseudo'], $_GET['pseudo']?> -->
-                Jean Forteroche</strong></h1>
+            <h1>Bienvenue <strong><?= $_SESSION['pseudo'] ?></strong></h1>
         </div>
         <div id="tabs">
             <div id="tabMenu">
