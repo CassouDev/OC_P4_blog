@@ -15,6 +15,10 @@ if(isset($_GET['motdepasse']) && $_GET['motdepasse'] == 'Wadji2015') {
     header("Location:php/admin.php");
 }else if (isset($_GET['motdepasse']) && $_GET['motdepasse'] != 'Wadji2015' ) {
 ?>
+    <div class='popup'>
+        <p>Le mot de passe est incorrect, veuillez retenter votre chance..</p>
+        <a href="index.php" class="button">Retour</a>
+    </div>
 <?php
 }else {
 
@@ -26,6 +30,7 @@ if(isset($_GET['motdepasse']) && $_GET['motdepasse'] == 'Wadji2015') {
         <meta charset="utf-8" />
         <title>Billet simple pour l'Alaska</title>
         <link rel="stylesheet" media="screen" href="css/homepage.css">
+        <link rel="stylesheet" media="screen" href="css/popup.css">
     </head>
     
     <body>
@@ -39,7 +44,8 @@ if(isset($_GET['motdepasse']) && $_GET['motdepasse'] == 'Wadji2015') {
                         <input type='text' name='pseudo'/><br>
                         <label for='motdepasse'>Mot de passe: </label>
                         <input type='password' name='motdepasse'/><br>
-                        <input class="button" type="submit" value="Se connecter"/>
+                        <input class='button' type='submit' value="Se connecter"/>
+                        <a href="index.php" class="button">Retour</a>
                     </p>
                 </form>
             </div>

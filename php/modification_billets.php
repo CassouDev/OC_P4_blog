@@ -27,6 +27,12 @@ if(isset($_POST['contenu'])) {
         'nvcontenu'=>$contenu, 
         'id'=> $_GET['idBillet']
     ));
+    ?>
+    <div class="popUp">
+        <p>Le billet a bien été modifié !</p>
+        <a href="admin.php" class="button">Ok</a>
+    </div>
+    <?php
 }
 
 ?>
@@ -37,7 +43,7 @@ if(isset($_POST['contenu'])) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Modifier mon billet</title>
         <link rel="stylesheet" media="screen" href="../css/admin.css">
-        <link rel="stylesheet" media="screen" href="../css/tabs.css">
+        <link rel="stylesheet" media="screen" href="../css/popup.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     </head>
 
@@ -60,8 +66,8 @@ if(isset($_POST['contenu'])) {
                     <label id="dateBillet" for="post_date">Date:</label><input id="inputDate" type="date" name="post_date" value="<?= $donnees['post_date'] ?>"/><br>
                     <textarea class="zoneTexte" name="contenu" cols="70" rows="20"><?=$donnees['contenu']?></textarea><br>
                     <div id="boutons">
-                        <input id="boutonPublier" type="submit" value="Modifier"/>
-                        <a href="admin.php?idBillet=<?= $donnees['id']; ?>&supprBillet=1" id="boutonSupprimer">Supprimer</a>
+                        <input class="button" type="submit" value="Modifier"/>
+                        <a href="admin.php?idBillet=<?= $donnees['id']; ?>&supprBillet" class="button">Supprimer</a>
                     </div>
                     </form>
                 <?php 

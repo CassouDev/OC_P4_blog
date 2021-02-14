@@ -36,6 +36,10 @@ if(isset($_POST['commentaire'])) {
         'report' => $report
     ));
     ?>
+    <div class="popUp">
+        <p>Votre commentaire a bien été ajouté !</p>
+        <a href="billets.php?idBillet=<?= $_GET['idBillet']; ?>" class="button">Ok</a>
+    </div>
     <?php
 }
 
@@ -48,6 +52,10 @@ if(isset($_GET['report_comment'])) {
         ]);
     }
     ?>
+    <div class="popUp">
+        <p>Le commentaire a bien été signalé !</p>
+        <a href="billets.php?idBillet=<?= $_GET['idBillet']; ?>" class="button">Ok</a>
+    </div>
     <?php
 }
 ?>
@@ -58,6 +66,7 @@ if(isset($_GET['report_comment'])) {
         <title>Billet simple pour l'Alaska</title>
         <link rel="stylesheet" media="screen" href="../css/homepage.css">
         <link rel="stylesheet" media="screen" href="../css/billets.css">
+        <link rel="stylesheet" media="screen" href="../css/popup.css">
     </head>
     <body>
         <!-- MENU -->

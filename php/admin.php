@@ -39,7 +39,11 @@ if(isset($_GET['supprBillet'])) {
         "id" => $_GET['idBillet']
     ]);
     ?>
-<?php
+    <div class="popUp">
+        <p>Le billet a bien été supprimé !</p>
+        <a href="admin.php" class="button">Ok</a>
+    </div>
+    <?php
 }
 //Désignaler un commentaire
 if(isset($_GET['unreportComment'])) {
@@ -48,6 +52,10 @@ if(isset($_GET['unreportComment'])) {
         'id'=>$_GET['id']
     ]);
     ?>
+    <div class="popUp">
+        <p>Le commentaire a bien été désignalé !</p>
+        <a href="admin.php" class="button">Ok</a>
+    </div>
     <?php
 }
 //Suppression d'un commentaire
@@ -57,6 +65,10 @@ if(isset($_GET['supprComment'])) {
         'id'=>$_GET['id']
     ]);
     ?>
+    <div class="popUp">
+        <p>Le commentaire a bien été supprimé !</p>
+        <a href="admin.php" class="button">Ok</a>
+    </div>
     <?php
 }
 ?>
@@ -68,6 +80,7 @@ if(isset($_GET['supprComment'])) {
         <title>Admin</title>
         <link rel="stylesheet" media="screen" href="../css/admin.css">
         <link rel="stylesheet" media="screen" href="../css/tabs.css">
+        <link rel="stylesheet" media="screen" href="../css/popup.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     </head>
     
