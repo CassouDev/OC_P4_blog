@@ -31,3 +31,7 @@
     font-weight: bold;
     font-size: 14px;
 }
+a.button:hover {
+    color: white;
+    text-decoration: none;
+}

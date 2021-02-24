@@ -87,14 +87,14 @@ if(isset($_GET['deleteComment'])) {
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>Admin</title>
         <link rel="stylesheet" media="screen" href="../css/admin.css">
-        <link rel="stylesheet" media="screen" href="../css/tabs.css">
         <link rel="stylesheet" media="screen" href="../css/popup.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <title>Admin</title>
     </head>
     
     <body>
+
         <!-- HEADER -->
         <header>
             <a href="admin.php?disconnect" id="disconnectButton">Déconnexion</a>
@@ -104,17 +104,20 @@ if(isset($_GET['deleteComment'])) {
         </header>
 
         <div class="container adminContent">
-            <h1>Bienvenue <strong><?= $_SESSION['pseudo'] ?></strong></h1>
-        </div>
-        <div id="tabs">
-            <div id="tabMenu">
-                <div class="tab whiteborder">Nouveau billet</div>
-                <div class="tab">Mes billets</div>
-                <div class="tab">Commentaires</div>
+            <div class="row text-center" id="welcome">
+                <div class="col">
+                    <h1>Bienvenue <strong><?= $_SESSION['pseudo'] ?></strong></h1>
+                </div>
             </div>
 
-            <div class="tabContent">
-                <div id="newBillet">
+            <nav class="row nav nav-tabs font-weight-bold text-center">
+                <a class="col nav-item nav-link active" href="#newPost" data-toggle="tab"> Nouveau billet</a>
+                <a class="col nav-item nav-link" href="#postSection" data-toggle="tab"> Mes billets</a>
+                <a class="col nav-item nav-link" href="#commentSection" data-toggle="tab">Commentaires</a>
+            </nav>
+
+            <div class="row tab-content mb-5">
+                <div class="col tab-pane active text-center mt-5 mb-4" id="newPost">
                     <form method='post' action="admin.php">
                         <p>
                             <label for="chapter">Chapitre:</label>
@@ -128,9 +131,8 @@ if(isset($_GET['deleteComment'])) {
                         </p>
                     </form>
                 </div>
-            </div>
 
-            <div class="tabContent">
+                <div class="col tab-pane text-center mt-5 mb-4" id="postSection">
                     <!-- Display all the posted posts -->
                     <?php 
                     while($data = $req->fetch()) 
@@ -144,13 +146,12 @@ if(isset($_GET['deleteComment'])) {
                     <?php
                     }
                     ?>
-                </section>
-            </div>
+                </div>
 
-            <div class="tabContent">
-                <section id='sectionCommentaires'>
+                <div class="col tab-pane text-center mb-4" id="commentSection">
                     <h1>Commentaires signalés</h1>
                     <!-- Display the reported comments -->
+                    <div class="container px-0">
                         <?php 
                         while($report = $reportCommentReq->fetch()) 
                         {
@@ -177,33 +178,42 @@ if(isset($_GET['deleteComment'])) {
                                     </div>
                                 </div>
 
+                                <div class="row mx-0 px-4">
+                                    <p class="col px-4 mt-0 mb-3">
                                         <?= htmlspecialchars($report['comment']); ?>
+                                    </p>
+                                </div>
+
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col py-3">
                                         <a class="button" href="admin.php?unreportComment&amp;id=<?= $report['id']; ?>">Désignaler</a>
                                     </div>
 
                                     <div class="col py-3">
                                         <a class="button" href="admin.php?deleteComment&amp;id=<?= $report['id']; ?>">Supprimer</a>
+                                    </div>
                                 </div>
                             </div>
-                            <?php
+                        <?php
                         }
                         ?>
                     </div>
 
                     <h1 id="h1otherComments">Autres commentaires</h1>
                     <!-- Display the unreported comments -->
+                    <div class="container px-0">
                         <?php 
                         while($comments = $commentReq->fetch()) 
                         {
-                                <div class="row">
+                        ?>  
                             <div id="unreportComment">
+                                <div class="row mx-0 px-3">
                                     <div class="col">
                                         <p>
                                             <strong><?= htmlspecialchars($comments['author']); ?></strong> le <?= htmlspecialchars($comments['comment_date']); ?>
                                         </p>
                                     </div>
+
                                     <div class="col">
                                         <?php
                                         $req= $db->prepare('SELECT title FROM posts WHERE chapter = :chapter');
@@ -218,22 +228,24 @@ if(isset($_GET['deleteComment'])) {
                                     </div>
                                 </div>
 
+                                <div class="row mx-0">
+                                    <p class="col px-4 mt-0 mb-3">
                                         <?= htmlspecialchars($comments['comment']); ?>
+                                    </p>
+                                </div>
                             </div>
                         <?php
                         }
                         ?>
                     </div>
-                </section>
+                </div>
             </div>
         </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <!-- Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     
-    <script src="../js/tabs.js"></script>
-
     </body>
 </html>

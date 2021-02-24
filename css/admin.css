@@ -12,48 +12,51 @@ header {
     font-style: italic;
 }
 #disconnectButton, #returnButton {
-    width: 80%;
-    margin: auto;
-    background-color: rgba(0, 0, 0, 0.1);
-    height: 50px;
-}
-header nav ul{
-    display: flex;
-    margin: auto;
-    padding-top: 13px;
-}
-header nav ul li {
-    margin: auto;
-}
     text-decoration: none;
-    float: right;
     margin-top: 25px;
-    margin-right: 15%;
     background-color: white;
+    border-radius: 5px;
+    border-width: 0px;
     color: #000000;
     padding: 8px 14px;
-    border-width: 0px;
-    border-radius: 5px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: bold;
     font-size: 13px;
+    font-weight: bold;
 }
-/* NOUVEAU BILLET */
-#newBillet {
-    margin: 50px 0 25px 0;
+#disconnectButton {
+    float: right;
+    margin-right: 15%;
 }
 #returnButton {
+    float: left;
+    margin-left: 15%;
+}
+/* TABS */
+.tab-content {
+    border: 2px solid rgba(0, 0, 0, 0.95);
+}
+a.nav-item.nav-link{
+    color: rgba(0, 0, 0, 0.95);
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px, 5px, 0 0;
     border: none;
+    font-size: 22px;
+}
+.nav-tabs a.nav-item.nav-link.active {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.95);
+    border: none;
+}
 /* "NOUVEAU BILLET" */
+#inputTitle, #inputDate, #inputChapter{
+    border: none;
     background-color: rgba(0, 0, 0, 0.1);
     text-align: center;
     height: 25px;
-    margin-bottom: 20px;
 }
 #inputTitle {
     width: 60%;
 }
-#newBillet, label{
+label{
     font-weight: 500;
     padding-right: 20px;
 }
@@ -64,103 +67,52 @@ header nav ul li {
 }
 /* "MES BILLETS" */
 #postSection a {
-    color: #ffffff;
-    padding: 10px 30px;
-    border-width: 0px;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 14px;
-}
-/* MES BILLETS / CHAPITRES */
-#sectionBillets {
-    margin: 50px 0 25px 0;
-}
-#sectionBillets a {
     text-decoration: none;
+    color: white;
 }
 .lastPost {
     width: 60%;
     opacity: 95%;
-    margin: auto;
-    margin-bottom: 10px;
     background-image: url('../images/chapter_background.jpg');
     background-size: contain;
     border-radius: 10px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: white;
-    text-align: center;
     display: block;
-    padding-top: 30px;
-    padding-bottom: 30px;
 }
 .lastPost h3 {
-    margin-top: 0px;
     margin-bottom: 0px;
     font-size: 22px;
 }
 /* EDIT COMMENT PAGE */
 .textArea {
-/* PAGE MODIFICATION DE BILLET */
-.modifier {
-    text-align: center;
-}
-.modifier h1 {
-    padding: 50px;
-}
-.zoneTexte {
     width: 70%;
 }
 #buttons {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 20px;
 }
-/* PAGE COMMENTAIRES */
+/* "COMMENTAIRES" */
 #commentSection {
-    border-bottom: 1px, solid, black;
+    padding-right: 0;
+    padding-left: 0;
 }
 #commentSection h1 {
     font-size: 20px;
     font-weight: 700;
-    border-radius: 5px 5px 0 0;
     padding: 10px 30px;
     margin-bottom: 0;
     background-color: rgba(0, 0, 0, 0.1);
     color: rgba(0, 0, 0, 0.6);
-    border-top: 1px solid black;
 }
-#signComment, #otherComment {
-    margin-top: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid black;
+#h1otherComments {
+    border-top: 2px solid black;
 }
-#infosComment {
-    display: flex;
-    justify-content: center;
+#reportComment, #unreportComment {
+    padding-top: 15px;
+    padding-bottom: 20px;
+    border-top: 3px solid rgba(0, 0, 0, 0.1);
 }
-.row {
-    margin-right: -50px;
-    margin-left: -50px;
-}
-#signComment a {
-    color: #ffffff;
-    padding: 10px 30px;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 14px;
-    background-color: rgba(0, 0, 0, 0.9);
-    text-decoration: none;
-}
-/* PAGE MODIFICATION DE COMMENTAIRES */
-.twoCols {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-.modifier .twoCols.top {
-    margin-bottom: 20px;
-    font-size: 18px;
-}
-.twoCols.bottom {
-    margin-top: 20px;
+#reportComment a {
+    font-size: 12px;
 }
