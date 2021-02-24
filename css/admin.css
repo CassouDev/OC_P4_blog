@@ -1,19 +1,17 @@
-/* GENERAL */
+/* HEADER */
 header {
     background-color: black;
 }
-#montagnes_admin {
+#mountains_admin {
     width: 100%;
 }
-#bienvenue {
-    text-align: center;
+#welcome {
     padding: 50px;
-    /* font-size: 18px; */
 }
-#bienvenue h1 strong {
+#welcome h1 strong {
     font-style: italic;
 }
-#menu_admin {
+#disconnectButton, #returnButton {
     width: 80%;
     margin: auto;
     background-color: rgba(0, 0, 0, 0.1);
@@ -27,7 +25,6 @@ header nav ul{
 header nav ul li {
     margin: auto;
 }
-#boutonDeconnect {
     text-decoration: none;
     float: right;
     margin-top: 25px;
@@ -45,27 +42,28 @@ header nav ul li {
 #newBillet {
     margin: 50px 0 25px 0;
 }
-#inputTitre, #inputDate{
+#returnButton {
     border: none;
+/* "NOUVEAU BILLET" */
     background-color: rgba(0, 0, 0, 0.1);
     text-align: center;
     height: 25px;
     margin-bottom: 20px;
 }
-#inputTitre {
+#inputTitle {
     width: 60%;
 }
 #newBillet, label{
     font-weight: 500;
     padding-right: 20px;
 }
-#newBillet textarea {
+#newPost textarea {
     background-color: rgba(0, 0, 0, 0.1);
     border: none;
     margin-bottom: 15px;
 }
-#boutonPublier {
-    background-color: rgba(0, 0, 0, 0.95);
+/* "MES BILLETS" */
+#postSection a {
     color: #ffffff;
     padding: 10px 30px;
     border-width: 0px;
@@ -80,7 +78,7 @@ header nav ul li {
 #sectionBillets a {
     text-decoration: none;
 }
-.derniersBillets {
+.lastPost {
     width: 60%;
     opacity: 95%;
     margin: auto;
@@ -95,14 +93,13 @@ header nav ul li {
     padding-top: 30px;
     padding-bottom: 30px;
 }
-.derniersBillets h3 {
+.lastPost h3 {
     margin-top: 0px;
     margin-bottom: 0px;
     font-size: 22px;
 }
-.derniersBillets a {
-    color: white;
-}
+/* EDIT COMMENT PAGE */
+.textArea {
 /* PAGE MODIFICATION DE BILLET */
 .modifier {
     text-align: center;
@@ -113,16 +110,16 @@ header nav ul li {
 .zoneTexte {
     width: 70%;
 }
-#boutons {
+#buttons {
     display: flex;
     justify-content: space-around;
     margin-bottom: 20px;
 }
 /* PAGE COMMENTAIRES */
-#sectionCommentaires {
+#commentSection {
     border-bottom: 1px, solid, black;
 }
-#sectionCommentaires h1 {
+#commentSection h1 {
     font-size: 20px;
     font-weight: 700;
     border-radius: 5px 5px 0 0;

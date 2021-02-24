@@ -7,7 +7,7 @@ body {
 header {
     margin-bottom: 50px;
 }
-#boutonConnect {
+#connectButton {
     float: right;
     margin-top: 25px;
     background-color: rgba(0, 0, 0, 0.90);
@@ -19,7 +19,7 @@ header {
     font-weight: bold;
     font-size: 13px;
 }
-#montagnes {
+#mountains {
     width: 80%;
     margin-left: 10%;
     margin-top: 50px;
@@ -58,10 +58,10 @@ input {
     font-size: 14px;
 }
 /* CHAPITRES */
-#sectionBillets a {
+#postSection a {
     text-decoration: none;
 }
-.derniersBillets {
+.lastPost {
     width: 60%;
     opacity: 95%;
     margin: auto;
@@ -77,10 +77,10 @@ input {
     padding-top: 30px;
     padding-bottom: 30px;
 }
-.derniersBillets h3 {
+.lastPost h3 {
     margin-top: 0px;
     margin-bottom: 0px;
 }
-.derniersBillets a {
+.lastPost a {
     color: white;
 }

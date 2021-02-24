@@ -1,53 +1,62 @@
 <?php 
-// Connexion à la bdd
-try {
-    $bdd = new PDO('mysql:host=localhost;dbname=oc_p4;charset=utf8', 'root', '');
+try 
+{
+    $db = new PDO('mysql:host=localhost;dbname=oc_p4;charset=utf8', 'root', '');
 }
-catch (Exception $e) {
-        die('Erreur : ' . $e->getMessage());
+catch (Exception $e) 
+{
+    die('Erreur : ' . $e->getMessage());
 }
 
-//Démarrage de la session
+//Start the session
 session_start();
-//Arrêt de la session + redirection
-if(isset($_GET['deconnect'])) {
+//Stop the session + redirect
+if(isset($_GET['disconnect'])) {
     session_destroy();
     header("Location:../index.php");
 }
 
-// Récupération des billets
-$reponses = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM billets ORDER BY post_date");
-// Récupération des commentaires non signalés
-$commentRep = $bdd->query("SELECT id, id_billet, auteur, commentaire, DATE_FORMAT(date_commentaire, '%d/%m/%Y') AS date_commentaire, sign_commentaire FROM commentaires WHERE sign_commentaire = '0' ORDER BY id DESC");
-// Récupération des commentaires signalés
-$reportComment = $bdd->query("SELECT * FROM commentaires WHERE sign_commentaire = '1' ORDER BY id DESC");
+// Get posts
+$req = $db->query("SELECT id, chapter, title, content, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM posts ORDER BY chapter DESC");
+// Get unreported comments
+$commentReq = $db->query("SELECT id, post_chapter, author, comment, DATE_FORMAT(comment_date, '%d/%m/%Y') AS comment_date, report_comment FROM comments WHERE report_comment = '0' ORDER BY post_chapter DESC");
+// Get reported comments
+$reportCommentReq = $db->query("SELECT * FROM comments WHERE  report_comment = '1' ORDER BY id DESC");
 
-// Ajout d'un nouveau billet
-if(isset($_POST['contenu'])) {
-    $titre = $_POST['titre'];
+// Add a new post
+if(isset($_POST['content'])) {
+    $chapter = $_POST['chapter'];
+    $title = $_POST['title'];
     $post_date = $_POST['post_date'];
-    $contenu = $_POST['contenu'];
-    // Insertion du message à l'aide d'une requête préparée
-    $req = $bdd->prepare('INSERT INTO billets (titre, post_date, contenu) VALUES(?, ?, ?)');
-    $req->execute(array($titre, $post_date, $contenu));
+    $content = $_POST['content'];
+    // Inserting the message using a prepared query
+    $insertReq = $db->prepare('INSERT INTO posts (chapter, title, post_date, content) VALUES(?, ?, ?, ?)');
+    $insertReq->execute(array($chapter, $title, $post_date, $content));
+    ?>
+    <div class="popUp">
+        <p>Le billet a bien été ajouté !</p>
+        <a href="admin.php" class="button">Ok</a>
+    </div>
+<?php
 }
 
-// Suppression d'un billet
+// Delete a post
 if(isset($_GET['supprBillet'])) {
-    $suppr = $bdd->prepare('DELETE FROM billets WHERE id = :id');
-    $suppr->execute([
-        "id" => $_GET['idBillet']
+    $delete = $db->prepare('DELETE FROM posts WHERE chapter = :chapter');
+    $delete->execute([
+        "chapter" => $_GET['chapter']
     ]);
     ?>
     <div class="popUp">
         <p>Le billet a bien été supprimé !</p>
         <a href="admin.php" class="button">Ok</a>
     </div>
-    <?php
+<?php
 }
-//Désignaler un commentaire
+
+// Unreport a comment
 if(isset($_GET['unreportComment'])) {
-    $req = $bdd->prepare("UPDATE commentaires SET sign_commentaire = '0' WHERE id = :id");
+    $req = $db->prepare("UPDATE comments SET report_comment = '0' WHERE id = :id");
     $req->execute([
         'id'=>$_GET['id']
     ]);
@@ -56,11 +65,12 @@ if(isset($_GET['unreportComment'])) {
         <p>Le commentaire a bien été désignalé !</p>
         <a href="admin.php" class="button">Ok</a>
     </div>
-    <?php
+<?php
 }
-//Suppression d'un commentaire
-if(isset($_GET['supprComment'])) {
-    $suppr = $bdd->prepare('DELETE FROM commentaires WHERE id = :id');
+
+// Delete a comment
+if(isset($_GET['deleteComment'])) {
+    $suppr = $db->prepare('DELETE FROM comments WHERE id = :id');
     $suppr->execute([
         'id'=>$_GET['id']
     ]);
@@ -69,13 +79,13 @@ if(isset($_GET['supprComment'])) {
         <p>Le commentaire a bien été supprimé !</p>
         <a href="admin.php" class="button">Ok</a>
     </div>
-    <?php
+<?php
 }
 ?>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
+        <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Admin</title>
         <link rel="stylesheet" media="screen" href="../css/admin.css">
@@ -87,11 +97,13 @@ if(isset($_GET['supprComment'])) {
     <body>
         <!-- HEADER -->
         <header>
-            <a href="admin.php?deconnect" id="boutonDeconnect">Déconnexion</a>
-            <img id="montagnes_admin" src="../images/admin.png" alt="montagnes admin">
+            <a href="admin.php?disconnect" id="disconnectButton">Déconnexion</a>
+            <p>
+                <img id="mountains_admin" src="../images/admin.png" alt="Mountains and'admin'"/>
+            </p>
         </header>
 
-        <div id="bienvenue">
+        <div class="container adminContent">
             <h1>Bienvenue <strong><?= $_SESSION['pseudo'] ?></strong></h1>
         </div>
         <div id="tabs">
@@ -104,24 +116,29 @@ if(isset($_GET['supprComment'])) {
             <div class="tabContent">
                 <div id="newBillet">
                     <form method='post' action="admin.php">
-                    <label id="titreBillet" for="titre">Titre:</label><input id="inputTitre" type="text" name="titre" autofocus/><br>
-                    <label id="dateBillet" for="post_date">Date:</label><input id="inputDate" type="date" name="post_date"/><br>
-                    <textarea name="contenu" cols="70" rows="20"></textarea><br>
-                    <input id="boutonPublier" type="submit" value="Publier"/>
+                        <p>
+                            <label for="chapter">Chapitre:</label>
+                            <input type="number" min="1" step="1" name="chapter" id="inputChapter"/><br>
+                            <label for="title">Titre:</label>
+                            <input type="text" name="title" id="inputTitle"/><br>
+                            <label for="post_date">Date:</label>
+                            <input type="date" name="post_date" id="inputDate"/><br>
+                            <textarea name="content" cols="70" rows="20"></textarea><br>
+                            <input class="button" type="submit" value="Publier"/>
+                        </p>
                     </form>
                 </div>
             </div>
 
             <div class="tabContent">
-                <section id='sectionBillets'>
-                    <!-- Récupération de tous les billets postés -->
+                    <!-- Display all the posted posts -->
                     <?php 
-                    while($donnees = $reponses->fetch()) 
+                    while($data = $req->fetch()) 
                     {
                     ?>
-                        <a href="modification_billets.php?idBillet=<?= $donnees['id']; ?>">
-                            <div class='derniersBillets'>
-                                <h3><?= htmlspecialchars($donnees['titre']); ?></h3>
+                        <a href="editPost.php?postId=<?= $data['id'] ?>&amp;chapterNb=<?= $data['chapter']; ?>">
+                            <div class='lastPost text-center py-4 mx-auto mb-3'>
+                                <h3>Chapitre <?= htmlspecialchars($data['chapter'])?> - <?= htmlspecialchars($data['title']); ?></h3>
                             </div>
                         </a>
                     <?php
@@ -132,65 +149,76 @@ if(isset($_GET['supprComment'])) {
 
             <div class="tabContent">
                 <section id='sectionCommentaires'>
-                <!-- Récupération des commentaires signalés -->
                     <h1>Commentaires signalés</h1>
-                    <div id="container">
+                    <!-- Display the reported comments -->
                         <?php 
-                        while($report = $reportComment->fetch()) {
-                            ?>
-                            <div id="signComment">
+                        while($report = $reportCommentReq->fetch()) 
+                        {
+                        ?>
+                            <div id="reportComment">
                                 <div class="row">
                                     <div class="col">
-                                        <p><strong><?= htmlspecialchars($report['auteur']); ?></strong> le <?= htmlspecialchars($report['date_commentaire']); ?></p>
+                                        <p>
+                                            <strong><?= htmlspecialchars($report['author']); ?></strong> le <?= htmlspecialchars($report['comment_date']); ?>
+                                        </p>
                                     </div>
+
                                     <div class="col">
                                         <?php
-                                        $req = $bdd->prepare("SELECT titre FROM billets WHERE id = :id");
+                                        $req = $db->prepare("SELECT title FROM posts WHERE chapter = :chapter");
                                         $req->execute([
-                                            'id'=> $report['id_billet']
+                                            'chapter'=> $report['post_chapter']
                                         ]);
                                         $title = $req->fetch();
                                         ?>
-                                        <p><?= htmlspecialchars($title['titre']); ?></p>
+                                        <p>
+                                            <?= htmlspecialchars($title['title']); ?>
+                                        </p>
                                     </div>
                                 </div>
-                                <p><?= htmlspecialchars($report['commentaire']); ?></p>
+
+                                        <?= htmlspecialchars($report['comment']); ?>
                                 <div class="row">
                                     <div class="col">
-                                        <a href="admin.php?unreportComment&amp;id=<?= $report['id']; ?>">Désignaler</a>
-                                    </div>
-                                    <div class="col">
-                                        <a href="admin.php?supprComment&amp;id=<?= $report['id']; ?>">Supprimer</a>
+                                        <a class="button" href="admin.php?unreportComment&amp;id=<?= $report['id']; ?>">Désignaler</a>
                                     </div>
 
+                                    <div class="col py-3">
+                                        <a class="button" href="admin.php?deleteComment&amp;id=<?= $report['id']; ?>">Supprimer</a>
                                 </div>
                             </div>
                             <?php
                         }
                         ?>
                     </div>
-                    <h1>Autres commentaires</h1>
-                    <!-- Récupération des commentaires non signalés -->
-                    <div id="container">
+
+                    <h1 id="h1otherComments">Autres commentaires</h1>
+                    <!-- Display the unreported comments -->
                         <?php 
-                        while($comments = $commentRep->fetch()) {
-                        ?>  <div id="otherComment">
+                        while($comments = $commentReq->fetch()) 
+                        {
                                 <div class="row">
+                            <div id="unreportComment">
                                     <div class="col">
-                                        <p><strong><?= htmlspecialchars($comments['auteur']); ?></strong> le <?= htmlspecialchars($comments['date_commentaire']); ?></p>
+                                        <p>
+                                            <strong><?= htmlspecialchars($comments['author']); ?></strong> le <?= htmlspecialchars($comments['comment_date']); ?>
+                                        </p>
                                     </div>
                                     <div class="col">
                                         <?php
-                                        $req= $bdd->prepare('SELECT titre FROM billets WHERE id = :id');
+                                        $req= $db->prepare('SELECT title FROM posts WHERE chapter = :chapter');
                                         $req->execute([
-                                            'id'=> $comments['id_billet']
+                                            'chapter'=> $comments['post_chapter']
                                         ]);
                                         $title = $req->fetch();
                                         ?>
-                                        <p><?= htmlspecialchars($title['titre']); ?></p>
+                                        <p>
+                                        <strong>Chapitre <?= htmlspecialchars($comments['post_chapter'])?></strong> - <?= htmlspecialchars($title['title']); ?>
+                                        </p>
                                     </div>
                                 </div>
-                                <p><?= htmlspecialchars($comments['commentaire']); ?></p>
+
+                                        <?= htmlspecialchars($comments['comment']); ?>
                             </div>
                         <?php
                         }

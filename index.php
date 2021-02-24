@@ -1,19 +1,18 @@
 <?php 
-// Connexion à la bdd
 try {
-    $bdd = new PDO('mysql:host=localhost;dbname=oc_p4;charset=utf8', 'root', '');
+    $db = new PDO('mysql:host=localhost;dbname=oc_p4;charset=utf8', 'root', '');
 }
 catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
 }
-$reponses = $bdd->query("SELECT id, titre, contenu, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM billets ORDER BY id DESC");
+$req = $db->query("SELECT id, chapter, title, content, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM posts ORDER BY chapter DESC");
 
-if(isset($_GET['motdepasse']) && $_GET['motdepasse'] == 'Wadji2015') {
+if(isset($_GET['password']) && $_GET['password'] == '1') {
     //Démarrage de la session + redirection
     session_start();
     $_SESSION['pseudo'] = $_GET['pseudo'];
     header("Location:php/admin.php");
-}else if (isset($_GET['motdepasse']) && $_GET['motdepasse'] != 'Wadji2015' ) {
+}else if (isset($_GET['password']) && $_GET['password'] != '1' ) {
 ?>
     <div class='popup'>
         <p>Le mot de passe est incorrect, veuillez retenter votre chance..</p>
@@ -36,36 +35,40 @@ if(isset($_GET['motdepasse']) && $_GET['motdepasse'] == 'Wadji2015') {
     <body>
         <!-- MENU -->
         <header>
-            <button id="boutonConnect">Connexion</button>
+            <button id="connectButton">Connexion</button>
             <div id="adminForm">
                 <form method="get" action="index.php" id="connectForm">
                     <p>
                         <label for='pseudo'>Pseudo: </label>
                         <input type='text' name='pseudo'/><br>
-                        <label for='motdepasse'>Mot de passe: </label>
-                        <input type='password' name='motdepasse'/><br>
+                        <label for='password'>Mot de passe: </label>
+                        <input type='password' name='password'/><br>
                         <input class='button' type='submit' value="Se connecter"/>
                         <a href="index.php" class="button">Retour</a>
                     </p>
                 </form>
             </div>
-            <img id="montagnes" src="images/montagnes.png" alt="montagnes billet simple pour l'Alaska">
+            <p>
+                <img id="mountains" src="images/mountains.png" alt="Mountains and 'Billet simple pour l'Alaska'">
+            </p>
         </header>
 
-        <!-- BILLETS -->
-        <section id='sectionBillets'>
-            <!-- Récupération des 5 derniers billets postés -->
+        <!-- POSTS -->
+        <section id='postSection'>
+            <!-- Get the posts -->
             <?php 
-            while($donnees = $reponses->fetch()) {
+            while($data = $req->fetch()) {
             ?>
-            <a href="php/billets.php?idBillet=<?= $donnees['id']; ?>">
-                <div class='derniersBillets'>
-                    <h3><?php echo htmlspecialchars($donnees['titre'])?></h3>
+            <a href="php/post.php?chapterNb=<?= $data['chapter']; ?>">
+                <div class='lastPost'>
+                    <h3>
+                        Chapitre <?= htmlspecialchars($data['chapter'])?> - <?= htmlspecialchars($data['title'])?>
+                    </h3>
                 </div>
             </a>
             <?php
             }
-            $reponses->closeCursor();?>
+            ?>
         </section>
 
         <script src="js/connect_form.js"></script>
