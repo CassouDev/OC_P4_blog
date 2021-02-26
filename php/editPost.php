@@ -7,35 +7,40 @@ catch (Exception $e)
 {
     die('Erreur : ' . $e->getMessage());
 }
-//Démarrage de la session
+//Star the session
 session_start();
 
-$req = $db->prepare("SELECT id, chapter, title, content, DATE_FORMAT(post_date, '%Y-%m-%d') AS post_date FROM posts WHERE id = :id");
+$req = $db->prepare("SELECT id, chapter, title, content, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM posts WHERE id = :id");
 $req->execute([
     'id'=> $_GET['postId']
 ]);
 
-// Modification du billet
+// edit the post
 if(isset($_POST['content'])) {
-    $chapter = $_POST['chapter'];
-    $title = $_POST['title'];
-    $postDate = $_POST['post_date'];
-    $content = $_POST['content'];
-    // Modification du message à l'aide d'une requête préparée
-    $req = $db->prepare('UPDATE posts SET chapter = :nwChapter, title = :nwTitle, post_date = :nwPostDate, content = :nwContent WHERE id = :id');
-    $req->execute(array(
-        'nwChapter'=>$chapter,
-        'nwTitle'=>$title, 
-        'nwPostDate'=>$postDate,
-        'nwContent'=>$content, 
-        'id'=> $_GET['postId']
-    ));
+    if($_POST['title'] != "" AND $_POST['content'] != "") {
+        $title = $_POST['title'];
+        $content = $_POST['content'];
+            
+        $req = $db->prepare('UPDATE posts SET title = :nwTitle, content = :nwContent WHERE id = :id');
+        $req->execute(array(
+            'nwTitle'=>$title, 
+            'nwContent'=>$content, 
+            'id'=> $_GET['postId']
+        ));
+        ?>
+        <div class="popUp">
+            <p>Le billet a bien été modifié !</p>
+            <a href="admin.php" class="button">Ok</a>
+        </div>
+    <?php
+    }else {
     ?>
-    <div class="popUp">
-        <p>Le billet a bien été modifié !</p>
-        <a href="admin.php" class="button">Ok</a>
-    </div>
-<?php
+        <div class="popUp">
+            <p>Veuillez remplir tous les champs svp.</p>
+            <a href="admin.php" class="button">Ok</a>
+        </div>
+    <?php 
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -48,6 +53,13 @@ if(isset($_POST['content'])) {
         <link rel="stylesheet" media="screen" href="../css/popup.css">
         <link rel="stylesheet" media="screen" href="../css/admin.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <!-- Tiny MCE -->
+        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <script>
+        tinymce.init({
+            selector: '#mytextarea'
+        });
+        </script>
     </head>
 
     <body>
@@ -70,17 +82,16 @@ if(isset($_POST['content'])) {
                 ?>
                     <form class="col" method='post' action="editPost.php?postId=<?= $data['id']; ?>">
                         <p>
-                            <label for="chapter">Chapitre:</label>
-                            <input type="number" min="1" step="1" name="chapter" id="inputChapter" value="<?= $data['chapter'] ?>"/><br>
+                            <p>
+                                <strong>Chapitre <?= $data['chapter'] ?></strong> - publié le <?= $data['post_date'] ?>
+                            </p>
                             <label for="title">Titre:</label>
                             <input id="inputTitle" type="text" name="title" value="<?= $data['title']?>"/><br>
-                            <label for="post_date">Date:</label>
-                            <input id="inputDate" type="date" name="post_date" value="<?= $data['post_date'] ?>"/><br>
-                            <textarea class="textArea" name="content" cols="70" rows="20"><?= $data['content']?></textarea><br>
+                            <textarea id="mytextarea" name="content" cols="70" rows="20"><?= $data['content']?></textarea><br>
                         
                             <div id="buttons">
                                 <input class="button" type="submit" value="Modifier"/>
-                                <a href="admin.php?postId=<?= $data['id']; ?>&deletePost" class="button">Supprimer</a>
+                                <a href="admin.php?chapterNb=<?= $_GET['chapterNb']; ?>&deletePost" class="button">Supprimer</a>
                             </div>
                         </p>
                     </form>

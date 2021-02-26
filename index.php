@@ -62,7 +62,7 @@ if(isset($_GET['password']) && $_GET['password'] == '1') {
             <a href="php/post.php?chapterNb=<?= $data['chapter']; ?>">
                 <div class='lastPost'>
                     <h3>
-                        Chapitre <?= htmlspecialchars($data['chapter'])?> - <?= htmlspecialchars($data['title'])?>
+                        Chapitre <?= htmlspecialchars($data['chapter']) ?> - <?= htmlspecialchars($data['title']) ?>
                     </h3>
                 </div>
             </a>

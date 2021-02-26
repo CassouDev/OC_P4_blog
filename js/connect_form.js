@@ -8,7 +8,6 @@ class Connect {
     }
     connect() {
         this.connectForm.style.display = "block";
-        // this.body.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
     }
 }
 var connexion = new Connect;

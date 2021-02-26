@@ -60,11 +60,6 @@ label{
     font-weight: 500;
     padding-right: 20px;
 }
-#newPost textarea {
-    background-color: rgba(0, 0, 0, 0.1);
-    border: none;
-    margin-bottom: 15px;
-}
 /* "MES BILLETS" */
 #postSection a {
     text-decoration: none;
@@ -85,9 +80,6 @@ label{
     font-size: 22px;
 }
 /* EDIT COMMENT PAGE */
-.textArea {
-    width: 70%;
-}
 #buttons {
     display: flex;
     justify-content: space-around;

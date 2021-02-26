@@ -25,27 +25,55 @@ $reportCommentReq = $db->query("SELECT * FROM comments WHERE  report_comment = '
 
 // Add a new post
 if(isset($_POST['content'])) {
-    $chapter = $_POST['chapter'];
-    $title = $_POST['title'];
-    $post_date = $_POST['post_date'];
-    $content = $_POST['content'];
-    // Inserting the message using a prepared query
-    $insertReq = $db->prepare('INSERT INTO posts (chapter, title, post_date, content) VALUES(?, ?, ?, ?)');
-    $insertReq->execute(array($chapter, $title, $post_date, $content));
+    if($_POST['chapter'] != "" AND $_POST['title'] != "" AND $_POST['content'] != "") {
+        $chapter = $_POST['chapter'];
+        $chapterReq = $db->prepare('SELECT * from posts WHERE chapter = ?');
+        $chapterReq->execute([$chapter]);
+        $chapterExist = $chapterReq->fetch();
+        if($chapterExist) {
+            ?>
+            <div class="popUp">
+                <p>Ce chapitre existe déjà, veuillez choisir un autre numéro de chapitre.</p>
+                <a href="admin.php" class="button">Ok</a>
+            </div>
+        <?php
+        }else {
+            $title = $_POST['title'];
+            $content = $_POST['content'];
+            // Inserting the message using a prepared query
+            $insertReq = $db->prepare('INSERT INTO posts (chapter, title, post_date, content) VALUES(:chapter, :title, NOW(), :content)');
+            $insertReq->execute(array(
+                'chapter' => $chapter, 
+                'title' => $title,
+                'content' => $content
+            ));
+            ?>
+            <div class="popUp">
+                <p>Le billet a bien été ajouté !</p>
+                <a href="admin.php" class="button">Ok</a>
+            </div>
+        <?php
+        }
+    }else {
     ?>
-    <div class="popUp">
-        <p>Le billet a bien été ajouté !</p>
-        <a href="admin.php" class="button">Ok</a>
-    </div>
-<?php
+        <div class="popUp">
+            <p>Veuillez remplir tous les champs svp.</p>
+            <a href="admin.php" class="button">Ok</a>
+        </div>
+    <?php 
+    }
 }
 
 // Delete a post
-if(isset($_GET['supprBillet'])) {
+if(isset($_GET['deletePost'])) {
     $delete = $db->prepare('DELETE FROM posts WHERE chapter = :chapter');
     $delete->execute([
-        "chapter" => $_GET['chapter']
+        'chapter' => $_GET['chapterNb']
     ]);
+    $deleteComment = $db->prepare('DELETE FROM comments WHERE post_chapter = :postChapter');
+    $deleteComment->execute([
+        'postChapter' => $_GET['chapterNb']
+    ])
     ?>
     <div class="popUp">
         <p>Le billet a bien été supprimé !</p>
@@ -90,6 +118,13 @@ if(isset($_GET['deleteComment'])) {
         <link rel="stylesheet" media="screen" href="../css/admin.css">
         <link rel="stylesheet" media="screen" href="../css/popup.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <!-- Tiny MCE -->
+        <script src="https://cdn.tiny.cloud/1/aqri9stihbla01t0trc3y1ojilh9esu49i9gbdqx8y9ptule/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <script>
+            tinymce.init({
+                selector: '#mytextarea'
+            });
+        </script>
         <title>Admin</title>
     </head>
     
@@ -124,9 +159,7 @@ if(isset($_GET['deleteComment'])) {
                             <input type="number" min="1" step="1" name="chapter" id="inputChapter"/><br>
                             <label for="title">Titre:</label>
                             <input type="text" name="title" id="inputTitle"/><br>
-                            <label for="post_date">Date:</label>
-                            <input type="date" name="post_date" id="inputDate"/><br>
-                            <textarea name="content" cols="70" rows="20"></textarea><br>
+                            <textarea id="mytextarea" name="content" cols="70" rows="20"></textarea><br>
                             <input class="button" type="submit" value="Publier"/>
                         </p>
                     </form>
@@ -140,7 +173,7 @@ if(isset($_GET['deleteComment'])) {
                     ?>
                         <a href="editPost.php?postId=<?= $data['id'] ?>&amp;chapterNb=<?= $data['chapter']; ?>">
                             <div class='lastPost text-center py-4 mx-auto mb-3'>
-                                <h3>Chapitre <?= htmlspecialchars($data['chapter'])?> - <?= htmlspecialchars($data['title']); ?></h3>
+                                <h3>Chapitre <?= htmlspecialchars($data['chapter']) ?> - <?= htmlspecialchars($data['title']); ?></h3>
                             </div>
                         </a>
                     <?php
@@ -173,7 +206,7 @@ if(isset($_GET['deleteComment'])) {
                                         $title = $req->fetch();
                                         ?>
                                         <p>
-                                            <?= htmlspecialchars($title['title']); ?>
+                                            <strong>Chapitre <?= htmlspecialchars($report['post_chapter'])?></strong> - <?= htmlspecialchars($title['title']); ?>
                                         </p>
                                     </div>
                                 </div>

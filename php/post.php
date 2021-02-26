@@ -27,8 +27,11 @@ $commentsNb->execute([
 ]);
 $number = $commentsNb->fetch();
 
+// Get the number of posts
+$postsNb = $db->query('SELECT COUNT(*) AS posts_nb FROM posts');
+$numberPosts = $postsNb->fetch();
 // Access to the previous and next Chapter
-$lastChapter = $number['comment_nb'];
+$lastChapter = $numberPosts['posts_nb'];
 if(isset($_GET['previousChapter'])) 
 {
     $prevChapter = $_GET['chapterNb'] - 1;
@@ -95,6 +98,7 @@ if(isset($_GET['reportComment'])) {
         <link rel="stylesheet" media="screen" href="../css/homepage.css">
         <link rel="stylesheet" media="screen" href="../css/post.css">
         <link rel="stylesheet" media="screen" href="../css/popup.css">
+        <script src="https://kit.fontawesome.com/1d97b80b9e.js" crossorigin="anonymous"></script>
     </head>
     <body>
         <!-- MENU -->
@@ -132,21 +136,21 @@ if(isset($_GET['reportComment'])) {
             ?>
                 <h1>
                     <a href="post.php?chapterNb=<?= $_GET['chapterNb'] ?>&amp;previousChapter">
-                        <p>
-                            <img src="../images/simple_white_arrow_left.png" alt="Simple white arrow to the previous chapter">
-                        </p>
+                        <span style="font-size: 58px; color: white;">
+                            <i class="fas fa-caret-left" alt="Simple white arrow to the previous chapter"></i>
+                        </span>
                     </a>
                     <p>
                         Chapitre <?= $_GET['chapterNb'] ?> - <?= htmlspecialchars($post['title'])?>
                     </p>
                     <a href="post.php?chapterNb=<?= $_GET['chapterNb'] ?>&amp;nextChapter">
-                        <p>
-                            <img src="../images/simple_white_arrow_right.png" alt="Simple white arrow to the next chapter">
-                        </p>
+                        <span style="font-size: 58px; color: white;">
+                            <i class="fas fa-caret-right" alt="Simple white arrow to the next chapter"></i>
+                        </span>
                     </a>
                 </h1>
                 <h2><?= htmlspecialchars($post['post_date']) ?></h2>
-                <p><?= htmlspecialchars($post['content']) ?></p>
+                <p><?= ($post['content']) ?></p>
             <?php
             }
             ?>
