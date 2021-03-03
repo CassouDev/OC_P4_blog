@@ -8,33 +8,34 @@ catch (Exception $e)
     die('Erreur : ' . $e->getMessage());
 }
 
+function chargerClasse($classe)
+{
+  require $classe . '.php';
+}
+
+spl_autoload_register('chargerClasse'); // autoload register -> it can be called when we instantiate a undeclared class
+
+$postsManager = new PostsManager($db);
 // Get the post
-$req = $db->prepare("SELECT id, chapter, title, content, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM posts WHERE chapter = :chapter");
-$req->execute([
-    "chapter"=> $_GET['chapterNb']
-]);
-
-// Get all the comments of this post
-$commentReq = $db->prepare("SELECT id, post_chapter, author, comment, DATE_FORMAT(comment_date, '%d/%m/%Y') AS comment_date, report_comment FROM comments WHERE post_chapter = ? AND report_comment = '0' ORDER BY id DESC");
-$commentReq->execute([
-    $_GET['chapterNb']
-]);
-
-// Get the number of comments
-$commentsNb = $db->prepare("SELECT COUNT(*) AS comment_nb FROM comments WHERE post_chapter = ? AND report_comment = '0'");
-$commentsNb->execute([
-    $_GET['chapterNb']
-]);
-$number = $commentsNb->fetch();
+$onePost = $postsManager->getOnePost();
 
 // Get the number of posts
-$postsNb = $db->query('SELECT COUNT(*) AS posts_nb FROM posts');
-$numberPosts = $postsNb->fetch();
+$postsNumber = $postsManager->countPosts();
+
+$commentsManager = new CommentsManager($db);
+// Get all the comments of this post
+$comments = $commentsManager->getComments();
+
+// Get the number of comments
+$commentsNumber = $commentsManager->countComments();
+
 // Access to the previous and next Chapter
-$lastChapter = $numberPosts['posts_nb'];
+$lastChapter = $postsNumber['postsNb'];
+$prevChapter = $_GET['chapterNb'] - 1;
+$nextChapter = $_GET['chapterNb'] + 1;
+
 if(isset($_GET['previousChapter'])) 
 {
-    $prevChapter = $_GET['chapterNb'] - 1;
     if($prevChapter > 0)
     {
         header("Location:post.php?chapterNb=$prevChapter");
@@ -44,7 +45,6 @@ if(isset($_GET['previousChapter']))
     }
 }elseif (isset($_GET['nextChapter']))
 {
-    $nextChapter = $_GET['chapterNb'] + 1;
     if($_GET['chapterNb'] < $lastChapter)
     {
         header("Location:post.php?chapterNb=$nextChapter");
@@ -54,20 +54,10 @@ if(isset($_GET['previousChapter']))
     }
 }
 
-// Management of the adding comments form
-if(isset($_POST['comment'])) {
-    $postChapter = $_GET['chapterNb'];
-    $author = $_POST['author'];
-    $comment = $_POST['comment'];
-    $report = '0';
-        
-    $commentReq = $db->prepare('INSERT INTO comments(post_chapter, author, comment, comment_date, report_comment) VALUES(:postChapter, :author, :comment, NOW(), :report)');
-    $commentReq->execute(array(
-        'postChapter' => $postChapter,
-        'author' => $author,
-        'comment' => $comment,
-        'report' => $report
-    ));
+// Add a comment (by the form)
+if(isset($_POST['commentButton']) && isset($_POST['pseudo'])) 
+{
+    $addComment = $commentsManager->addComments();
     ?>
     <div class="popUp">
         <p>Votre commentaire a bien été ajouté !</p>
@@ -76,12 +66,10 @@ if(isset($_POST['comment'])) {
 <?php
 }
 
-// Reporting a comment
-if(isset($_GET['reportComment'])) {
-    $reportReq = $db->prepare('UPDATE comments SET report_comment = 1 WHERE id = :commentId');
-    $reportReq->execute([
-        'commentId' => $_GET['id']
-    ]);
+// Report a comment
+if(isset($_GET['reportComment'])) 
+{
+    $reportComment = $commentsManager->reportComments();
     ?>
     <div class="popUp">
         <p>Le commentaire a bien été signalé !</p>
@@ -131,7 +119,7 @@ if(isset($_GET['reportComment'])) {
         <!-- Display a post -->
         <section id='postSection'>
             <?php 
-            while($post = $req->fetch()) 
+            foreach ($onePost as $post) 
             {
             ?>
                 <h1>
@@ -141,7 +129,7 @@ if(isset($_GET['reportComment'])) {
                         </span>
                     </a>
                     <p>
-                        Chapitre <?= $_GET['chapterNb'] ?> - <?= htmlspecialchars($post['title'])?>
+                        Chapitre <?= $_GET['chapterNb'] ?> - <?= htmlspecialchars($post->title())?>
                     </p>
                     <a href="post.php?chapterNb=<?= $_GET['chapterNb'] ?>&amp;nextChapter">
                         <span style="font-size: 58px; color: white;">
@@ -149,25 +137,24 @@ if(isset($_GET['reportComment'])) {
                         </span>
                     </a>
                 </h1>
-                <h2><?= htmlspecialchars($post['post_date']) ?></h2>
-                <p><?= ($post['content']) ?></p>
+                <h2><?= htmlspecialchars($post->postDate()) ?></h2>
+                <p><?= ($post->content()) ?></p>
             <?php
             }
             ?>
         </section>
 
         <section id='commentSection'>
-            <h1 id="commentsTitle">Commentaires (<?= $number['comment_nb'] ?>)</h1>
+            <h1 id="commentsTitle">Commentaires (<?= $commentsNumber ?>)</h1>
             <!-- Display comments -->
             <div id="comments">
                 <?php 
-                while ($comments = $commentReq->fetch()) 
-                { 
+                foreach ($comments as $comment) {
                 ?>
                     <div id="eachComment">
-                        <p><strong> <?= htmlspecialchars($comments['author']) ?></strong> le <?= htmlspecialchars($comments['comment_date']) ?></p>
-                        <p><?= htmlspecialchars($comments['comment']) ?></p>
-                        <a href="post.php?chapterNb=<?= $_GET['chapterNb'] ?>&amp;id=<?= $comments['id'] ?>&amp;reportComment" id="reportButton">Signaler</a>
+                        <p><strong> <?= htmlspecialchars($comment->pseudo()) ?></strong> le <?= htmlspecialchars($comment->commentDate()) ?></p>
+                        <p><?= htmlspecialchars($comment->comment()) ?></p>
+                        <a href="post.php?chapterNb=<?= $_GET['chapterNb'] ?>&amp;id=<?= $comment->id() ?>&amp;reportComment" id="reportButton">Signaler</a>
                     </div>
                 <?php 
                 } 
@@ -180,11 +167,10 @@ if(isset($_GET['reportComment'])) {
             <div id="commentForm">
                 <form method="post" action="post.php?chapterNb=<?= $_GET['chapterNb'] ?>">
                     <p>
-                        <label for="author">Pseudo: </label>
-                        <input type="text" name="author"/><br>
-                        <label for="commentDate">Date: </label>
+                        <label for="pseudo">Pseudo: </label>
+                        <input type="text" name="pseudo"/><br>
                         <textarea name="comment" cols="100" rows="10"></textarea><br>
-                        <input class="button" type="submit" name="commentButton" value="Commenter"/>
+                        <input class="button" type="submit" value="Commenter" name="commentButton"/>
                     </p>
                 </form>
             </div>
