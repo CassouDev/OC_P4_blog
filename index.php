@@ -5,10 +5,9 @@ try {
 catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
 }
-$req = $db->query("SELECT id, chapter, title, content, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM posts ORDER BY chapter DESC");
 
+//Start the session + redirection
 if(isset($_GET['password']) && $_GET['password'] == '1') {
-    //Démarrage de la session + redirection
     session_start();
     $_SESSION['pseudo'] = $_GET['pseudo'];
     header("Location:php/admin.php");
@@ -22,6 +21,17 @@ if(isset($_GET['password']) && $_GET['password'] == '1') {
 }else {
 
 }
+
+function chargerClasse($classe)
+{
+  require 'php/' . $classe . '.php'; // On inclut la classe correspondante au paramètre passé.
+}
+
+spl_autoload_register('chargerClasse'); // On enregistre la fonction en autoload pour qu'elle soit appelée dès qu'on instanciera une classe non déclarée.
+
+$manager = new PostsManager($db); //instanciation de la classe PostsManager
+$posts = $manager->getPosts();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -56,19 +66,21 @@ if(isset($_GET['password']) && $_GET['password'] == '1') {
         <!-- POSTS -->
         <section id='postSection'>
             <!-- Get the posts -->
-            <?php 
-            while($data = $req->fetch()) {
-            ?>
-            <a href="php/post.php?chapterNb=<?= $data['chapter']; ?>">
+            <?php
+            foreach ($posts as $post) {
+                ?>
+                <a href="php/post.php?chapterNb=<?= $post->chapter(); ?>">
                 <div class='lastPost'>
                     <h3>
-                        Chapitre <?= htmlspecialchars($data['chapter']) ?> - <?= htmlspecialchars($data['title']) ?>
+                        Chapitre <?= htmlspecialchars($post->chapter()) ?> - <?= htmlspecialchars($post->title()) ?>
                     </h3>
                 </div>
-            </a>
+                </a>
             <?php
             }
             ?>
+            
+
         </section>
 
         <script src="js/connect_form.js"></script>
