@@ -24,13 +24,13 @@ if(isset($_GET['password']) && $_GET['password'] == '1') {
 
 function chargerClasse($classe)
 {
-  require 'php/' . $classe . '.php'; // On inclut la classe correspondante au paramètre passé.
+  require 'php/' . $classe . '.php';
 }
 
-spl_autoload_register('chargerClasse'); // On enregistre la fonction en autoload pour qu'elle soit appelée dès qu'on instanciera une classe non déclarée.
-
-$manager = new PostsManager($db); //instanciation de la classe PostsManager
-$posts = $manager->getPosts();
+spl_autoload_register('chargerClasse'); // autoload register -> it can be called when we instantiate a undeclared class
+// Get posts
+$manager = new PostManager($db);
+$posts = $manager->getPost();
 
 ?>
 <!DOCTYPE html>
@@ -67,9 +67,10 @@ $posts = $manager->getPosts();
         <section id='postSection'>
             <!-- Get the posts -->
             <?php
-            foreach ($posts as $post) {
+            foreach ($posts as $post) 
+            {
                 ?>
-                <a href="php/post.php?chapterNb=<?= $post->chapter(); ?>">
+                <a href="php/postPage.php?chapterNb=<?= $post->chapter(); ?>">
                 <div class='lastPost'>
                     <h3>
                         Chapitre <?= htmlspecialchars($post->chapter()) ?> - <?= htmlspecialchars($post->title()) ?>

@@ -1,5 +1,5 @@
 <?php
-class Comments
+class Comment
 {
     private $_id;
     private $_postChapter;
@@ -86,7 +86,6 @@ class Comments
 
     public function setCommentDate($commentDate)
     {
-
         $this->_commentDate = $commentDate;
     }
 
