@@ -7,11 +7,15 @@ catch (Exception $e) {
 }
 
 //Start the session + redirection
-if(isset($_GET['password']) && $_GET['password'] == '1') {
+if (isset($_GET['password']) && $_GET['password'] == '1') 
+{
     session_start();
     $_SESSION['pseudo'] = $_GET['pseudo'];
     header("Location:php/admin.php");
-}else if (isset($_GET['password']) && $_GET['password'] != '1' ) {
+}
+else if (isset($_GET['password']) && $_GET['password'] != '1' ) 
+{
+    $message = "Le mot de passe est incorrect, veuillez retenter votre chance..";
 ?>
     <div class='popup'>
         <p>Le mot de passe est incorrect, veuillez retenter votre chance..</p>

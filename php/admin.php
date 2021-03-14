@@ -16,98 +16,68 @@ if(isset($_GET['disconnect'])) {
     header("Location:../index.php");
 }
 
+function chargerClasse($classe)
+{
+  require $classe . '.php';
+}
+
+spl_autoload_register('chargerClasse'); // autoload register -> it can be called when we instantiate a undeclared class
+
+$postManager = new PostManager($db);
 // Get posts
-$req = $db->query("SELECT id, chapter, title, content, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM posts ORDER BY chapter DESC");
+$posts = $postManager->getPost();
+// Get the number of posts
+$lastChapter = $postManager->countPosts();
+$chapterNumber = $lastChapter['postsNb'] + 1;
+
+$adminCommentManager = new CommentManager($db);
 // Get unreported comments
-$commentReq = $db->query("SELECT id, post_chapter, author, comment, DATE_FORMAT(comment_date, '%d/%m/%Y') AS comment_date, report_comment FROM comments WHERE report_comment = '0' ORDER BY post_chapter DESC");
+$unreportedComments = $adminCommentManager->getUnreportedComments();
 // Get reported comments
-$reportCommentReq = $db->query("SELECT * FROM comments WHERE  report_comment = '1' ORDER BY id DESC");
+$reportedComments = $adminCommentManager->getReportedComments();
 
 // Add a new post
-if(isset($_POST['content'])) {
-    if($_POST['chapter'] != "" AND $_POST['title'] != "" AND $_POST['content'] != "") {
-        $chapter = $_POST['chapter'];
-        $chapterReq = $db->prepare('SELECT * from posts WHERE chapter = ?');
-        $chapterReq->execute([$chapter]);
-        $chapterExist = $chapterReq->fetch();
-        if($chapterExist) {
-            ?>
-            <div class="popUp">
-                <p>Ce chapitre existe déjà, veuillez choisir un autre numéro de chapitre.</p>
-                <a href="admin.php" class="button">Ok</a>
-            </div>
-        <?php
-        }else {
-            $title = $_POST['title'];
-            $content = $_POST['content'];
-            // Inserting the message using a prepared query
-            $insertReq = $db->prepare('INSERT INTO posts (chapter, title, post_date, content) VALUES(:chapter, :title, NOW(), :content)');
-            $insertReq->execute(array(
-                'chapter' => $chapter, 
-                'title' => $title,
-                'content' => $content
-            ));
-            ?>
-            <div class="popUp">
-                <p>Le billet a bien été ajouté !</p>
-                <a href="admin.php" class="button">Ok</a>
-            </div>
-        <?php
-        }
-    }else {
-    ?>
-        <div class="popUp">
-            <p>Veuillez remplir tous les champs svp.</p>
-            <a href="admin.php" class="button">Ok</a>
-        </div>
-    <?php 
+if(isset($_POST['publier']) && isset($_POST['chapter']) && isset($_POST['title']) && isset($_POST['content'])) 
+{
+    $newPost = new Post([
+        'chapter' => $_POST['chapter'],
+        'title' => $_POST['title'],
+        'content' => $_POST['content']
+    ]);
+
+    if (!$newPost->validPost())
+    {
+        $message = "Veuillez remplir tous les champs svp.";
+        unset($newPost);
+    }
+    else
+    {
+        $postManager->addPosts($newPost);
+        $message = "Votre billet a bien été ajouté.";
     }
 }
 
 // Delete a post
-if(isset($_GET['deletePost'])) {
-    $delete = $db->prepare('DELETE FROM posts WHERE chapter = :chapter');
-    $delete->execute([
-        'chapter' => $_GET['chapterNb']
-    ]);
-    $deleteComment = $db->prepare('DELETE FROM comments WHERE post_chapter = :postChapter');
-    $deleteComment->execute([
-        'postChapter' => $_GET['chapterNb']
-    ])
-    ?>
-    <div class="popUp">
-        <p>Le billet a bien été supprimé !</p>
-        <a href="admin.php" class="button">Ok</a>
-    </div>
-<?php
+if(isset($_GET['deletePost'])) 
+{
+    $postManager->deletePost();
+    $postManager->deleteCommentFromPost();
+
+    $message = 'Le billet a bien été supprimé !';
 }
 
 // Unreport a comment
-if(isset($_GET['unreportComment'])) {
-    $req = $db->prepare("UPDATE comments SET report_comment = '0' WHERE id = :id");
-    $req->execute([
-        'id'=>$_GET['id']
-    ]);
-    ?>
-    <div class="popUp">
-        <p>Le commentaire a bien été désignalé !</p>
-        <a href="admin.php" class="button">Ok</a>
-    </div>
-<?php
+if(isset($_GET['unreportComment'])) 
+{
+    $adminCommentManager->unreportTheComment();
+    $message = 'Le commentaire a bien été désignalé !';
 }
 
 // Delete a comment
-if(isset($_GET['deleteComment'])) {
-    $suppr = $db->prepare('DELETE FROM comments WHERE id = :id');
-    $suppr->execute([
-        'id'=>$_GET['id']
-    ]);
-    ?>
-    <div class="popUp">
-        <p>Le commentaire a bien été supprimé !</p>
-        <a href="admin.php" class="button">Ok</a>
-    </div>
-<?php
+if(isset($_GET['deleteComment'])) 
+{
+    $adminCommentManager->deleteComment();
+    $message ='Le commentaire a bien été supprimé !';
 }
 ?>
 <!DOCTYPE html>
@@ -144,6 +114,18 @@ if(isset($_GET['deleteComment'])) {
                     <h1>Bienvenue <strong><?= $_SESSION['pseudo'] ?></strong></h1>
                 </div>
             </div>
+            <!-- PopUp messages -->
+            <?php
+            if (isset($message))
+            {
+            ?>
+                <div class="popUp">
+                    <p><?= $message ?></p>
+                    <a href="admin.php" class="button">Ok</a>
+                </div>
+            <?php
+            }
+            ?>
 
             <nav class="row nav nav-tabs font-weight-bold text-center">
                 <a class="col nav-item nav-link active" href="#newPost" data-toggle="tab"> Nouveau billet</a>
@@ -156,11 +138,11 @@ if(isset($_GET['deleteComment'])) {
                     <form method='post' action="admin.php">
                         <p>
                             <label for="chapter">Chapitre:</label>
-                            <input type="number" min="1" step="1" name="chapter" id="inputChapter"/><br>
+                            <input type="number" min="1" step="1"  id="inputChapter" value="<?= $chapterNumber; ?>" name="chapter"/><br>
                             <label for="title">Titre:</label>
-                            <input type="text" name="title" id="inputTitle"/><br>
+                            <input type="text" id="inputTitle" name="title"/><br>
                             <textarea id="mytextarea" name="content" cols="70" rows="20"></textarea><br>
-                            <input class="button" type="submit" value="Publier"/>
+                            <input class="button" type="submit" value="Publier" name='publier'/>
                         </p>
                     </form>
                 </div>
@@ -168,12 +150,12 @@ if(isset($_GET['deleteComment'])) {
                 <div class="col tab-pane text-center mt-5 mb-4" id="postSection">
                     <!-- Display all the posted posts -->
                     <?php 
-                    while($data = $req->fetch()) 
+                    foreach($posts as $post) 
                     {
                     ?>
-                        <a href="editPost.php?postId=<?= $data['id'] ?>&amp;chapterNb=<?= $data['chapter']; ?>">
+                        <a href="editPost.php?postId=<?= $post->id(); ?>&amp;chapterNb=<?= $post->chapter(); ?>">
                             <div class='lastPost text-center py-4 mx-auto mb-3'>
-                                <h3>Chapitre <?= htmlspecialchars($data['chapter']) ?> - <?= htmlspecialchars($data['title']); ?></h3>
+                                <h3>Chapitre <?= htmlspecialchars($post->chapter()) ?> - <?= htmlspecialchars($post->title()); ?></h3>
                             </div>
                         </a>
                     <?php
@@ -186,44 +168,48 @@ if(isset($_GET['deleteComment'])) {
                     <!-- Display the reported comments -->
                     <div class="container px-0">
                         <?php 
-                        while($report = $reportCommentReq->fetch()) 
+                        foreach ($reportedComments as $reportedComment)
                         {
                         ?>
                             <div id="reportComment">
                                 <div class="row">
                                     <div class="col">
                                         <p>
-                                            <strong><?= htmlspecialchars($report['author']); ?></strong> le <?= htmlspecialchars($report['comment_date']); ?>
+                                        
+                                            <strong><?= htmlspecialchars($reportedComment->pseudo()); ?></strong> le <?= htmlspecialchars($reportedComment->commentDate()); ?>
                                         </p>
                                     </div>
 
                                     <div class="col">
                                         <?php
-                                        $req = $db->prepare("SELECT title FROM posts WHERE chapter = :chapter");
-                                        $req->execute([
-                                            'chapter'=> $report['post_chapter']
-                                        ]);
-                                        $title = $req->fetch();
+                                        //Get titles of reported comments
+                                        $reportTitles = $postManager->getTitles($reportedComment->postChapter());
+
+                                        foreach ($reportTitles as $unreportTitle)
+                                        {
                                         ?>
-                                        <p>
-                                            <strong>Chapitre <?= htmlspecialchars($report['post_chapter'])?></strong> - <?= htmlspecialchars($title['title']); ?>
-                                        </p>
+                                            <p>
+                                            <strong>Chapitre <?= htmlspecialchars($reportedComment->postChapter()); ?></strong> - <?= htmlspecialchars($unreportTitle->title()); ?>
+                                            </p>
+                                        <?php
+                                        }
+                                        ?>
                                     </div>
                                 </div>
 
                                 <div class="row mx-0 px-4">
                                     <p class="col px-4 mt-0 mb-3">
-                                        <?= htmlspecialchars($report['comment']); ?>
+                                        <?= htmlspecialchars($reportedComment->comment()); ?>
                                     </p>
                                 </div>
 
                                 <div class="row">
                                     <div class="col py-3">
-                                        <a class="button" href="admin.php?unreportComment&amp;id=<?= $report['id']; ?>">Désignaler</a>
+                                        <a class="button" href="admin.php?unreportComment&amp;id=<?= $reportedComment->id(); ?>">Désignaler</a>
                                     </div>
 
                                     <div class="col py-3">
-                                        <a class="button" href="admin.php?deleteComment&amp;id=<?= $report['id']; ?>">Supprimer</a>
+                                        <a class="button" href="admin.php?deleteComment&amp;id=<?= $reportedComment->id(); ?>">Supprimer</a>
                                     </div>
                                 </div>
                             </div>
@@ -236,34 +222,37 @@ if(isset($_GET['deleteComment'])) {
                     <!-- Display the unreported comments -->
                     <div class="container px-0">
                         <?php 
-                        while($comments = $commentReq->fetch()) 
+                        foreach($unreportedComments as $unreportedComment) 
                         {
                         ?>  
                             <div id="unreportComment">
                                 <div class="row mx-0 px-3">
                                     <div class="col">
                                         <p>
-                                            <strong><?= htmlspecialchars($comments['author']); ?></strong> le <?= htmlspecialchars($comments['comment_date']); ?>
+                                            <strong><?= htmlspecialchars($unreportedComment->pseudo()); ?></strong> le <?= htmlspecialchars($unreportedComment->commentDate()); ?>
                                         </p>
                                     </div>
 
                                     <div class="col">
                                         <?php
-                                        $req= $db->prepare('SELECT title FROM posts WHERE chapter = :chapter');
-                                        $req->execute([
-                                            'chapter'=> $comments['post_chapter']
-                                        ]);
-                                        $title = $req->fetch();
+                                        //Get titles of unreported comments
+                                        $unreportTitles = $postManager->getTitles($unreportedComment->postChapter());
+
+                                        foreach ($unreportTitles as $unreportTitle) 
+                                        {
                                         ?>
-                                        <p>
-                                        <strong>Chapitre <?= htmlspecialchars($comments['post_chapter'])?></strong> - <?= htmlspecialchars($title['title']); ?>
-                                        </p>
+                                            <p>
+                                            <strong>Chapitre <?= htmlspecialchars($unreportedComment->postChapter()); ?></strong> - <?= htmlspecialchars($unreportTitle->title()); ?>
+                                            </p>
+                                        <?php
+                                        }
+                                        ?>
                                     </div>
                                 </div>
 
                                 <div class="row mx-0">
                                     <p class="col px-4 mt-0 mb-3">
-                                        <?= htmlspecialchars($comments['comment']); ?>
+                                        <?= htmlspecialchars($unreportedComment->comment()); ?>
                                     </p>
                                 </div>
                             </div>
