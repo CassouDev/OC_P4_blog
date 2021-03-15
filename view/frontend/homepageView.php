@@ -1,12 +1,12 @@
 <?php
 $blogTitle = "Billet simple pour l'Alaska";
-$cssFile1 = "css/homepage.css";
-$cssFile2 = "css/popup.css";
+$cssFile1 = "public/css/homepage.css";
+$cssFile2 = "public/css/popup.css";
 $cssFile3 = null;
 $headContent = null;
 $headLink = "index.php";
 $imgId = "mountains";
-$scr = "images/mountains.png";
+$scr = "public/images/mountains.png";
 $alt = "Mountains and 'Billet simple pour l'Alaska'";
 
 ob_start(); ?>
@@ -28,12 +28,24 @@ ob_start(); ?>
 ob_start(); ?>
         <!-- POSTS -->
         <section id='postSection'>
+            <!-- PopUp messages -->
+            <?php
+            if (isset($message))
+            {
+            ?>
+                <div class="popUp">
+                    <p><?= $message ?></p>
+                    <a href="index.php" class="button">Ok</a>
+                </div>
+            <?php
+            }
+            ?>
             <!-- Get the posts -->
             <?php
             foreach ($posts as $post) 
             {
                 ?>
-                <a href="php/postPage.php?chapterNb=<?= $post->chapter(); ?>">
+                <a href="controller/postPage.php?chapterNb=<?= $post->chapter(); ?>">
                 <div class='lastPost'>
                     <h3>
                         Chapitre <?= htmlspecialchars($post->chapter()) ?> - <?= htmlspecialchars($post->title()) ?>
@@ -47,7 +59,7 @@ ob_start(); ?>
 
         </section>
 
-        <script src="js/connect_form.js"></script>
+        <script src="public/js/connect_form.js"></script>
 <?php $blogContent = ob_get_clean();
 
-require('php/template.php'); ?>
+require('view/template.php'); ?>

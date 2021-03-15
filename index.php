@@ -11,24 +11,18 @@ if (isset($_GET['password']) && $_GET['password'] == '1')
 {
     session_start();
     $_SESSION['pseudo'] = $_GET['pseudo'];
-    header("Location:php/admin.php");
+    header("Location:controller/admin.php");
 }
 else if (isset($_GET['password']) && $_GET['password'] != '1' ) 
 {
     $message = "Le mot de passe est incorrect, veuillez retenter votre chance..";
-?>
-    <div class='popup'>
-        <p>Le mot de passe est incorrect, veuillez retenter votre chance..</p>
-        <a href="index.php" class="button">Retour</a>
-    </div>
-<?php
 }else {
 
 }
 
 function chargerClasse($classe)
 {
-  require 'php/' . $classe . '.php';
+  require 'model/' . $classe . '.php';
 }
 
 spl_autoload_register('chargerClasse'); // autoload register -> it can be called when we instantiate a undeclared class
@@ -36,4 +30,4 @@ spl_autoload_register('chargerClasse'); // autoload register -> it can be called
 $manager = new PostManager($db);
 $posts = $manager->getPost();
 
-require('indexView.php');
+require('view/frontend/homepageView.php');

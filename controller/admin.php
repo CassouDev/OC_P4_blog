@@ -18,7 +18,7 @@ if(isset($_GET['disconnect'])) {
 
 function chargerClasse($classe)
 {
-  require $classe . '.php';
+  require '../model/' . $classe . '.php';
 }
 
 spl_autoload_register('chargerClasse'); // autoload register -> it can be called when we instantiate a undeclared class
@@ -80,4 +80,4 @@ if(isset($_GET['deleteComment']))
     $message ='Le commentaire a bien été supprimé !';
 }
 
-require('adminView.php');
+require('../view/backend/adminView.php');

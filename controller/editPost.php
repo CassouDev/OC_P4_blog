@@ -12,7 +12,7 @@ session_start();
 
 function chargerClasse($classe)
 {
-  require $classe . '.php';
+  require '../model/' . $classe . '.php';
 }
 
 spl_autoload_register('chargerClasse');
@@ -33,4 +33,4 @@ if(isset($_POST['content']))
         $message ="Veuillez remplir tous les champs svp.";
     }
 }
- require('editPostView.php');
+ require('../view/backend/editPostView.php');

@@ -10,7 +10,7 @@ catch (Exception $e)
 
 function chargerClasse($classe)
 {
-  require $classe . '.php';
+  require '../model/' . $classe . '.php';
 }
 
 spl_autoload_register('chargerClasse'); // autoload register -> it can be called when we instantiate a undeclared class
@@ -39,19 +39,19 @@ if(isset($_GET['previousChapter']))
 {
     if($prevChapter > 0)
     {
-        header("Location:postPage.php?chapterNb=$prevChapter");
+        header("Location:../controller/postPage.php?chapterNb=$prevChapter");
     }else
     {
-        header("Location:postPage.php?chapterNb=$lastChapter");
+        header("Location:../controller/postPage.php?chapterNb=$lastChapter");
     }
 }elseif (isset($_GET['nextChapter']))
 {
     if($_GET['chapterNb'] < $lastChapter)
     {
-        header("Location:postPage.php?chapterNb=$nextChapter");
+        header("Location:../controller/postPage.php?chapterNb=$nextChapter");
     }else
     {
-        header("Location:postPage.php?chapterNb=1");
+        header("Location:../controller/postPage.php?chapterNb=1");
     }
 }
 
@@ -83,4 +83,4 @@ if (isset($_GET['reportComment']))
     $message = 'Votre commentaire a bien été signalé !';
 }
 
-require('postPageView.php');
+require('../view/frontend/postPageView.php');
