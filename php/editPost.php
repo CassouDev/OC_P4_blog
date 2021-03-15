@@ -10,36 +10,27 @@ catch (Exception $e)
 //Star the session
 session_start();
 
-$req = $db->prepare("SELECT id, chapter, title, content, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM posts WHERE id = :id");
-$req->execute([
-    'id'=> $_GET['postId']
-]);
+function chargerClasse($classe)
+{
+  require $classe . '.php';
+}
+
+spl_autoload_register('chargerClasse');
+
+$postManager = new PostManager($db);
+// Get the post
+$onePost = $postManager->getOnePost();
 
 // edit the post
-if(isset($_POST['content'])) {
-    if($_POST['title'] != "" AND $_POST['content'] != "") {
-        $title = $_POST['title'];
-        $content = $_POST['content'];
-            
-        $req = $db->prepare('UPDATE posts SET title = :nwTitle, content = :nwContent WHERE id = :id');
-        $req->execute(array(
-            'nwTitle'=>$title, 
-            'nwContent'=>$content, 
-            'id'=> $_GET['postId']
-        ));
-        ?>
-        <div class="popUp">
-            <p>Le billet a bien été modifié !</p>
-            <a href="admin.php" class="button">Ok</a>
-        </div>
-    <?php
-    }else {
-    ?>
-        <div class="popUp">
-            <p>Veuillez remplir tous les champs svp.</p>
-            <a href="admin.php" class="button">Ok</a>
-        </div>
-    <?php 
+if(isset($_POST['content'])) 
+{
+    if($_POST['title'] != "" AND $_POST['content'] != "")
+    {
+        $postManager->editPost();
+        $message = "Le billet a bien été modifié !";
+    }else 
+    {
+        $message ="Veuillez remplir tous les champs svp.";
     }
 }
 ?>
@@ -72,22 +63,34 @@ if(isset($_POST['content'])) {
             </p>
         </header>
 
+        <?php
+        if (isset($message))
+        {
+        ?>
+            <div class="popUp">
+                <p><?= $message ?></p>
+                <a href="admin.php" class="button">Ok</a>
+            </div>
+        <?php
+        }
+        ?>
+
         <div class="container editPost text-center pt-5 pb-4">
             <h1>Modifier mon billet</h1>
 
             <div class="row mt-5">
                 <?php 
-                while($data = $req->fetch())
+                foreach($onePost as $post)
                 {
                 ?>
-                    <form class="col" method='post' action="editPost.php?postId=<?= $data['id']; ?>">
+                    <form class="col" method='post' action="editPost.php?chapterNb=<?= $_GET['chapterNb'] ?>">
                         <p>
                             <p>
-                                <strong>Chapitre <?= $data['chapter'] ?></strong> - publié le <?= $data['post_date'] ?>
+                                <strong>Chapitre <?= $post->chapter() ?></strong> - publié le <?= $post->postDate() ?>
                             </p>
                             <label for="title">Titre:</label>
-                            <input id="inputTitle" type="text" name="title" value="<?= $data['title']?>"/><br>
-                            <textarea id="mytextarea" name="content" cols="70" rows="20"><?= $data['content']?></textarea><br>
+                            <input id="inputTitle" type="text" name="title" value="<?= htmlspecialchars($post->title()) ?>"/><br>
+                            <textarea id="mytextarea" name="content" cols="70" rows="20"><?= htmlspecialchars($post->content()) ?></textarea><br>
                         
                             <div id="buttons">
                                 <input class="button" type="submit" value="Modifier"/>

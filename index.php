@@ -5,14 +5,17 @@ try {
 catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
 }
-$req = $db->query("SELECT id, chapter, title, content, DATE_FORMAT(post_date, '%d/%m/%Y') AS post_date FROM posts ORDER BY chapter DESC");
 
-if(isset($_GET['password']) && $_GET['password'] == '1') {
-    //Démarrage de la session + redirection
+//Start the session + redirection
+if (isset($_GET['password']) && $_GET['password'] == '1') 
+{
     session_start();
     $_SESSION['pseudo'] = $_GET['pseudo'];
     header("Location:php/admin.php");
-}else if (isset($_GET['password']) && $_GET['password'] != '1' ) {
+}
+else if (isset($_GET['password']) && $_GET['password'] != '1' ) 
+{
+    $message = "Le mot de passe est incorrect, veuillez retenter votre chance..";
 ?>
     <div class='popup'>
         <p>Le mot de passe est incorrect, veuillez retenter votre chance..</p>
@@ -22,6 +25,17 @@ if(isset($_GET['password']) && $_GET['password'] == '1') {
 }else {
 
 }
+
+function chargerClasse($classe)
+{
+  require 'php/' . $classe . '.php';
+}
+
+spl_autoload_register('chargerClasse'); // autoload register -> it can be called when we instantiate a undeclared class
+// Get posts
+$manager = new PostManager($db);
+$posts = $manager->getPost();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -56,19 +70,22 @@ if(isset($_GET['password']) && $_GET['password'] == '1') {
         <!-- POSTS -->
         <section id='postSection'>
             <!-- Get the posts -->
-            <?php 
-            while($data = $req->fetch()) {
-            ?>
-            <a href="php/post.php?chapterNb=<?= $data['chapter']; ?>">
+            <?php
+            foreach ($posts as $post) 
+            {
+                ?>
+                <a href="php/postPage.php?chapterNb=<?= $post->chapter(); ?>">
                 <div class='lastPost'>
                     <h3>
-                        Chapitre <?= htmlspecialchars($data['chapter']) ?> - <?= htmlspecialchars($data['title']) ?>
+                        Chapitre <?= htmlspecialchars($post->chapter()) ?> - <?= htmlspecialchars($post->title()) ?>
                     </h3>
                 </div>
-            </a>
+                </a>
             <?php
             }
             ?>
+            
+
         </section>
 
         <script src="js/connect_form.js"></script>
