@@ -41,7 +41,7 @@ class Comment
         }
     }
 
-    //Liste des getters
+    //Liste of the getters
     public function id() { return $this->_id; }
     public function postChapter() { return $this->_postChapter; }
     public function pseudo() { return $this->_pseudo; }
@@ -49,7 +49,7 @@ class Comment
     public function commentDate() { return $this->_commentDate; }
     public function reportComment() { return $this->_reportComment; }
 
-    //Liste des setters
+    //Liste of the setters
     public function setId($id)
     {
         $id = (int) $id;

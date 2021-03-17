@@ -45,7 +45,7 @@ ob_start(); ?>
             foreach ($posts as $post) 
             {
                 ?>
-                <a href="controller/postPage.php?chapterNb=<?= $post->chapter(); ?>">
+                <a href="index.php?action=postPage&amp;chapterNb=<?= $post->chapter(); ?>">
                 <div class='lastPost'>
                     <h3>
                         Chapitre <?= htmlspecialchars($post->chapter()) ?> - <?= htmlspecialchars($post->title()) ?>

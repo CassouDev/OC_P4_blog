@@ -5,16 +5,25 @@ class PostManager
 {
   private $_db; // Instance de PDO.
 
-  public function __construct($db)
+  public function __construct()
   {
-    $this->setDb($db);
+    try 
+    {
+        $this->_db = new PDO('mysql:host=localhost;dbname=oc_p4;charset=utf8', 'root', '');
+    }
+    catch (Exception $e) 
+    {
+        die('Erreur : ' . $e->getMessage());
+    }
   }
 
   public function getPost()
   {
     $postsArray = [];
     
-    $req = $this->_db->query("SELECT id, chapter, title, content, DATE_FORMAT(postDate, '%d/%m/%Y') AS postDate FROM posts ORDER BY chapter DESC");
+    $req = $this->_db->prepare("SELECT id, chapter, title, content, DATE_FORMAT(postDate, '%d/%m/%Y') AS postDate FROM posts ORDER BY chapter DESC");
+    $req->execute();
+
     while($postsData = $req->fetch())
     {
       $postsArray[] = new Post($postsData);
@@ -70,7 +79,7 @@ class PostManager
 
   public function countPosts()
   {   
-    return $this->_db->query('SELECT COUNT(*) AS postsNb FROM posts')->fetch();
+    return $this->_db->prepare('SELECT COUNT(*) AS postsNb FROM posts')->fetch();
   }
 
   public function getTitles($chapter)

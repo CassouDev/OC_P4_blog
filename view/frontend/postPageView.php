@@ -1,11 +1,11 @@
 <?php
 $blogTitle = "Billet simple pour l'Alaska";
-$cssFile1 = "../public/css/homepage.css";
-$cssFile2 = "../public/css/popup.css";
-$cssFile3 = "../public/css/post.css";
-$headLink = "../index.php";
+$cssFile1 = "public/css/homepage.css";
+$cssFile2 = "public/css/popup.css";
+$cssFile3 = "public/css/post.css";
+$headLink = "index.php";
 $imgId = "mountains";
-$scr = "../public/images/mountains.png";
+$scr = "public/images/mountains.png";
 $alt = "Mountains and 'Billet simple pour l'Alaska'";
 
 ob_start(); ?>
@@ -14,17 +14,17 @@ ob_start(); ?>
 
 ob_start(); ?>
 <button id="connectButton">Connexion</button>
-<a href="../index.php" alt="Bouton de retour à l'accueil" id="returnButton">Accueil</a>
+<a href="index.php" alt="Bouton de retour à l'accueil" id="returnButton">Accueil</a>
 
 <div id="adminForm">
-    <form method="get" action="../index.php" id="connectForm">
+    <form method="get" action="index.php" id="connectForm">
         <p>
             <label for="pseudo">Pseudo: </label>
             <input type="text" name="pseudo"/><br>
             <label for="password">Mot de passe: </label>
             <input type="password" name="password"/><br>
             <input class="button" type="submit" value="Se connecter"/>
-            <a href="../controller/postPage.php?chapterNb=<?= $_GET['chapterNb']; ?>" class="button">Retour</a>
+            <a href="index.php?action=postPage&amp;chapterNb=<?= $_GET['chapterNb']; ?>" class="button">Retour</a>
             </p>
     </form>
 </div>
@@ -40,7 +40,7 @@ ob_start(); ?>
     ?>
         <div class="popUp">
             <p><?= $message ?></p>
-            <a href="../controller/postPage.php?chapterNb=<?= $_GET['chapterNb']; ?>" class="button">Ok</a>
+            <a href="index.php?action=postPage&amp;chapterNb=<?= $_GET['chapterNb']; ?>" class="button">Ok</a>
         </div>
     <?php
     }
@@ -49,7 +49,7 @@ ob_start(); ?>
     {
     ?>
         <h1>
-            <a href="../controller/postPage.php?chapterNb=<?= $_GET['chapterNb'] ?>&amp;previousChapter">
+            <a href="index.php?action=postPage&amp;chapterNb=<?= $_GET['chapterNb'] ?>&amp;previousChapter">
                 <span style="font-size: 58px; color: white;">
                     <i class="fas fa-caret-left" alt="Simple white arrow to the previous chapter"></i>
                 </span>
@@ -57,7 +57,7 @@ ob_start(); ?>
             <p>
                 Chapitre <?= $_GET['chapterNb'] ?> - <?= htmlspecialchars($post->title())?>
             </p>
-            <a href="../controller/postPage.php?chapterNb=<?= $_GET['chapterNb'] ?>&amp;nextChapter">
+            <a href="index.php?action=postPage&amp;chapterNb=<?= $_GET['chapterNb'] ?>&amp;nextChapter">
                 <span style="font-size: 58px; color: white;">
                     <i class="fas fa-caret-right" alt="Simple white arrow to the next chapter"></i>
                 </span>
@@ -81,7 +81,7 @@ ob_start(); ?>
             <div id="eachComment">
                 <p><strong> <?= htmlspecialchars($comment->pseudo()) ?></strong> le <?= htmlspecialchars($comment->commentDate()) ?></p>
                 <p><?= htmlspecialchars($comment->comment()) ?></p>
-                <a href="../controller/postPage.php?chapterNb=<?= $_GET['chapterNb'] ?>&amp;id=<?= $comment->id() ?>&amp;reportComment" id="reportButton">Signaler</a>
+                <a href="index.php?action=postPage&amp;chapterNb=<?= $_GET['chapterNb'] ?>&amp;id=<?= $comment->id() ?>&amp;reportComment" id="reportButton">Signaler</a>
             </div>
         <?php 
         } 
@@ -92,7 +92,7 @@ ob_start(); ?>
     <h1 id="letComment">Laisser un commentaire</h1>
 
     <div id="commentForm">
-        <form method="post" action="../controller/postPage.php?chapterNb=<?= $_GET['chapterNb'] ?>">
+        <form method="post" action="index.php?action=postPage&amp;chapterNb=<?= $_GET['chapterNb'] ?>">
             <p>
                 <label for="pseudo">Pseudo: </label>
                 <input type="text" name="pseudo"/><br>
@@ -103,8 +103,8 @@ ob_start(); ?>
     </div>
 </section>
 
-<script src="../public/js/connect_form.js"></script>
+<script src="public/js/connect_form.js"></script>
 
 <?php $blogContent = ob_get_clean();
 
-require('../view/template.php'); ?>
+require('view/template.php'); ?>

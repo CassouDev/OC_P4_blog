@@ -5,9 +5,16 @@ class CommentManager
 {
     private $_db; // Instance de PDO.
 
-    public function __construct($db)
+    public function __construct()
     {
-      $this->setDb($db);
+        try 
+        {
+        $this->_db = new PDO('mysql:host=localhost;dbname=oc_p4;charset=utf8', 'root', '');
+        }
+        catch (Exception $e) 
+        {
+        die('Erreur : ' . $e->getMessage());
+        }
     }
 
     public function addComments(Comment $newComment)
@@ -57,7 +64,8 @@ class CommentManager
     {
         $unreportedCmt = [];
 
-        $unreportedReq = $this->_db->query("SELECT id, postChapter, pseudo, comment, DATE_FORMAT(commentDate, '%d/%m/%Y') AS commentDate, reportComment FROM comments WHERE reportComment = '0' ORDER BY postChapter DESC");
+        $unreportedReq = $this->_db->prepare("SELECT id, postChapter, pseudo, comment, DATE_FORMAT(commentDate, '%d/%m/%Y') AS commentDate, reportComment FROM comments WHERE reportComment = '0' ORDER BY postChapter DESC");
+        $unreportedReq->execute();
 
         while ($unreportedData = $unreportedReq->fetch())
         {
@@ -71,7 +79,8 @@ class CommentManager
     {
         $reportedCmt = [];
 
-        $reportedReq = $this->_db->query("SELECT * FROM comments WHERE  reportComment = '1' ORDER BY postChapter DESC");
+        $reportedReq = $this->_db->prepare("SELECT * FROM comments WHERE  reportComment = '1' ORDER BY postChapter DESC");
+        $reportedReq->execute();
 
         while ($reportedData = $reportedReq->fetch())
         {
@@ -108,17 +117,6 @@ class CommentManager
         ]);
 
     }
-
-    // public function updateReport()
-    // {
-    //     $updateReport = new Comment();
-
-    //     $reportReq = $this->_db->prepare('UPDATE comments SET reportComment = :reportCmt WHERE id = :commentId');
-    //     $reportReq->execute([
-    //     'reportCmt' => $updateReport->reportComment(),
-    //     'commentId' => $_GET['id']
-    //     ]);
-    // }
 
     public function setDb(PDO $db)
     {

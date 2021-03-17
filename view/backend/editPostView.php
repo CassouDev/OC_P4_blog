@@ -1,17 +1,17 @@
 <?php
 $blogTitle = "Modifier mon billet";
-$cssFile1 = "../public/css/admin.css";
-$cssFile2 = "../public/css/popup.css";
+$cssFile1 = "public/css/admin.css";
+$cssFile2 = "public/css/popup.css";
 $cssFile3 = null;
 $headContent = null;
-$headLink = "../controller/admin.php";
+$headLink = "index.php?action=admin";
 $imgId = "mountains_admin";
-$scr = "../public/images/admin.png";
+$scr = "public/images/admin.png";
 $alt = "Mountains and 'admin'";
 
 ob_start(); ?>
-    <a href="../controller/admin.php?disconnect" id="disconnectButton">Déconnexion</a>
-    <a href="../controller/admin.php" id="returnButton">Retour</a>
+    <a href="index.php?action=admin&amp;disconnect" id="disconnectButton">Déconnexion</a>
+    <a href="index.php?action=admin" id="returnButton">Retour</a>
 <?php $headerButtons = ob_get_clean();
 
 ob_start(); ?>
@@ -32,7 +32,7 @@ if (isset($message))
 ?>
     <div class="popUp">
         <p><?= $message ?></p>
-        <a href="../controller/admin.php" class="button">Ok</a>
+        <a href="index.php?action=admin" class="button">Ok</a>
     </div>
 <?php
 }
@@ -46,7 +46,7 @@ if (isset($message))
         foreach($onePost as $post)
         {
         ?>
-            <form class="col" method='post' action="../controller/editPost.php?chapterNb=<?= $_GET['chapterNb'] ?>">
+            <form class="col" method='post' action="index.php?action=editPost&amp;chapterNb=<?= $_GET['chapterNb'] ?>">
                 <p>
                     <strong>Chapitre <?= $post->chapter() ?></strong> - publié le <?= $post->postDate() ?>
                 </p>
@@ -56,7 +56,7 @@ if (isset($message))
                         
                 <div id="buttons">
                     <input class="button" type="submit" value="Modifier"/>
-                    <a href="../controller/admin.php?chapterNb=<?= $_GET['chapterNb']; ?>&deletePost" class="button">Supprimer</a>
+                    <a href="index.php?action=admin&amp;chapterNb=<?= $_GET['chapterNb']; ?>&deletePost" class="button">Supprimer</a>
                 </div>
             </p>
         </form>
@@ -72,4 +72,4 @@ if (isset($message))
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <?php $blogContent = ob_get_clean();
 
-require('../view/template.php'); ?>
+require('view/template.php'); ?>

@@ -1,11 +1,11 @@
 <?php
 $blogTitle = "Admin";
-$cssFile1 = "../public/css/admin.css";
-$cssFile2 = "../public/css/popup.css";
+$cssFile1 = "public/css/admin.css";
+$cssFile2 = "public/css/popup.css";
 $cssFile3 = null;
 $headLink = null;
 $imgId = "mountains_admin";
-$scr = "../public/images/admin.png";
+$scr = "public/images/admin.png";
 $alt = "Mountains and'admin'";
 
 ob_start(); ?>
@@ -20,7 +20,7 @@ ob_start(); ?>
 <?php $headContent = ob_get_clean();
 
 ob_start(); ?>
-<a href="../controller/admin.php?disconnect" id="disconnectButton">Déconnexion</a>
+<a href="index.php?action=admin&amp;disconnect" id="disconnectButton">Déconnexion</a>
 <?php $headerButtons = ob_get_clean();
 
 ob_start(); ?>
@@ -37,7 +37,7 @@ ob_start(); ?>
     ?>
         <div class="popUp">
             <p><?= $message ?></p>
-            <a href="../controller/admin.php" class="button">Ok</a>
+            <a href="index.php?action=admin" class="button">Ok</a>
         </div>
     <?php
     }
@@ -51,7 +51,7 @@ ob_start(); ?>
 
     <div class="row tab-content mb-5">
         <div class="col tab-pane active text-center mt-5 mb-4" id="newPost">
-            <form method='post' action="../controller/admin.php">
+            <form method='post' action="index.php?action=admin">
                 <p>
                     <label for="chapter">Chapitre:</label>
                     <input type="number" min="1" step="1"  id="inputChapter" value="<?= $chapterNumber; ?>" name="chapter"/><br>
@@ -69,7 +69,7 @@ ob_start(); ?>
             foreach($posts as $post) 
             {
             ?>
-                <a href="../controller/editPost.php?postId=<?= $post->id(); ?>&amp;chapterNb=<?= $post->chapter(); ?>">
+                <a href="index.php?action=editPost&amp;postId=<?= $post->id(); ?>&amp;chapterNb=<?= $post->chapter(); ?>">
                     <div class='lastPost text-center py-4 mx-auto mb-3'>
                         <h3>Chapitre <?= htmlspecialchars($post->chapter()) ?> - <?= htmlspecialchars($post->title()); ?></h3>
                     </div>
@@ -121,11 +121,11 @@ ob_start(); ?>
 
                         <div class="row">
                             <div class="col py-3">
-                                <a class="button" href="../controller/admin.php?unreportComment&amp;id=<?= $reportedComment->id(); ?>">Désignaler</a>
+                                <a class="button" href="index.php?action=admin&amp;unreportComment&amp;id=<?= $reportedComment->id(); ?>">Désignaler</a>
                             </div>
 
                             <div class="col py-3">
-                                <a class="button" href="../controller/admin.php?deleteComment&amp;id=<?= $reportedComment->id(); ?>">Supprimer</a>
+                                <a class="button" href="index.php?action=admin&amp;deleteComment&amp;id=<?= $reportedComment->id(); ?>">Supprimer</a>
                             </div>
                         </div>
                     </div>
@@ -187,4 +187,4 @@ ob_start(); ?>
 
 <?php $blogContent = ob_get_clean();
 
-require('../view/template.php'); ?>
+require('view/template.php'); ?>

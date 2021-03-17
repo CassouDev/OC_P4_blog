@@ -43,14 +43,14 @@ class Post
       return !empty($this->_content);
     }
 
-    //Liste des getters
+    //Liste of the getters
     public function id() { return $this->_id; }
     public function chapter() { return $this->_chapter; }
     public function title() { return $this->_title; }
     public function postDate() { return $this->_postDate; }
     public function content() { return $this->_content; }
 
-    //Liste des setters
+    //Liste of the setters
     public function setId($id)
     {
         $id = (int) $id;
