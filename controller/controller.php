@@ -11,7 +11,10 @@ spl_autoload_register('loadClass'); // autoload register -> it can be called whe
 function homeGetPosts()
 {
     $user = new UserManager();
-    $pseudos = $user->getUserPseudo();
+    $pseudo = $user->getUserPseudo();
+
+    $manager = new PostManager();
+    $posts = $manager->getPost();
 
     //Add a new user
     if(isset($_POST['userPseudo']) && isset($_POST['pass'])) 

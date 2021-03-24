@@ -3,7 +3,6 @@ $blogTitle = "Admin";
 $cssFile1 = "public/css/admin.css";
 $cssFile2 = "public/css/popup.css";
 $cssFile3 = null;
-$headLink = null;
 $imgId = "mountains_admin";
 $scr = "public/images/admin.png";
 $alt = "Mountains and'admin'";
@@ -54,7 +53,7 @@ ob_start(); ?>
             <form method='post' action="index.php?action=admin">
                 <p>
                     <label for="chapter">Chapitre:</label>
-                    <input type="number" min="1" step="1"  id="inputChapter" value="<?= $chapterNumber; ?>" name="chapter"/><br>
+                    <input type="number" min="1" step="1"  id="inputChapter" value="<?= $nextChapter; ?>" name="chapter"/><br>
                     <label for="title">Titre:</label>
                     <input type="text" id="inputTitle" name="title"/><br>
                     <textarea id="mytextarea" name="content" cols="70" rows="20"></textarea><br>

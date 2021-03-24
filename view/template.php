@@ -13,12 +13,9 @@
     <body>
         <header>
             <?= $headerButtons ?>
-
-            <a href=<?= $headLink ?> >
                 <p>
                     <img id=<?= $imgId ?> src=<?= $scr ?> alt=<?= $alt ?> />
                 </p>
-            </a>
         </header>
 
         <?= $blogContent ?>

@@ -1,4 +1,5 @@
 <?php
+session_start();
 require('controller/controller.php');
 
 if (isset($_GET['action'])) {
@@ -9,6 +10,10 @@ if (isset($_GET['action'])) {
     elseif ($_GET['action'] == 'postPage')
     {
         if (isset($_GET['chapterNb']) && $_GET['chapterNb'] > 0)
+        {
+            postPage();
+        }
+        elseif (isset($_GET['chapterNb']) && $_GET['chapterNb'] < 0)
         {
             postPage();
         }

@@ -4,7 +4,6 @@ $cssFile1 = "public/css/admin.css";
 $cssFile2 = "public/css/popup.css";
 $cssFile3 = null;
 $headContent = null;
-$headLink = "index.php?action=admin";
 $imgId = "mountains_admin";
 $scr = "public/images/admin.png";
 $alt = "Mountains and 'admin'";

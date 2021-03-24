@@ -4,7 +4,6 @@ $cssFile1 = "public/css/homepage.css";
 $cssFile2 = "public/css/popup.css";
 $cssFile3 = null;
 $headContent = null;
-$headLink = "index.php";
 $imgId = "mountains";
 $scr = "public/images/mountains.png";
 $alt = "Mountains and 'Billet simple pour l'Alaska'";
@@ -12,17 +11,30 @@ $alt = "Mountains and 'Billet simple pour l'Alaska'";
 ob_start(); ?>
 <button id="connectButton">Connexion</button>
 <div id="adminForm">
-    <form method="get" action="index.php" id="connectForm">
-        <p>
-            <label for='pseudo'>Pseudo: </label>
-            <input type='text' name='pseudo'/><br>
-            <label for='password'>Mot de passe: </label>
-            <input type='password' name='password'/><br>
-            <input class='button' type='submit' value="Se connecter"/>
-            <a href="index.php" class="button">Retour</a>
-        </p>
+    <form method="post" action="index.php?action=homeGetPosts&amp;pseudo=<?= $pseudo; ?>" id="connectForm">
+    <p>
+        <label for='pseudo'>Pseudo: </label>
+        <input type='text' name='pseudo'/><br>
+        <label for='password'>Mot de passe: </label>
+        <input type='password' name='password'/><br>
+        <input class='button' type='submit' value="Se connecter"/>
+        <a href="index.php" class="button">Retour</a>
+    </p>
     </form>
 </div>
+<!-- <div >
+    <form method="post" action="index.php?action=homeGetPosts&amp;pseudo=<?= $pseudo; ?>" >
+    <p>
+        <label for='userPseudo'>Pseudo: </label>
+        <input type='text' name='userPseudo'/><br>
+        <label for='pass'>Mot de passe: </label>
+        <input type='pass' name='pass'/><br>
+        <input class='button' type='submit' value="S'inscrire"/>
+        <a href="index.php" class="button">Retour</a>
+    </p>
+    </form>
+</div> -->
+
 <?php $headerButtons = ob_get_clean();
 
 ob_start(); ?>

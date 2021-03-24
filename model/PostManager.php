@@ -9,11 +9,12 @@ class PostManager
   {
     try 
     {
-        $this->_db = new PDO('mysql:host=localhost;dbname=oc_p4;charset=utf8', 'root', '');
+      $this->_db = new PDO('mysql:host=localhost;dbname=oc_p4;charset=utf8', 'root', '');
+      // $this->_db = new PDO('mysql:host=db5001825346.hosting-data.io;dbname=dbs1502331;charset=utf8', 'dbu969252', 'Anima-2012');
     }
     catch (Exception $e) 
     {
-        die('Erreur : ' . $e->getMessage());
+      die('Erreur : ' . $e->getMessage());
     }
   }
 
@@ -79,7 +80,10 @@ class PostManager
 
   public function countPosts()
   {   
-    return $this->_db->prepare('SELECT COUNT(*) AS postsNb FROM posts')->fetch();
+    $countReq = $this->_db->prepare('SELECT COUNT(*) AS postsNb FROM posts');
+    $countReq->execute();
+
+    return $countReq->fetchColumn();
   }
 
   public function getTitles($chapter)

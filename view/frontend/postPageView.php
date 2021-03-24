@@ -3,7 +3,6 @@ $blogTitle = "Billet simple pour l'Alaska";
 $cssFile1 = "public/css/homepage.css";
 $cssFile2 = "public/css/popup.css";
 $cssFile3 = "public/css/post.css";
-$headLink = "index.php";
 $imgId = "mountains";
 $scr = "public/images/mountains.png";
 $alt = "Mountains and 'Billet simple pour l'Alaska'";
