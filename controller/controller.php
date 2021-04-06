@@ -7,6 +7,7 @@ function loadClass($class)
 
 spl_autoload_register('loadClass'); // autoload register -> it can be called when we instantiate a undeclared class
 
+
 // Get posts
 function homeGetPosts()
 {
@@ -16,38 +17,18 @@ function homeGetPosts()
     $manager = new PostManager();
     $posts = $manager->getPost();
 
-    //Add a new user
-    if(isset($_POST['userPseudo']) && isset($_POST['pass'])) 
-    {
-        $pass_hache = password_hash($_POST['pass'], PASSWORD_DEFAULT);
-        $newUser = new User([
-            'userPseudo' => $_POST['userPseudo'],
-            'pass' => $pass_hache
-        ]);
-
-        if (empty($newUser))
-        {
-            $message = "Veuillez remplir tous les champs svp.";
-            unset($newUser);
-        }
-        else
-        {
-            $User->addUser($newUser);
-            $message = "Votre compte a bien été enregistré.";
-        }
-    }
-
     //Start the session + redirection
     if (isset($_POST['password']) && isset($_POST['pseudo']))
     {
-        $pseudo = $_POST['pseudo'];
-        $getConnect = $user->getPassFromUser($pseudo);
-        $isPasswordCorrect = password_verify($_POST['password'] == $getConnect);
+        $getPass = $user->getPassFromUser();
 
-        if ($isPasswordCorrect) {
-            session_start();
-            $_SESSION['id'] = $passFromUser['id'];
-            $_SESSION['userPseudo'] = $_GET['pseudo'];
+        $isPasswordCorrect = password_verify($_POST['password'], $getPass->pass());
+
+        if ($isPasswordCorrect) 
+        {
+            $_SESSION['id'] = $getPass->id();
+            $_SESSION['pseudo'] = $_POST['pseudo'];
+
             header("Location:index.php?action=admin");
         }
         else
@@ -55,19 +36,6 @@ function homeGetPosts()
             $message = 'Mauvais identifiant ou mot de passe !';
         }
     }
-    
-
-    // //Start the session + redirection
-    // if (isset($_GET['password']) && $_GET['password'] == '1') 
-    // {
-    //     session_start();
-    //     $_SESSION['pseudo'] = $_GET['pseudo'];
-    //     header("Location:index.php?action=admin");
-    // }
-    // else if (isset($_GET['password']) && $_GET['password'] != '1' ) 
-    // {
-    //     $message = "Le mot de passe est incorrect, veuillez retenter votre chance..";
-    // }
 
     $manager = new PostManager();
     $posts = $manager->getPost();
@@ -80,7 +48,7 @@ function postPage()
     $postManager = new PostManager();
     // Get the post
     $onePost = $postManager->getOnePost();
-
+    
     // Get the number of posts
     $postsNumber = $postManager->countPosts();
 
@@ -149,10 +117,9 @@ function postPage()
 
 function admin()
 {
-    //Start the session
-    session_start();
     //Stop the session + redirect
-    if(isset($_GET['disconnect'])) {
+    if(isset($_GET['disconnect'])) 
+    {
         session_destroy();
         header("Location:index.php");
     }
@@ -219,9 +186,6 @@ function admin()
 
 function editPost()
 {
-    //Star the session
-    session_start();
-
     $postManager = new PostManager();
     // Get the post
     $onePost = $postManager->getOnePost();

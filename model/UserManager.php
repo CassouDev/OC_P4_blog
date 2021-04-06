@@ -28,51 +28,35 @@ class UserManager
 
   public function getPassFromUser()
   {
-    $userReq = $this->_db->prepare('SELECT * FROM users WHERE pseudo = :pseudo');
+    $userReq = $this->_db->prepare('SELECT id, pass  FROM users WHERE pseudo = :pseudo');
     $userReq->execute(array(
-      'pseudo' => $_GET['pseudo']
+      'pseudo' => $_POST['pseudo']
     ));
     $userData = $userReq->fetch();
 
     return new User($userData);
   }
 
-  // public function getUser()
+  // public function addUser(User $newUser)
   // {
-  //   $userReq = $this->_db->prepare('SELECT * FROM users');
-  //   $userReq->execute();
+  //   // Hachage du mot de passe
+  //   $pass_hache = password_hash($newUser->pass(), PASSWORD_DEFAULT);
 
-  //   $userData = $userReq->fetch();
-
-  //   // return new User($userData);
-  // }
-
-  // public function getUserIdFromPseudo()
-  // {
-  //   $userIdReq = $this->_db->prepare('SELECT * FROM users WHERE pseudo = :pseudo');
-  //   $userIdReq->execute(array(
-  //     'pseudo' => $_GET['pseudo']
+  //   $addUserReq = $this->_db->prepare('INSERT INTO users(pseudo, pass) VALUES(:pseudo, :pass)');
+  //   $addUserReq->execute(array(
+  //     'pseudo' => $newUser->pseudo(),
+  //     'pass' => $pass_hache
   //   ));
-  //   $userIdData = $userIdReq->fetch();
-  //   // var_dump(new User($userData));
-    
-  //   return new User($userIdData);
   // }
 
-  public function addUser(User $newUser)
+  public function addJeanForteroche()
   {
     // Hachage du mot de passe
-    $pass_hache = password_hash($newUser->pass(), PASSWORD_DEFAULT);
+    $pass_hache = password_hash('Wadji', PASSWORD_DEFAULT);
 
-    $addUserReq = $this->_db->prepare('INSERT INTO users(pseudo, pass) VALUES(:pseudo, :pass)');
+    $addUserReq = $this->_db->prepare('INSERT INTO users(pseudo, pass) VALUES(Jean_Forteroche, :pass)');
     $addUserReq->execute(array(
-      'pseudo' => $newUser->pseudo(),
       'pass' => $pass_hache
     ));
-  }
-
-  public function setDb(PDO $db)
-  {
-    $this->_db = $db;
   }
 }
