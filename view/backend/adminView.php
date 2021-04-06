@@ -29,18 +29,6 @@ ob_start(); ?>
             <h1>Bienvenue <strong><?= $_SESSION['pseudo'] ?></strong></h1>
         </div>
     </div>
-    <!-- PopUp messages -->
-    <?php
-    if (isset($message))
-    {
-    ?>
-        <div class="popUp">
-            <p><?= $message ?></p>
-            <a href="index.php?action=admin" class="button">Ok</a>
-        </div>
-    <?php
-    }
-    ?>
 
     <nav class="row nav nav-tabs font-weight-bold text-center">
         <a class="col nav-item nav-link active" href="#newPost" data-toggle="tab"> Nouveau billet</a>

@@ -33,7 +33,7 @@ function homeGetPosts()
         }
         else
         {
-            $message = 'Mauvais identifiant ou mot de passe !';
+            throw new Exception('Mauvais identifiant ou mot de passe !');
         }
     }
 
@@ -85,6 +85,8 @@ function postPage()
         }
     }
 
+    
+
     // Add a new comment (by the form)
     if(isset($_POST['commentButton']) && isset($_POST['pseudo']) && isset($_POST['comment']))
     {
@@ -96,12 +98,12 @@ function postPage()
         
         if (empty($_POST['pseudo']) OR empty($_POST['comment']))
         {
-            $message = "Veuillez remplir tous les champs svp.";
+            throw new Exception('Veuillez remplir tous les champs svp.');
         }
         else
         {
             $commentManager->addComments($newComment);
-            $message = 'Votre commentaire a bien été ajouté !';
+            throw new Exception('Votre commentaire a bien été ajouté !');
         } 
     }
 
@@ -109,7 +111,7 @@ function postPage()
     if (isset($_GET['reportComment']))
     {
         $commentManager->reportTheComment();
-        $message = 'Votre commentaire a bien été signalé !';
+        throw new Exception('Votre commentaire a bien été signalé !');
     }
 
     require('view/frontend/postPageView.php');
@@ -148,13 +150,13 @@ function admin()
 
         if (!$newPost->validPost())
         {
-            $message = "Veuillez remplir tous les champs svp.";
+            throw new Exception('Veuillez remplir tous les champs svp.');
             unset($newPost);
         }
         else
         {
             $postManager->addPosts($newPost);
-            $message = "Votre billet a bien été ajouté.";
+            throw new Exception('Votre billet a bien été ajouté.');
         }
     }
 
@@ -164,21 +166,21 @@ function admin()
         $postManager->deletePost();
         $postManager->deleteCommentFromPost();
 
-        $message = 'Le billet a bien été supprimé !';
+        throw new Exception('Le billet a bien été supprimé !');
     }
 
     // Unreport a comment
     if(isset($_GET['unreportComment'])) 
     {
         $adminCommentManager->unreportTheComment();
-        $message = 'Le commentaire a bien été désignalé !';
+        throw new Exception('Le commentaire a bien été désignalé !');
     }
 
     // Delete a comment
     if(isset($_GET['deleteComment'])) 
     {
         $adminCommentManager->deleteComment();
-        $message ='Le commentaire a bien été supprimé !';
+        throw new Exception('Le commentaire a bien été supprimé !');
     }
 
     require('view/backend/adminView.php');
@@ -196,11 +198,12 @@ function editPost()
         if($_POST['title'] != "" AND $_POST['content'] != "")
         {
             $postManager->editPost();
-            $message = "Le billet a bien été modifié !";
+            throw new Exception('Le billet a bien été modifié !');
         }else 
         {
-            $message ="Veuillez remplir tous les champs svp.";
+            throw new Exception('Veuillez remplir tous les champs svp.');
         }
     }
+
     require('view/backend/editPostView.php');
 }

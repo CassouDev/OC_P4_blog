@@ -25,13 +25,13 @@ ob_start(); ?>
 <?php $headContent = ob_get_clean();
 
 ob_start(); ?>
-<?php
-if (isset($message))
-{
-?>
-    <div class="popUp">
-        <p><?= $message ?></p>
-        <a href="index.php?action=admin" class="button">Ok</a>
+    <a href="index.php?action=admin&amp;disconnect" id="disconnectButton">Déconnexion</a>
+    <a href="index.php?action=admin" id="returnButton">Retour</a>
+<?php $headerButtons = ob_get_clean();
+
+ob_start(); ?>
+<div class="adminContent">
+    <div class="bigTitle">
     </div>
 <?php
 }

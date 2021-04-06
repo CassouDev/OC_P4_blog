@@ -38,22 +38,9 @@ ob_start(); ?>
 <?php $headerButtons = ob_get_clean();
 
 ob_start(); ?>
-        <!-- POSTS -->
-        <section id='postSection'>
-            <!-- PopUp messages -->
-            <?php
-            if (isset($message))
-            {
-            ?>
-                <div class="popUp">
-                    <p><?= $message ?></p>
-                    <a href="index.php" class="button">Ok</a>
-                </div>
-            <?php
-            }
-            ?>
-            <!-- Get the posts -->
-            <?php
+    <!-- POSTS -->
+    <section id='postSection'>
+        <?php
             foreach ($posts as $post) 
             {
                 ?>
