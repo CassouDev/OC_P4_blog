@@ -37,9 +37,6 @@ function homeGetPosts()
         }
     }
 
-    $manager = new PostManager();
-    $posts = $manager->getPost();
-
     require('view/frontend/homepageView.php');
 }
 
@@ -58,30 +55,54 @@ function postPage()
 
     // Get the number of comments
     $commentsNumber = $commentManager->countComments();
-
+    
+    // Get the id of the post
+    $postId = $postManager->getPostId($_GET['chapterNb']);
 
     // Access to the previous and next Chapter
-    $lastChapter = $postsNumber['postsNb'];
     $prevChapter = $_GET['chapterNb'] - 1;
     $nextChapter = $_GET['chapterNb'] + 1;
+
+    $prevId = $postManager->getPostId($prevChapter);
+    $nextId = $postManager->getPostId($nextChapter);
+    $firstId = $postManager->getPostId(1);
+    $lastId = $postManager->getPostId($postsNumber);
+
+    foreach ($prevId as $previous) {
+        $prevChptId = $previous->id();
+    }
+    foreach ($nextId as $next) {
+        $nextChptId = $next->id();
+    }
+    foreach ($postId as $chpt) {
+        $chptId = $chpt->id();
+    }
+    foreach ($firstId as $firstChpt) {
+        $firstChptId = $firstChpt->id();
+    }
+    foreach ($lastId as $lastChpt) {
+        $lastChptId = $lastChpt->id();
+    }
 
     if(isset($_GET['previousChapter'])) 
     {
         if($prevChapter > 0)
         {
-            header("Location:index.php?action=postPage&chapterNb=$prevChapter");
-        }else
-        {
-            header("Location:index.php?action=postPage&chapterNb=$lastChapter");
+            header("Location:index.php?action=postPage&chapterId=$prevChptId&chapterNb=$prevChapter");
         }
-    }elseif (isset($_GET['nextChapter']))
-    {
-        if($_GET['chapterNb'] < $lastChapter)
+        else
         {
-            header("Location:index.php?action=postPage&chapterNb=$nextChapter");
+            header("Location:index.php?action=postPage&chapterId=$lastChptId&chapterNb=$postsNumber");
+        }
+    }
+    elseif (isset($_GET['nextChapter']))
+    {
+        if($_GET['chapterNb'] < $postsNumber)
+        {
+            header("Location:index.php?action=postPage&chapterId=$nextChptId&chapterNb=$nextChapter");
         }else
         {
-            header("Location:index.php?action=postPage&chapterNb=1");
+            header("Location:index.php?action=postPage&chapterId=$firstChptId&chapterNb=1");
         }
     }
 
@@ -91,7 +112,7 @@ function postPage()
     if(isset($_POST['commentButton']) && isset($_POST['pseudo']) && isset($_POST['comment']))
     {
         $newComment = new Comment([
-            'postChapter' => $_GET['chapterNb'],
+            'post_id' => $_GET['chapterId'],
             'pseudo' => $_POST['pseudo'],
             'comment' => $_POST['comment']
         ]);
@@ -129,9 +150,10 @@ function admin()
     $postManager = new PostManager();
     // Get posts
     $posts = $postManager->getPost();
+    
     // Get the number of posts
     $lastChapter = $postManager->countPosts();
-    $chapterNumber = $lastChapter['postsNb'] + 1;
+    $nextChapter = $lastChapter + 1;
 
     $adminCommentManager = new CommentManager();
     // Get unreported comments
@@ -140,15 +162,15 @@ function admin()
     $reportedComments = $adminCommentManager->getReportedComments();
 
     // Add a new post
-    if(isset($_POST['publier']) && isset($_POST['chapter']) && isset($_POST['title']) && isset($_POST['content'])) 
+    if(isset($_POST['publier']) && isset($_POST['title']) && isset($_POST['content']))
     {
         $newPost = new Post([
-            'chapter' => $_POST['chapter'],
+            'chapter' => $nextChapter,
             'title' => $_POST['title'],
             'content' => $_POST['content']
         ]);
-
-        if (!$newPost->validPost())
+        
+        if (($_POST['title']) == "" OR ($_POST['content']) == "")
         {
             throw new Exception('Veuillez remplir tous les champs svp.');
             unset($newPost);
@@ -164,7 +186,6 @@ function admin()
     if(isset($_GET['deletePost'])) 
     {
         $postManager->deletePost();
-        $postManager->deleteCommentFromPost();
 
         throw new Exception('Le billet a bien été supprimé !');
     }
@@ -191,9 +212,10 @@ function editPost()
     $postManager = new PostManager();
     // Get the post
     $onePost = $postManager->getOnePost();
+    $count = $postManager->countPosts();
 
     // edit the post
-    if(isset($_POST['content'])) 
+    if(isset($_POST['title']) && isset($_POST['content'])) 
     {
         if($_POST['title'] != "" AND $_POST['content'] != "")
         {

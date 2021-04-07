@@ -11,7 +11,7 @@ $alt = "Mountains and 'Billet simple pour l'Alaska'";
 ob_start(); ?>
 <button id="connectButton">Connexion</button>
 <div id="adminForm">
-    <form method="post" action="index.php?action=homeGetPosts&amp;pseudo=<?= $pseudo; ?>" id="connectForm">
+        <form method="post" action="index.php" id="connectForm">
     <p>
         <label for='pseudo'>Pseudo: </label>
         <input type='text' name='pseudo'/><br>
@@ -44,7 +44,7 @@ ob_start(); ?>
             foreach ($posts as $post) 
             {
                 ?>
-                <a href="index.php?action=postPage&amp;chapterNb=<?= $post->chapter(); ?>">
+            <a href="index.php?action=postPage&amp;chapterId=<?= $post->id(); ?>&amp;chapterNb=<?= htmlspecialchars($post->chapter()); ?>">
                 <div class='lastPost'>
                     <h3>
                         Chapitre <?= htmlspecialchars($post->chapter()) ?> - <?= htmlspecialchars($post->title()) ?>

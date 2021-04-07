@@ -2,7 +2,7 @@
 class Comment
 {
     private $_id;
-    private $_postChapter;
+    private $_post_id;
     private $_pseudo;
     private $_comment;
     private $_commentDate;
@@ -19,9 +19,9 @@ class Comment
         {
             $this->setId($data['id']);
         }
-        if (isset($data['postChapter']))
+        if (isset($data['post_id']))
         {
-            $this->setPostChapter($data['postChapter']);
+            $this->setPost_id($data['post_id']);
         }
         if (isset($data['pseudo']))
         {
@@ -43,7 +43,7 @@ class Comment
 
     //Liste of the getters
     public function id() { return $this->_id; }
-    public function postChapter() { return $this->_postChapter; }
+    public function post_id() { return $this->_post_id; }
     public function pseudo() { return $this->_pseudo; }
     public function comment() { return $this->_comment; }
     public function commentDate() { return $this->_commentDate; }
@@ -59,12 +59,13 @@ class Comment
         }
     }
 
-    public function setPostChapter($postChapter)
+    public function setPost_id($post_id)
     {
-        $postChapter = (int) $postChapter;
-        if ($postChapter > 0) 
+        $post_id = (int) $post_id;
+
+        if ($post_id > 0) 
         {
-            $this->_postChapter = $postChapter;
+            $this->_post_id = $post_id;
         }
     }
 

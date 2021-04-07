@@ -45,20 +45,28 @@ ob_start(); ?>
         foreach($onePost as $post)
         {
         ?>
-            <form class="col" method='post' action="index.php?action=editPost&amp;chapterNb=<?= $_GET['chapterNb'] ?>">
-                <p>
-                    <strong>Chapitre <?= $post->chapter() ?></strong> - publié le <?= $post->postDate() ?>
+            <p id="chapterNumber">
+                Chapitre <?= $post->chapter(); ?>
                 </p>
                 <label for="title">Titre:</label>
-                <input id="inputTitle" type="text" name="title" value="<?= htmlspecialchars($post->title()) ?>"/><br>
-                <textarea id="mytextarea" name="content" cols="70" rows="20"><?= htmlspecialchars($post->content()) ?></textarea><br>
+            <form method='post' action="index.php?action=editPost&amp;chapterId=<?= $_GET['chapterId'] ?>">
+                <label for="inputTitle">Titre:</label>
+                <input id="inputTitle" type="text" name="title" value="<?= htmlspecialchars($post->title()); ?>"/><br>
+                <textarea id="mytextarea" name="content" cols="70" rows="20"><?= ($post->content()); ?></textarea><br>
                         
                 <div id="buttons">
                     <input class="button" type="submit" value="Modifier"/>
-                    <a href="index.php?action=admin&amp;chapterNb=<?= $_GET['chapterNb']; ?>&deletePost" class="button">Supprimer</a>
+
+                    <?php
+                    if($_GET['chapterNb'] == $count)
+                    {
+                    ?>
+                        <a href="index.php?action=admin&amp;chapterId=<?= $_GET['chapterId']; ?>&amp;deletePost" class="button" id="deleteButton">Supprimer</a>
+                    <?php
+                    }
+                    ?>
                 </div>
-            </p>
-        </form>
+            </form>
         <?php 
         }
         ?>

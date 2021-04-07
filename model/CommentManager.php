@@ -13,9 +13,9 @@ class CommentManager extends Database
 
     public function addComments(Comment $newComment)
     {        
-        $insertReq = $this->_db->prepare("INSERT INTO comments(postChapter, pseudo, comment, commentDate) VALUES(:postChapter, :pseudo, :comment, NOW())");
+        $insertReq = $this->_db->prepare("INSERT INTO comments(post_id, pseudo, comment, commentDate) VALUES(:post_id, :pseudo, :comment, NOW())");
         $insertReq->execute(array(
-            'postChapter' => $newComment->postChapter(),
+            'post_id' => $newComment->post_id(),
             'pseudo' => $newComment->pseudo(),
             'comment' => $newComment->comment()
         ));
@@ -23,9 +23,9 @@ class CommentManager extends Database
 
     public function deleteCommentFromPost()
     {
-        $deleteFromPostReq = $this->_db->prepare('DELETE FROM comments WHERE postChapter = :postChapter');
+        $deleteFromPostReq = $this->_db->prepare('DELETE FROM comments WHERE post_id = :post_id');
         $deleteFromPostReq->execute([
-            'postChapter' => $_GET['chapterNb']
+            'post_id' => $_GET['chapterId']
         ]);
     }
 
@@ -33,7 +33,7 @@ class CommentManager extends Database
     {
         $deleteComment = $this->_db->prepare('DELETE FROM comments WHERE id = :id');
         $deleteComment->execute([
-            'id'=>$_GET['id']
+            'id' => $_GET['id']
         ]);
     }
 
@@ -41,9 +41,9 @@ class CommentManager extends Database
     {
         $OnePostComments = [];
         
-        $postCmtReq = $this->_db->prepare("SELECT id, postChapter, pseudo, comment, DATE_FORMAT(commentDate, '%d/%m/%Y') AS commentDate, reportComment FROM comments WHERE postChapter = ? AND reportComment = '0' ORDER BY id DESC");
+        $postCmtReq = $this->_db->prepare("SELECT id, post_id, pseudo, comment, DATE_FORMAT(commentDate, '%d/%m/%Y') AS commentDate, reportComment FROM comments WHERE post_id = ? AND reportComment = '0' ORDER BY id DESC");
         $postCmtReq->execute([
-            $_GET['chapterNb']
+            $_GET['chapterId']
         ]);
 
         while ($postCmtData = $postCmtReq->fetch()) 
@@ -58,7 +58,7 @@ class CommentManager extends Database
     {
         $unreportedCmt = [];
 
-        $unreportedReq = $this->_db->prepare("SELECT id, postChapter, pseudo, comment, DATE_FORMAT(commentDate, '%d/%m/%Y') AS commentDate, reportComment FROM comments WHERE reportComment = '0' ORDER BY postChapter DESC");
+        $unreportedReq = $this->_db->prepare("SELECT id, post_id, pseudo, comment, DATE_FORMAT(commentDate, '%d/%m/%Y') AS commentDate, reportComment FROM comments WHERE reportComment = '0' ORDER BY post_id DESC");
         $unreportedReq->execute();
 
         while ($unreportedData = $unreportedReq->fetch())
@@ -73,7 +73,7 @@ class CommentManager extends Database
     {
         $reportedCmt = [];
 
-        $reportedReq = $this->_db->prepare("SELECT * FROM comments WHERE  reportComment = '1' ORDER BY postChapter DESC");
+        $reportedReq = $this->_db->prepare("SELECT * FROM comments WHERE reportComment = '1' ORDER BY post_id DESC");
         $reportedReq->execute();
 
         while ($reportedData = $reportedReq->fetch())
@@ -86,9 +86,9 @@ class CommentManager extends Database
 
     public function countComments()
     {   
-        $countCmtReq = $this->_db->prepare("SELECT COUNT(*) AS commentNumber FROM comments WHERE postChapter = ? AND reportComment = '0'");
+        $countCmtReq = $this->_db->prepare("SELECT COUNT(*) AS commentNumber FROM comments WHERE post_id = ? AND reportComment = '0'");
         $countCmtReq->execute([
-            $_GET['chapterNb']
+            $_GET['chapterId']
         ]);
 
         return $countCmtReq->fetchColumn();
@@ -100,7 +100,6 @@ class CommentManager extends Database
         $reportReq->execute([
             'commentId' => $_GET['id']
         ]);
-
     }
 
     public function unreportTheComment()

@@ -29,9 +29,9 @@ class PostManager extends Database
   {
     $onePostArray = [];
 
-    $req = $this->_db->prepare("SELECT id, chapter, title, content, DATE_FORMAT(postDate, '%d/%m/%Y') AS postDate FROM posts WHERE chapter = :chapter");
+    $req = $this->_db->prepare("SELECT id, chapter, title, content, DATE_FORMAT(postDate, '%d/%m/%Y') AS postDate FROM posts WHERE id = :id");
     $req->execute([
-        "chapter"=> $_GET['chapterNb']
+        "id"=> $_GET['chapterId']
     ]);
 
     while($OnePostData = $req->fetch())
@@ -40,6 +40,40 @@ class PostManager extends Database
     }
 
     return $onePostArray;
+  }
+
+  public function getPostId($chapter)
+  {
+    $postId = [];
+    
+    $req = $this->_db->prepare("SELECT * FROM posts WHERE chapter = :chapter");
+    $req->execute([
+        "chapter"=> $chapter
+    ]);
+
+    while($postData = $req->fetch())
+    {
+      $postId[] = new Post($postData);
+    }
+
+    return $postId;
+  }
+
+  public function getTitles($postId)
+  {
+    $title = [];
+
+    $titleReq= $this->_db->prepare('SELECT title, chapter FROM posts WHERE id = :id');
+    $titleReq->execute([
+        'id'=> $postId
+    ]);
+
+    while ($titleData = $titleReq->fetch())
+    {
+      $title[] = new Post($titleData);
+    }
+
+    return $title;
   }
 
   public function addPosts(Post $newPost)
@@ -54,19 +88,19 @@ class PostManager extends Database
 
   public function editPost()
   {
-    $editReq = $this->_db->prepare('UPDATE posts SET title = :nwTitle, content = :nwContent WHERE chapter = :chapter');
+    $editReq = $this->_db->prepare('UPDATE posts SET title = :nwTitle, content = :nwContent, postDate = NOW() WHERE id = :id');
     $editReq->execute(array(
       'nwTitle'=>$_POST['title'], 
       'nwContent'=>$_POST['content'], 
-      'chapter'=> $_GET['chapterNb']
+      'id'=> $_GET['chapterId']
     ));
   }
 
   public function deletePost()
   {
-    $delete = $this->_db->prepare("DELETE FROM posts WHERE chapter = :chapter");
+    $delete = $this->_db->prepare("DELETE FROM posts WHERE id = :id");
     $delete->execute([
-        'chapter' => $_GET['chapterNb']
+        'id' => $_GET['chapterId']
     ]);
   }
 
@@ -77,22 +111,4 @@ class PostManager extends Database
 
     return $countReq->fetchColumn();
   }
-
-  public function getTitles($chapter)
-  {
-    $title = [];
-
-    $titleReq= $this->_db->prepare('SELECT title FROM posts WHERE chapter = :chapter');
-    $titleReq->execute([
-        'chapter'=> $chapter
-    ]);
-
-    while ($titleData = $titleReq->fetch())
-    {
-      $title[] = new Post($titleData);
-    }
-
-    return $title;
-  }
-
 }

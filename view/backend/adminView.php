@@ -56,7 +56,7 @@ ob_start(); ?>
             foreach($posts as $post) 
             {
             ?>
-                <a href="index.php?action=editPost&amp;postId=<?= $post->id(); ?>&amp;chapterNb=<?= $post->chapter(); ?>">
+                <a href="index.php?action=editPost&amp;chapterId=<?= $post->id(); ?>&amp;chapterNb=<?= $post->chapter(); ?>">
                     <div class='lastPost text-center py-4 mx-auto mb-3'>
                         <h3>Chapitre <?= htmlspecialchars($post->chapter()) ?> - <?= htmlspecialchars($post->title()); ?></h3>
                     </div>
@@ -86,13 +86,13 @@ ob_start(); ?>
                             <div class="col">
                                 <?php
                                 //Get titles of reported comments
-                                $reportTitles = $postManager->getTitles($reportedComment->postChapter());
+                                $reportTitles = $postManager->getTitles($reportedComment->post_id());
 
                                 foreach ($reportTitles as $unreportTitle)
                                 {
                                 ?>
                                     <p>
-                                    <strong>Chapitre <?= htmlspecialchars($reportedComment->postChapter()); ?></strong> - <?= htmlspecialchars($unreportTitle->title()); ?>
+                                        <strong>Chapitre <?= $reportTitle->chapter(); ?></strong> - <?= htmlspecialchars($reportTitle->title()); ?>
                                     </p>
                                 <?php
                                 }
@@ -139,7 +139,7 @@ ob_start(); ?>
                             <div class="col">
                                 <?php
                                 //Get titles of unreported comments
-                                $unreportTitles = $postManager->getTitles($unreportedComment->postChapter());
+                                $unreportTitles = $postManager->getTitles($unreportedComment->post_id());
 
                                 foreach ($unreportTitles as $unreportTitle) 
                                 {

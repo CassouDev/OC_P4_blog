@@ -36,13 +36,6 @@ class Post
         }
     }
 
-    public function validPost()
-    {
-      return !empty($this->_chapter);
-      return !empty($this->_title);
-      return !empty($this->_content);
-    }
-
     //Liste of the getters
     public function id() { return $this->_id; }
     public function chapter() { return $this->_chapter; }

@@ -23,8 +23,8 @@ ob_start(); ?>
             <label for="password">Mot de passe: </label>
             <input type="password" name="password"/><br>
             <input class="button" type="submit" value="Se connecter"/>
-            <a href="index.php?action=postPage&amp;chapterNb=<?= $_GET['chapterNb']; ?>" class="button">Retour</a>
-            </p>
+            <a href="index.php?action=postPage&amp;chapterId=<?= $_GET['chapterId']; ?>&amp;chapterNb=<?= $_GET['chapterNb']; ?>" class="button">Retour</a>
+        </div>
     </form>
 </div>
 <?php $headerButtons = ob_get_clean();
@@ -37,33 +37,24 @@ ob_start(); ?>
     if (isset($message))
     {
     ?>
-        <div class="popUp">
-            <p><?= $message ?></p>
-            <a href="index.php?action=postPage&amp;chapterNb=<?= $_GET['chapterNb']; ?>" class="button">Ok</a>
+            <div class="chapter">
+                <a href="index.php?action=postPage&amp;chapterId=<?= $chapterid->id(); ?>&amp;chapterNb=<?= $_GET['chapterNb']; ?>&amp;previousChapter">
+                    <img src="public/images/left-arrow.png" alt="flèche billet précédent">
+                </a>
+                <a href="index.php?action=postPage&amp;chapterId=<?= $chapterid->id(); ?>&amp;chapterNb=<?= $_GET['chapterNb']; ?>&amp;nextChapter">
+                    <img src="public/images/right-arrow.png" alt="flèche billet suivant">
+                </a>
         </div>
     <?php
     }
+        ?>
+        
+        <div class='content'>
 
-    foreach ($onePost as $post) 
-    {
-    ?>
-        <h1>
-            <a href="index.php?action=postPage&amp;chapterNb=<?= $_GET['chapterNb'] ?>&amp;previousChapter">
-                <span style="font-size: 58px; color: white;">
-                    <i class="fas fa-caret-left" alt="Simple white arrow to the previous chapter"></i>
-                </span>
-            </a>
-            <p>
-                Chapitre <?= $_GET['chapterNb'] ?> - <?= htmlspecialchars($post->title())?>
+            <p class="postDate">
+                Posté le <?= $post->postDate(); ?>
             </p>
-            <a href="index.php?action=postPage&amp;chapterNb=<?= $_GET['chapterNb'] ?>&amp;nextChapter">
-                <span style="font-size: 58px; color: white;">
-                    <i class="fas fa-caret-right" alt="Simple white arrow to the next chapter"></i>
-                </span>
-            </a>
-        </h1>
-        <h2><?= htmlspecialchars($post->postDate()) ?></h2>
-        <p><?= $post->content() ?></p>
+        </div>
     <?php
     }
     ?>
@@ -80,7 +71,8 @@ ob_start(); ?>
             <div id="eachComment">
                 <p><strong> <?= htmlspecialchars($comment->pseudo()) ?></strong> le <?= htmlspecialchars($comment->commentDate()) ?></p>
                 <p><?= htmlspecialchars($comment->comment()) ?></p>
-                <a href="index.php?action=postPage&amp;chapterNb=<?= $_GET['chapterNb'] ?>&amp;id=<?= $comment->id() ?>&amp;reportComment" id="reportButton">Signaler</a>
+                </p>
+                <a href="index.php?action=postPage&amp;chapterId=<?= $_GET['chapterId']; ?>&amp;chapterNb=<?= $_GET['chapterNb']; ?>&amp;id=<?= $comment->id(); ?>&amp;reportComment" class="reportButton">Signaler</a>
             </div>
         <?php 
         } 
