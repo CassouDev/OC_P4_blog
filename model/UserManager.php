@@ -1,23 +1,15 @@
 <?php
 require('User.php');
+require_once('Database.php');
 
-class UserManager
+class UserManager extends Database
 {
-  private $_db; // Instance de PDO.
-
   public function __construct()
   {
-    try 
-    {
-      $this->_db = new PDO('mysql:host=localhost;dbname=oc_p4;charset=utf8', 'root', '');
-      // $this->_db = new PDO('mysql:host=db5001825346.hosting-data.io;dbname=dbs1502331;charset=utf8', 'dbu969252', 'Anima-2012');
-    }
-    catch (Exception $e) 
-    {
-      die('Erreur : ' . $e->getMessage());
-    }
+    $this->_db = new PDO('mysql:host=localhost;dbname=oc_p4;charset=utf8', 'root', '');
+    // $this->_db = new PDO('mysql:host=db5001825346.hosting-data.io;dbname=dbs1502331;charset=utf8', 'dbu969252', 'Anima-2012');
   }
-
+  
   public function getUserPseudo()
   {
     $pseudoReq = $this->_db->prepare('SELECT pseudo FROM users');
