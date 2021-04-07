@@ -34,8 +34,8 @@ ob_start(); ?>
         ?>
             <p id="chapterNumber">
                 Chapitre <?= $post->chapter(); ?>
-                </p>
-                <label for="title">Titre:</label>
+            </p>
+
             <form method='post' action="index.php?action=editPost&amp;chapterId=<?= $_GET['chapterId'] ?>">
                 <label for="inputTitle">Titre:</label>
                 <input id="inputTitle" type="text" name="title" value="<?= htmlspecialchars($post->title()); ?>"/><br>

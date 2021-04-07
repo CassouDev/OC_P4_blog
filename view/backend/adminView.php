@@ -18,7 +18,7 @@ ob_start(); ?>
 <?php $headContent = ob_get_clean();
 
 ob_start(); ?>
-<a href="index.php?action=admin&amp;disconnect" id="disconnectButton">Déconnexion</a>
+<a href="index.php?action=admin&disconnect" id="disconnectButton">Déconnexion</a>
 <?php $headerButtons = ob_get_clean();
 
 ob_start(); ?>
@@ -61,7 +61,9 @@ ob_start(); ?>
             ?>
                 <a href="index.php?action=editPost&amp;chapterId=<?= $post->id(); ?>&amp;chapterNb=<?= $post->chapter(); ?>">
                     <div class='lastPost text-center py-4 mx-auto mb-3'>
-                        <h3>Chapitre <?= htmlspecialchars($post->chapter()) ?> - <?= htmlspecialchars($post->title()); ?></h3>
+                        <h2>
+                            Chapitre <?= $post->chapter(); ?> - <?= htmlspecialchars($post->title()); ?>
+                        </h2>
                     </div>
                 </a>
             <?php
@@ -81,8 +83,7 @@ ob_start(); ?>
                         <div class="row">
                             <div class="col">
                                 <p>   
-                                        
-                                    <strong><?= htmlspecialchars($reportedComment->pseudo()); ?></strong> le <?= htmlspecialchars($reportedComment->commentDate()); ?>
+                                    <strong><?= htmlspecialchars($reportedComment->pseudo()); ?></strong> le <?= $reportedComment->commentDate(); ?>
                                 </p>
                             </div>
 
@@ -91,7 +92,7 @@ ob_start(); ?>
                                 //Get titles of reported comments
                                 $reportTitles = $postManager->getTitles($reportedComment->post_id());
 
-                                foreach ($reportTitles as $unreportTitle)
+                                foreach ($reportTitles as $reportTitle)
                                 {
                                 ?>
                                     <p>
@@ -135,7 +136,7 @@ ob_start(); ?>
                         <div class="row mx-0 px-3">
                             <div class="col">
                                 <p>
-                                    <strong><?= htmlspecialchars($unreportedComment->pseudo()); ?></strong> le <?= htmlspecialchars($unreportedComment->commentDate()); ?>
+                                    <strong><?= htmlspecialchars($unreportedComment->pseudo()); ?></strong> le <?= $unreportedComment->commentDate(); ?>
                                 </p>
                             </div>
 
@@ -148,7 +149,7 @@ ob_start(); ?>
                                 {
                                 ?>
                                     <p>
-                                    <strong>Chapitre <?= htmlspecialchars($unreportedComment->postChapter()); ?></strong> - <?= htmlspecialchars($unreportTitle->title()); ?>
+                                        <strong>Chapitre <?= $unreportTitle->chapter(); ?></strong> - <?= htmlspecialchars($unreportTitle->title()); ?>
                                     </p>
                                 <?php
                                 }
