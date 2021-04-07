@@ -1,27 +1,19 @@
 <?php
-$blogTitle = "Modifier mon billet";
-$cssFile1 = "public/css/admin.css";
-$cssFile2 = "public/css/popup.css";
-$cssFile3 = null;
-$headContent = null;
 $imgId = "mountains_admin";
 $scr = "public/images/admin.png";
-$alt = "Mountains and 'admin'";
+$alt = "Mountains";
 
 ob_start(); ?>
-    <a href="index.php?action=admin&amp;disconnect" id="disconnectButton">Déconnexion</a>
-    <a href="index.php?action=admin" id="returnButton">Retour</a>
-<?php $headerButtons = ob_get_clean();
-
-ob_start(); ?>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<!-- Tiny MCE -->
-<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-<script>
-    tinymce.init({
-        selector: '#mytextarea'
-    });
-</script>
+    <link rel="stylesheet" media="screen" href="public/css/admin.css"/>
+    <link rel="stylesheet" media="screen" href="public/css/popup.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Tiny MCE -->
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#mytextarea'
+        });
+    </script>
 <?php $headContent = ob_get_clean();
 
 ob_start(); ?>

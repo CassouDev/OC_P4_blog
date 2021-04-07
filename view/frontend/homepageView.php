@@ -1,16 +1,17 @@
 <?php
-$blogTitle = "Billet simple pour l'Alaska";
-$cssFile1 = "public/css/homepage.css";
-$cssFile2 = "public/css/popup.css";
-$cssFile3 = null;
-$headContent = null;
 $imgId = "mountains";
 $scr = "public/images/mountains.png";
-$alt = "Mountains and 'Billet simple pour l'Alaska'";
+$alt = "Mountains";
 
 ob_start(); ?>
-<button id="connectButton">Connexion</button>
-<div id="adminForm">
+    <link rel="stylesheet" media="screen" href="public/css/homepage.css"/>
+    <link rel="stylesheet" media="screen" href="public/css/popup.css"/>
+<?php $headContent = ob_get_clean();
+
+ob_start(); ?>
+    <button class='button' id="connectButton">Connexion</button>
+
+    <div id="adminForm">
         <form method="post" action="index.php" id="connectForm">
     <p>
         <label for='pseudo'>Pseudo: </label>

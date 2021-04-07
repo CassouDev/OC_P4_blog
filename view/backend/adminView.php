@@ -1,21 +1,20 @@
 <?php
-$blogTitle = "Admin";
-$cssFile1 = "public/css/admin.css";
-$cssFile2 = "public/css/popup.css";
-$cssFile3 = null;
 $imgId = "mountains_admin";
 $scr = "public/images/admin.png";
-$alt = "Mountains and'admin'";
+$alt = "Mountains";
 
 ob_start(); ?>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <!-- Tiny MCE -->
-        <script src="https://cdn.tiny.cloud/1/aqri9stihbla01t0trc3y1ojilh9esu49i9gbdqx8y9ptule/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-        <script>
-            tinymce.init({
-                selector: '#mytextarea'
-            });
-        </script>
+    <link rel="stylesheet" media="screen" href="public/css/admin.css"/>
+    <link rel="stylesheet" media="screen" href="public/css/popup.css"/>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Tiny MCE -->
+    <script src="https://cdn.tiny.cloud/1/aqri9stihbla01t0trc3y1ojilh9esu49i9gbdqx8y9ptule/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#mytextarea'
+        });
+    </script>
 <?php $headContent = ob_get_clean();
 
 ob_start(); ?>
@@ -26,7 +25,9 @@ ob_start(); ?>
 <div class="container adminContent col-sm-10">
     <div class="row font-italic text-center bigTitle">
         <div class="col">
-            <h1>Bienvenue <strong><?= $_SESSION['pseudo'] ?></strong></h1>
+            <h1>
+                Bienvenue <strong><?= $_SESSION['pseudo'] ?></strong>
+            </h1>
         </div>
     </div>
 
