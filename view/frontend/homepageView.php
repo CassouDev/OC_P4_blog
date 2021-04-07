@@ -58,7 +58,7 @@ ob_start(); ?>
 
         </section>
 
-        <script src="public/js/connect_form.js"></script>
+    <script src="public/js/connect_form.js"></script>
 <?php $blogContent = ob_get_clean();
 
 require('view/template.php'); ?>

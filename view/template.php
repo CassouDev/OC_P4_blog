@@ -14,7 +14,7 @@
         <header>
             <?= $headerButtons ?>
                 <p>
-                    <img id=<?= $imgId ?> src=<?= $scr ?> alt=<?= $alt ?> />
+                    <img id=<?= $imgId ?> src=<?= $scr ?> alt=<?= $alt ?>/>
                 </p>
         </header>
 

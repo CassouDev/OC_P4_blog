@@ -10,9 +10,8 @@
     background-color: white;
     border: 2px solid rgba(0, 0, 0, 0.9);
     border-radius: 5px;
-    box-shadow: 6px, 6px, 0.5, black;
     text-align: center;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-weight: bold;
 }
 .popUp p {
@@ -20,18 +19,62 @@
     margin-bottom: 40px;
     font-weight: 500;
 }
-/*BOUTONs*/
+/*BUTTONS*/
 .button {
     text-decoration: none;
     background-color: rgba(0, 0, 0, 0.95);
     color: #ffffff;
-    padding: 10px 30px;
+    padding: 10px 25px;
     border-width: 0px;
     border-radius: 5px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 13px;
+    margin-bottom: 25px;
 }
 a.button:hover {
     color: white;
     text-decoration: none;
+}
+
+@media only screen and (max-width: 1200px)
+{
+    /*BUTTONS*/
+    .button {
+        border-radius: 5px;
+        font-size: 11.5px;
+    }
+}
+
+@media only screen and (max-width: 992px)
+{
+    /*BUTTONS*/
+    .button {
+        font-size: 11px;
+    }
+}
+
+@media only screen and (max-width: 768px)
+{
+    /*BUTTONS*/
+    .button {
+        font-size: 11px;
+        padding: 7px 25px; 
+    }
+}
+
+@media only screen and (max-width: 600px)
+{
+    /*BUTTONS*/
+    .button {
+        font-size: 10px;
+    }
+}
+
+@media only screen and (max-width: 480px)
+{
+    /*BUTTONS*/
+    .button {
+        font-size: 9px;
+        padding: 8px 15px; 
+    }
 }

@@ -1,26 +1,19 @@
-/* GENERAL */
+/* MAIN */
 body {
-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 16px;
 }
+/* CONNECTION */
 #returnButton {
     float: left;
     margin-top: 25px;
-    background-color: rgba(0, 0, 0, 0.90);
-    color: #ffffff;
-    text-decoration: none;
-    padding: 8px 14px;
-    border-width: 0px;
-    border-radius: 5px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: bold;
-    font-size: 13px;
 }
-/* BILLET */
+/* POST */
 #postSection {
-    text-align: center;
     margin-bottom: 25px;
+    width: 86%;
+    margin-left: 7%;
 }
-#postSection h1 {
+#postSection .chapter {
     background-image: url('../images/chapter_background.jpg');
     background-size: contain;
     color: white;
@@ -29,28 +22,41 @@ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubun
     margin: auto;
     display: flex;
     justify-content: space-around;
-}
-#postSection h1 img {
-    text-decoration: none;
-    width: 15px;
-}
-#postSection h2 {
-    font-size: 15px;
-    color: rgba();
-    font-weight: 500;
+    font-size: 17px;
     text-align: center;
 }
-/* COMMENTAIRES */
+#postSection .chapter a {
+    margin: auto;
+    padding-top: 4px;
+}
+#postSection .chapter img {
+    text-decoration: none;
+    width: 16px;
+    margin-right: 15px;
+    margin-left: 15px;
+}
+#postSection .chapter h1 {
+    margin: 15px;
+}
+.content {
+    margin-top: 40px;
+}
+.postDate {
+    font-weight: 600;
+    font-style: italic;
+    text-align: right;
+}
+/* COMMENTS */
 #commentSection { 
     text-align: center;
-    margin-bottom: 0;
-    margin: auto;
 }
-#commentsTitle{
+#commentSection h1 {
     font-size: 20px;
     border-radius: 5px 5px 0 0;
     padding: 10px 30px;
     margin-bottom: 0;
+}
+h1#commentsTitle{
     background-color: rgba(0, 0, 0, 0.1);
     color: rgba(0, 0, 0, 0.6);
 }
@@ -59,53 +65,155 @@ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubun
     max-height: 300px;
     overflow-y: scroll;
 }
-#eachComment {
+.eachComment {
     border-top: 3px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
 }
-#reportButton {
+.reportButton {
     color: #ffffff;
     padding: 8px 30px;
     border-width: 0px;
     border-radius: 5px;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 13px;
     background-color: rgba(0, 0, 0, 0.45);
     text-decoration: none;
 }
-#letComment {
-    font-size: 20px;
-    border-radius: 5px 5px 0 0;
-    padding: 10px 30px;
-    margin-bottom: 0;
+h1#letComment {
     background-color: rgba(0, 0, 0, 1);
     color: white;
 }
 #commentForm {
-    margin: auto;
     padding: 0 25px 0 25px;
     border: 2px solid rgba(0, 0, 0, 0.95);
-    margin-bottom: 20px;
     border-radius: 0 0 5px 5px;
 }
-#commentPseudo, #commentDate{
-    border: none;
-    background-color: rgba(0, 0, 0, 0.1);
-    text-align: center;
-    color: rgba(0, 0, 0, 0,95);
-    margin-bottom: 20px;
-    margin-top: 20px;
-    height: 25px;
-}
-#commentPseudo {
-    width: 60%;
-}
 #commentForm label {
-    font-weight: 500;
-    padding-right: 20px;
+    font-weight: 700;
 }
 #commentForm textarea {
+    width: 80%;
     border: none;
     margin-bottom: 15px;
     background-color: rgba(0, 0, 0, 0.1);  
+}
+
+@media screen and (max-width: 1200px)
+{
+    /* MAIN */
+    body {
+        font-size: 14px;
+    }
+    /* COMMENTS */
+    #commentSection h1 {
+        font-size: 19px;
+    }
+    .content {
+        margin-top: 35px;
+    }
+    .reportButton {
+        font-size: 11.5px;
+    }
+}
+@media screen and (max-width: 1024px) 
+{
+    /* MAIN */
+    body {
+        font-size: 13px;
+    }
+    /* CONNECTION */
+    #returnButton {
+        margin-bottom: 0px;
+    } 
+    /* COMMENTS */
+    #commentSection h1 {
+        font-size: 18px;
+    }
+    #commentForm textarea {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 992px) 
+{
+    /* POST */
+    #postSection .chapter {
+        font-size: 15px;
+    }
+    #postSection .chapter img {
+        width: 14px;
+    }
+}
+
+@media screen and (max-width: 768px) 
+{
+    /* POST */
+    #postSection {
+        width: 100%;
+        margin-left: 0%;
+    }
+    #postSection .chapter {
+        font-size: 14px;
+    }
+    #postSection .chapter img {
+        width: 11px;
+    }
+    /* COMMENTS */
+    .reportButton {
+        font-size: 11px;
+        padding: 7px 25px; 
+    }
+}
+
+@media screen and (max-width: 600px) 
+{
+    /* CONNECTION */
+    #returnButton {
+        margin-top: 15px;
+    }
+    /* POST */
+    #postSection .chapter {
+        font-size: 13px;
+    }
+    #postSection .chapter img {
+        width: 10px;
+    }
+    /* COMMENTS */
+    #commentSection h1 {
+        font-size: 16px;
+    }
+    .reportButton {
+        font-size: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) 
+{
+    /* MAIN */
+    body {
+        font-size: 12px;
+    }
+    /* CONNECTION */
+    #returnButton {
+        margin-top: 0px;
+    }
+    /* POST */
+    #postSection {
+        width: 80%;
+        margin-left: 10%;
+    }
+    #postSection .chapter {
+        font-size: 11px;
+    }
+    #postSection .chapter img {
+        width: 8px;
+    }
+    /* COMMENTS */
+    #commentSection h1 {
+        font-size: 14px;
+    }
+    .reportButton {
+        padding: 8px 15px; 
+        font-size: 9px;
+    }
 }

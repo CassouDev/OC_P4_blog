@@ -1,87 +1,230 @@
-/* GENERAL */
+/* MAIN */
 body {
     width: 70%;
     margin: auto;
     margin-bottom: 40px;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 /* HEADER */
 header {
     margin-bottom: 50px;
 }
+#connectButtons {
+    display: flex;
+    justify-content: space-around;
+    width: 44%;
+    margin-left: 28%;
+}
 #connectButton {
     float: right;
     margin-top: 25px;
-    background-color: rgba(0, 0, 0, 0.90);
-    color: #ffffff;
-    padding: 8px 14px;
-    border-width: 0px;
-    border-radius: 5px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-weight: bold;
-    font-size: 13px;
+    margin-bottom: 0px;
 }
 #mountains {
-    width: 80%;
-    margin-left: 10%;
+    width: 85%;
+    margin-left: 7%;
     margin-top: 50px;
     margin-bottom: 25px;
     padding-bottom: 10px;
 }
-/* CONNEXION */
+/* CONNECTION */
 #adminForm {
     display: none;
     position: absolute;
     top: 300px;
     left: 25%;
-    margin: auto;
-    padding: 60px 0px 60px 0px;
+    padding: 60px 0px 35px 0px;
     width: 50%;
     z-index: 2;
     background-color: white;
     border: 2px solid rgba(0, 0, 0, 0.9);
-    border-radius: 5px;
-    box-shadow: 6px, 6px, 0.5, black;
+    border-radius: 8px;
     text-align: center;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 16px;
     font-weight: bold;
 }
 input {
-    margin-bottom: 20px;
-    font-weight: bold;
+    margin-bottom: 25px;
 }
-.button {
-    background-color: rgba(0, 0, 0, 0.95);
-    color: #ffffff;
-    padding: 10px 30px;
-    border-width: 0px;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 14px;
+label {
+    margin-right: 10px;
 }
-/* CHAPITRES */
+/* CHAPTERS */
+#postSection {
+    width: 70%;
+    margin-left: 15%;
+}
 #postSection a {
     text-decoration: none;
 }
 .lastPost {
-    width: 60%;
     opacity: 95%;
     margin: auto;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     background-image: url('../images/chapter_background.jpg');
     background-size: contain;
-    border-radius: 10px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    border-radius: 15px;
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: white;
-    font-size: 18px;
+    font-size: 17px;
     text-align: center;
     display: block;
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding: 30px;
 }
-.lastPost h3 {
+.lastPost h1 {
     margin-top: 0px;
     margin-bottom: 0px;
 }
 .lastPost a {
     color: white;
+}
+
+@media screen and (max-width: 1200px)
+{
+    /* CONNECTION */
+    #connectButtons {
+        width: 50%;
+        margin-left: 25%;
+    }
+    #adminForm {
+        font-size: 14px;
+    }
+    /* CHAPTERS */
+    .lastPost {
+        margin-bottom: 12px;
+        border-radius: 10px;
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 1024px) 
+{
+    /* CHAPTERS */
+    .lastPost {
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+}
+
+
+@media screen and (max-width: 992px) 
+{
+    /* CONNECTION */
+    #connectButtons {
+        width: 60%;
+        margin-left: 20%;
+    }
+    label {
+        margin-right: 6px;
+    }
+    /* CHAPTERS */
+    #postSection {
+        width: 80%;
+        margin-left: 10%;
+    }
+    .lastPost {
+        font-size: 13px;
+    }
+}
+
+
+@media screen and (max-width: 768px) 
+{
+    /* HEADER */
+    header {
+        margin-bottom: 40px;
+    }
+    #mountains {
+        width: 100%;
+        margin-top: 30px;
+        margin-left: 0%;
+    }
+    /* CONNECTION */
+    #adminForm {
+        top: 200px;
+        padding: 40px 0px 15px 0px;
+        width: 60%;
+        left: 20%;
+        border-radius: 5px;
+        font-size: 13px;
+    }
+    input {
+        margin-bottom: 20px;
+    }
+    /* CHAPTERS */
+    .lastPost {
+        font-size: 12px;
+        padding: 25px;
+    }
+}
+
+
+@media screen and (max-width: 600px) 
+{
+    /* MAIN */
+    body {
+        width: 80%;
+    }
+    /* HEADER */
+    header {
+        margin-bottom: 15px;
+    }
+    #mountains {
+        margin-top: 20px;
+    }
+    /* CONNECTION */
+    #connectButton {
+        margin-top: 15px;
+    }
+    #adminForm {
+        top: 150px;
+        font-size: 11px;
+    }
+    input {
+        margin-bottom: 20px;
+    }
+    /* CHAPTERS */
+    .lastPost {
+        font-size: 11px;
+        padding: 20px;
+        border-radius: 8px;
+    }
+}
+
+
+@media screen and (max-width: 480px) 
+{
+    /* MAIN */
+    body {
+        width: 90%;
+    }
+    /* HEADER */
+    header {
+        margin-bottom: 0px;
+    }
+    /* CONNECTION */
+    #connectButton {
+        margin-top: 0px;
+    }
+    #adminForm {
+        padding: 30px 0px 5px 0px;
+        width: 90%;
+        left: 5%;
+        border: 1px solid black;
+        border-radius: 5px;
+        font-size: 10px;
+    }
+    input {
+        margin-bottom: 20px;
+    }
+    /* CHAPTERS */
+    #postSection {
+        width: 80%;
+        margin-left: 10%;
+    }
+    .lastPost {
+        /* width: 90%; */
+        font-size: 10px;
+    }
 }

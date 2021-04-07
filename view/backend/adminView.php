@@ -23,8 +23,8 @@ ob_start(); ?>
 <?php $headerButtons = ob_get_clean();
 
 ob_start(); ?>
-<div class="container adminContent">
-    <div class="row text-center" id="welcome">
+<div class="container adminContent col-sm-10">
+    <div class="row font-italic text-center bigTitle">
         <div class="col">
             <h1>Bienvenue <strong><?= $_SESSION['pseudo'] ?></strong></h1>
         </div>
@@ -37,12 +37,14 @@ ob_start(); ?>
     </nav>
 
     <div class="row tab-content mb-5">
-        <div class="col tab-pane active text-center mt-5 mb-4" id="newPost">
+        <div class="col tab-pane active text-center mt-4 mb-2" id="newPost">
+            <p id="chapterNumber">
+                Chapitre <?= $nextChapter; ?>
+            </p>
+
             <form method='post' action="index.php?action=admin">
                 <p>
-                    <label for="chapter">Chapitre:</label>
-                    <input type="number" min="1" step="1"  id="inputChapter" value="<?= $nextChapter; ?>" name="chapter"/><br>
-                    <label for="title">Titre:</label>
+                    <label for="inputTitle">Titre:</label>
                     <input type="text" id="inputTitle" name="title"/><br>
                     <textarea id="mytextarea" name="content" cols="70" rows="20"></textarea><br>
                     <input class="button" type="submit" value="Publier" name='publier'/>
@@ -50,7 +52,7 @@ ob_start(); ?>
             </form>
         </div>
 
-        <div class="col tab-pane text-center mt-5 mb-4" id="postSection">
+        <div class="col tab-pane text-center mt-4 mb-4" id="postSection">
             <!-- Display all the posted posts -->
             <?php 
             foreach($posts as $post) 
@@ -74,10 +76,10 @@ ob_start(); ?>
                 foreach ($reportedComments as $reportedComment)
                 {
                 ?>
-                    <div id="reportComment">
+                    <div class="reportComment">
                         <div class="row">
                             <div class="col">
-                                <p>
+                                <p>   
                                         
                                     <strong><?= htmlspecialchars($reportedComment->pseudo()); ?></strong> le <?= htmlspecialchars($reportedComment->commentDate()); ?>
                                 </p>
@@ -128,7 +130,7 @@ ob_start(); ?>
                 foreach($unreportedComments as $unreportedComment) 
                 {
                 ?>  
-                    <div id="unreportComment">
+                    <div class="unreportComment">
                         <div class="row mx-0 px-3">
                             <div class="col">
                                 <p>

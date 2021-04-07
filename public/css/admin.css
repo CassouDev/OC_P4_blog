@@ -1,15 +1,18 @@
 /* HEADER */
+.adminContent {
+    text-align: center;
+    width: 80%;
+    margin: auto;
+}
 header {
     background-color: black;
 }
 #mountains_admin {
     width: 100%;
 }
-#welcome {
+.bigTitle {
+    text-align: center;
     padding: 50px;
-}
-#welcome h1 strong {
-    font-style: italic;
 }
 #disconnectButton, #returnButton {
     text-decoration: none;
@@ -18,9 +21,9 @@ header {
     border-radius: 5px;
     border-width: 0px;
     color: #000000;
-    padding: 8px 14px;
+    padding: 8px 20px;
     font-size: 13px;
-    font-weight: bold;
+    font-weight: 700;
 }
 #disconnectButton {
     float: right;
@@ -34,10 +37,10 @@ header {
 .tab-content {
     border: 2px solid rgba(0, 0, 0, 0.95);
 }
-a.nav-item.nav-link{
+a.nav-item.nav-link {
     color: rgba(0, 0, 0, 0.95);
     background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 5px, 5px, 0 0;
+    border-radius: 5px 5px 0 0;
     border: none;
     font-size: 22px;
 }
@@ -47,17 +50,23 @@ a.nav-item.nav-link{
     border: none;
 }
 /* "NOUVEAU BILLET" */
-#inputTitle, #inputDate, #inputChapter{
+#chapterNumber {
+    text-align: center;
+    font-weight: bold;
+    font-size: 19px;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.6);
+}
+#inputTitle {
+    width: 60%;
     border: none;
     background-color: rgba(0, 0, 0, 0.1);
     text-align: center;
     height: 25px;
-}
-#inputTitle {
-    width: 60%;
+    margin-bottom: 20px;
 }
 label{
-    font-weight: 500;
+    font-weight: bold;
     padding-right: 20px;
 }
 /* "MES BILLETS" */
@@ -71,15 +80,20 @@ label{
     background-image: url('../images/chapter_background.jpg');
     background-size: contain;
     border-radius: 10px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    /* font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
+    font-weight: 500;
     color: white;
     display: block;
+    padding: 30px;
 }
-.lastPost h3 {
+.lastPost h2 {
     margin-bottom: 0px;
     font-size: 22px;
 }
 /* EDIT COMMENT PAGE */
+textarea#mytextarea {
+    font-size: 16px;
+}
 #buttons {
     display: flex;
     justify-content: space-around;
@@ -100,11 +114,220 @@ label{
 #h1otherComments {
     border-top: 2px solid black;
 }
-#reportComment, #unreportComment {
+.reportComment, .unreportComment {
     padding-top: 15px;
     padding-bottom: 20px;
     border-top: 3px solid rgba(0, 0, 0, 0.1);
 }
-#reportComment a {
-    font-size: 12px;
+
+@media screen and (max-width: 1200px)
+{
+    /* HEADER */
+    #disconnectButton, #returnButton {
+        font-size: 11.5px;
+    }
+    .bigTitle h1 {
+        font-size: 30px;
+    }
+    /* TABS */
+    a.nav-item.nav-link {
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 1024px)
+{
+    /* HEADER */
+    #disconnectButton, #returnButton {
+        font-size: 11px;
+    }
+    .bigTitle h1 {
+        font-size: 28px;
+    }
+    /* TABS */
+    a.nav-item.nav-link{
+        font-size: 20px;
+    }
+    /* "NOUVEAU BILLET" */
+    #chapterNumber {
+        font-size: 17px;
+    }
+    /* "MES BILLETS" */
+    .lastPost h2 {
+        font-size: 20px;
+    }
+    /* "COMMENTAIRES" */
+    #commentSection h1 {
+        font-size: 18px;
+    }
+    #commentSection {
+        font-size: 14px;
+    }
+    /* EDIT COMMENT PAGE */
+    textarea#mytextarea {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 992px) 
+{
+    /* HEADER */
+    #disconnectButton, #returnButton {
+        font-size: 10px;
+    }
+    .bigTitle {
+        padding: 35px;
+    }
+    .bigTitle h1 {
+        font-size: 26px;
+    }
+    /* TABS */
+    a.nav-item.nav-link{
+        font-size: 19px;
+    }
+    /* "MES BILLETS" */
+    .lastPost {
+        width: 70%;
+    }
+    .lastPost h2 {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 768px) 
+{
+    /* HEADER */
+    #disconnectButton, #returnButton {
+        margin-top: 20px;
+        padding: 6px 16px;
+    }
+    .bigTitle {
+        padding: 25px;
+    }
+    .bigTitle h1 {
+        font-size: 22px;
+    }
+    /* TABS */
+    a.nav-item.nav-link{
+        font-size: 17px;
+    }
+    /* "NOUVEAU BILLET" */
+    #chapterNumber {
+        font-size: 15px;
+    }
+     /* "MES BILLETS" */
+     .lastPost {
+        width: 75%;
+    }
+    .lastPost h2 {
+        font-size: 17px;
+    }
+    /* "COMMENTAIRES" */
+    #commentSection h1 {
+        font-size: 16px;
+    }
+    #commentSection {
+        font-size: 12px;
+    }
+    /* EDIT COMMENT PAGE */
+    textarea#mytextarea {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 600px) 
+{
+    /* HEADER */
+    .bigTitle {
+        padding: 20px;
+    }
+    .bigTitle h1 {
+        font-size: 20px;
+    }
+    /* TABS */
+    a.nav-item.nav-link{
+        font-size: 15px;
+    }
+    /* "NOUVEAU BILLET" */
+    #chapterNumber {
+        font-size: 13px;
+    }
+    label {
+        font-size: 13px;
+    }
+     /* "MES BILLETS" */
+     .lastPost {
+        width: 80%;
+    }
+    .lastPost h2 {
+        font-size: 15px;
+    }
+    /* "COMMENTAIRES" */
+    #commentSection h1 {
+        font-size: 15px;
+    }
+    /* EDIT COMMENT PAGE */
+    #inputTitle {
+        font-size: 13px;
+    }
+}
+
+
+@media screen and (max-width: 480px) 
+{
+    /* HEADER */
+    #disconnectButton, #returnButton {
+        margin-top: 10px;
+        font-size: 9px;
+        padding: 6px 10px;
+    }
+    #disconnectButton {
+        float: right;
+        margin-right: 5%;
+    }
+    .container.adminContent {
+        width: 85%;
+    }
+    .bigTitle {
+        padding: 12px;
+    }
+    .bigTitle h1 {
+        font-size: 16px;
+    }
+    /* TABS */
+    a.nav-item.nav-link{
+        font-size: 14px;
+    }
+    /* "NOUVEAU BILLET" */
+    #chapterNumber {
+        font-size: 12px;
+    }
+    label {
+        font-size: 11px;
+    }
+     /* "MES BILLETS" */
+     .lastPost {
+        width: 90%;
+    }
+    .lastPost h2 {
+        font-size: 14px;
+        line-height: 18px;
+    }
+    /* "COMMENTAIRES" */
+    #commentSection h1 {
+        font-size: 13px;
+    }
+    #commentSection {
+        font-size: 11px;
+    }
+    .reportComment, .unreportComment {
+        padding: 15px 10px 20px 10px;
+    }
+    /* EDIT COMMENT PAGE */
+    #inputTitle {
+        font-size: 11px;
+    }
+    textarea #mytextarea {
+        font-size: 11px;
+    }
 }

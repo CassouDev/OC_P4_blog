@@ -8,12 +8,13 @@ $scr = "public/images/mountains.png";
 $alt = "Mountains and 'Billet simple pour l'Alaska'";
 
 ob_start(); ?>
-<script src="https://kit.fontawesome.com/1d97b80b9e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" media="screen" href="public/css/homepage.css"/>
 <?php $headContent = ob_get_clean();
 
 ob_start(); ?>
-<button id="connectButton">Connexion</button>
-<a href="index.php" alt="Bouton de retour à l'accueil" id="returnButton">Accueil</a>
+<button class= 'button' id="connectButton">Connexion</button>
+
+<a href="index.php" class='button' id="returnButton">Accueil</a>
 
 <div id="adminForm">
     <form method="get" action="index.php" id="connectForm">
@@ -68,7 +69,7 @@ ob_start(); ?>
         foreach ($comments as $comment) 
         {
         ?>
-            <div id="eachComment">
+            <div class="eachComment">
                 <p><strong> <?= htmlspecialchars($comment->pseudo()) ?></strong> le <?= htmlspecialchars($comment->commentDate()) ?></p>
                 <p><?= htmlspecialchars($comment->comment()) ?></p>
                 </p>
